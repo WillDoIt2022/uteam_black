@@ -41,6 +41,10 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  flutter_svg: ^0.22.0
+
+  flutter_svg_provider: ^0.1.9
+
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
@@ -60,9 +64,12 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+      - assets/img/Logo_guy.png
+      - assets/svg/Logo_guy.svg
+      - assets/img/Logo_box.png
+      - assets/img/Logo_dashbord.png
+      - assets/img/Logo_house.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -75,10 +82,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: fonts/Inter-VariableFont_slnt,wght.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

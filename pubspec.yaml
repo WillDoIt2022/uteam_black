@@ -44,6 +44,8 @@ dev_dependencies:
   flutter_svg: ^0.22.0
 
   flutter_svg_provider: ^0.1.9
+# Phone mask
+  easy_mask: ^2.0.1
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

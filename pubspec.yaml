@@ -44,6 +44,8 @@ dev_dependencies:
   flutter_svg: ^0.22.0
 
   flutter_svg_provider: ^0.1.9
+
+  another_flushbar: ^1.12.29
 # Phone mask
   easy_mask: ^2.0.1
 
@@ -68,10 +70,15 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
       - assets/img/Logo_guy.png
-      - assets/svg/Logo_guy.svg
       - assets/img/Logo_box.png
       - assets/img/Logo_dashbord.png
       - assets/img/Logo_house.png
+      - assets/svg/Logo_guy.svg
+      - assets/svg/Add.svg
+      - assets/svg/Edit.svg
+      - assets/svg/Geo.svg
+      - assets/svg/Profile.svg
+      - assets/svg/Settings.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

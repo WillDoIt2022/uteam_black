@@ -1,32 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:easy_mask/easy_mask.dart';
-import 'dart:math';
+import 'package:another_flushbar/flushbar.dart'; //notifys
+import 'package:easy_mask/easy_mask.dart'; //mask for phone
 // ignore_for_file: prefer_const_constructors
 
-Widget loginWidget(_next) {
-  Random random = Random();
-  int randomNumber =
-      random.nextInt(9999) + 1000; // from 1000 upto 9999 included
-  print(randomNumber);
-  print(_next);
-
-  return 
- 
-  _next
-      ? Column(children: <Widget>[  
+Widget loginWidget(context, next, controllerPhone, controllerCode, randomCode) {
+  print(randomCode);
+  return next
+      ? Column(children: <Widget>[
           SizedBox(
-            height:125,
+            height: 125,
             child: Text(
-            textAlign: TextAlign.center,
-            "enter your\nphone number".toUpperCase(),
-            style: TextStyle(
-              fontSize: 36,
-              color: Color.fromARGB(255, 255, 255, 255),
-              fontFamily: 'Inter',
-              fontWeight: FontWeight.w700,
+              textAlign: TextAlign.center,
+              "enter your\nphone number".toUpperCase(),
+              style: TextStyle(
+                fontSize: 36,
+                color: Color.fromARGB(255, 255, 255, 255),
+                fontFamily: 'Inter',
+                fontWeight: FontWeight.w700,
+              ),
             ),
-          ),),
+          ),
           SizedBox(
             width: 290,
             child: TextField(
@@ -37,7 +31,7 @@ Widget loginWidget(_next) {
                 fontWeight: FontWeight.w700,
               ),
               keyboardType: TextInputType.number,
-              controller: TextEditingController(text: "+33"),
+              controller: controllerPhone,
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
                 TextInputMask(mask: '\\+99 999 999 99 99', reverse: false)
@@ -63,17 +57,18 @@ Widget loginWidget(_next) {
       : Column(
           children: <Widget>[
             SizedBox(
-            height:125,
-            child:Text(
-              textAlign: TextAlign.center,
-              "enter code we\nsended on your\nphone number".toUpperCase(),
-              style: TextStyle(
-                fontSize: 36,
-                color: Color.fromARGB(255, 255, 255, 255),
-                fontFamily: 'Inter',
-                fontWeight: FontWeight.w700,
+              height: 125,
+              child: Text(
+                textAlign: TextAlign.center,
+                "enter code we\nsended on your\nphone number".toUpperCase(),
+                style: TextStyle(
+                  fontSize: 36,
+                  color: Color.fromARGB(255, 255, 255, 255),
+                  fontFamily: 'Inter',
+                  fontWeight: FontWeight.w700,
+                ),
               ),
-            ),),
+            ),
             SizedBox(
               width: 290,
               child: TextField(
@@ -84,7 +79,25 @@ Widget loginWidget(_next) {
                   fontWeight: FontWeight.w700,
                 ),
                 keyboardType: TextInputType.number,
-                controller: TextEditingController(text: ""),
+                controller: controllerCode,
+                onChanged: (text) {
+                  if (int.parse(controllerCode.text) == randomCode) {
+                    Navigator.pushNamed(context, '/main_page');
+                  } else if (controllerCode.text.length == 4 &&
+                      int.parse(controllerCode.text) != randomCode) {
+                    Flushbar(
+                      title: 'Warning',
+                      titleColor: Colors.yellow,
+                      titleSize: 18,
+                      message: 'Check if the specified code is correct',
+                      messageSize: 14,
+                      duration: Duration(seconds: 4),
+                      flushbarPosition: FlushbarPosition.TOP,
+                    ).show(context);
+                  } else {
+                    return;
+                  }
+                },
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                   LengthLimitingTextInputFormatter(4),

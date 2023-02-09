@@ -31,6 +31,57 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+#camera controller
+  camera: ^0.9.4+19
+
+  flutter_svg: ^0.22.0
+#to use svg img
+  flutter_svg_provider: ^0.1.9
+
+#notifys
+  another_flushbar: ^1.12.29
+
+  flutter_conditional_rendering: ^2.0.0
+
+  dropdown_button2: ^1.9.2
+#for phone mask
+  easy_mask: ^2.0.1
+
+  flutter_bloc: ^8.1.1
+
+  bloc: ^8.1.0
+
+  flutter_spinkit: ^5.1.0
+  
+#for output custom app icon
+  flutter_launcher_icons: ^0.11.0
+
+  loading_animation_widget: ^1.2.0+4
+
+#To get current user geo latitude and longitude
+  geolocator: ^8.2.0
+
+#To translate an address into latitude and longitude coordinates 
+#1 request per second
+  geocode: ^1.0.2
+
+#Dio package will be used for HTTP requests. 
+  dio: ^4.0.4
+
+#For multilanguage. 
+  translator: ^0.1.4
+#To capitilized the letters and more options to do 
+  text_tools: ^0.0.2
+
+
+#Left package without ver to install, and terminal will install those ver, 
+#wich is relative to others packages (in this package conflict with cameras package)
+  google_maps_flutter: 
+  
+#DataBase connect
+  firebase_database: ^10.0.9
+  firebase_core: ^2.4.1
+  cloud_firestore: ^4.3.1
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -40,21 +91,17 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-  flutter_svg: ^0.22.0
-
-  flutter_svg_provider: ^0.1.9
-
-  another_flushbar: ^1.12.29
-# Phone mask
-  easy_mask: ^2.0.1
-
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/img/launher/UTEAM_logo.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -73,12 +120,14 @@ flutter:
       - assets/img/Logo_box.png
       - assets/img/Logo_dashbord.png
       - assets/img/Logo_house.png
+      - assets/img/BackgroundMap.png
       - assets/svg/Logo_guy.svg
       - assets/svg/Add.svg
       - assets/svg/Edit.svg
       - assets/svg/Geo.svg
       - assets/svg/Profile.svg
       - assets/svg/Settings.svg
+      - assets/svg/CameraButton.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

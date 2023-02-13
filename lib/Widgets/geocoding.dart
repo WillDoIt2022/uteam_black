@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import './languageDeterminer.dart';
 import './translator.dart';
 import '../globals.dart' as globals;
 // ignore_for_file: prefer_const_constructors
@@ -32,6 +33,7 @@ for (var i = 0; i < address.length; i++) {
             globals.language = address[i]["short_name"].toLowerCase();
             globals.countryIso = address[i]["short_name"];
             globals.country = address[i]["long_name"];
+            languageDeterminer();
             translateLanguage();
           } else if (address[i]['types'][0] == 'postal_code') {
             globals.postalCode = address[i]["long_name"];

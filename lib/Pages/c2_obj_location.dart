@@ -108,7 +108,7 @@ class ObjLocationState extends State<ObjLocation> {
                 counter != 0
                     ? ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.only(top: 30, left: 30),
+                          padding: EdgeInsets.only(top: 25, left: 30),
                           elevation: 0.0,
                           backgroundColor: Colors.white.withOpacity(0.05),
                           textStyle: const TextStyle(

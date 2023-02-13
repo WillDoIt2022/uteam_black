@@ -65,7 +65,7 @@ class _ObjSummary extends State<ObjectPage> {
                 onSave
                     ? ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.only(top: 30, left: 30),
+                          padding: EdgeInsets.only(top: 25, left: 30),
                           elevation: 0.0,
                           backgroundColor: Color.fromARGB(255, 246, 246, 246),
                         ),
@@ -86,7 +86,7 @@ class _ObjSummary extends State<ObjectPage> {
                       )
                     : ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.only(top: 30, right: 30),
+                          padding: EdgeInsets.only(top: 25, right: 30),
                           elevation: 0.0,
                           backgroundColor: Color.fromARGB(255, 246, 246, 246),
                         ),

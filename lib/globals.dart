@@ -50,3 +50,4 @@ Map<String, String> generalContentArray = {
 'objectPageText_1': 'save',
 'objectPageText_2': 'edit'
 };
+

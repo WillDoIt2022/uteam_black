@@ -78,7 +78,7 @@ class _LaunchApp extends State<WelcomePage> {
                             width: 150,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                padding: EdgeInsets.only(top: 30),
+                                padding: EdgeInsets.only(top: 25),
                                 elevation: 0.0,
                                 backgroundColor: Colors.white.withOpacity(0.05),
                               ),
@@ -129,7 +129,7 @@ class _LaunchApp extends State<WelcomePage> {
                             width: 150,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                padding: EdgeInsets.only(top: 30),
+                                padding: EdgeInsets.only(top: 25),
                                 elevation: 0.0,
                                 backgroundColor: Colors.white.withOpacity(0.05),
                               ),

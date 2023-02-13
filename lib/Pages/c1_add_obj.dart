@@ -38,7 +38,7 @@ class _AddObj extends State<AddObjPage> {
                     width: 150,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.only(top: 30, right: 10),
+                        padding: EdgeInsets.only(top: 25, right: 10),
                         elevation: 0.0,
                         backgroundColor: Colors.white.withOpacity(0.05),
                       ),

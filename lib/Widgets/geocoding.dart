@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import './languageDeterminer.dart';
+import 'language_determiner.dart';
 import './translator.dart';
 import '../globals.dart' as globals;
 // ignore_for_file: prefer_const_constructors

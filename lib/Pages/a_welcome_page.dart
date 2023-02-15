@@ -65,7 +65,7 @@ class _LaunchApp extends State<WelcomePage> {
     return Scaffold(
         backgroundColor: Color.fromARGB(255,246,246,246),
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
           // ignore: prefer_const_literals_to_create_immutables
           children: <Widget>[
             Expanded(

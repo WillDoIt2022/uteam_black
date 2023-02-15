@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:uuid/uuid.dart';
 import 'dart:io';
 import '../globals.dart' as globals;
 import '../Widgets/footer_menu.dart';
@@ -9,7 +10,6 @@ import '../routes.dart';
 class ObjectPage extends StatefulWidget {
   const ObjectPage({Key? key, required this.picture}) : super(key: key);
   final XFile picture;
-
   @override
   State<StatefulWidget> createState() {
     return _ObjSummary();
@@ -17,8 +17,12 @@ class ObjectPage extends StatefulWidget {
 }
 
 class _ObjSummary extends State<ObjectPage> {
-  final object = {
+
+var uuid = Uuid();
+String objectId="";
+  late var object = {
     "createDate": Timestamp.now(),
+    "id":objectId,
     "phoneNumber": globals.phoneNumber,
     "uulid": globals.uulid,
     "latitude": globals.flag?globals.latitude:globals.newLatitude,
@@ -30,18 +34,23 @@ class _ObjSummary extends State<ObjectPage> {
     "building": globals.flag ? globals.building : globals.newBuilding,
     "level": globals.level,
   };
+
+
   final docObjects = FirebaseFirestore.instance.collection('objects').doc();
   dynamic onSave;
   dynamic street = globals.flag ? globals.street : globals.newStreet;
   dynamic building = globals.flag ? globals.building : globals.newBuilding;
-
-  @override
+ 
+ @override
   void initState() {
     super.initState();
     onSave = true;
   }
 
   Future addNewObject() async {
+    objectId=uuid.v1();
+    globals.objectId=objectId;
+
     docObjects
         .set(object)
         .then((value) => print(docObjects))
@@ -296,7 +305,7 @@ class _ObjSummary extends State<ObjectPage> {
               ),
             ),
           ),
-          Expanded(flex: 2, child: footerMenu(context)),
+          Expanded(flex: 2, child: footerMenu()),
         ],
       )),
     );

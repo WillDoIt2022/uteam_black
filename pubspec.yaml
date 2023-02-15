@@ -73,7 +73,6 @@ dependencies:
 #To capitilized the letters and more options to do 
   text_tools: ^0.0.2
 
-
 #Left package without ver to install, and terminal will install those ver, 
 #wich is relative to others packages (in this package conflict with cameras package)
   google_maps_flutter: 
@@ -82,6 +81,8 @@ dependencies:
   firebase_database: ^10.0.9
   firebase_core: ^2.4.1
   cloud_firestore: ^4.3.1
+#random id generator
+  uuid: ^3.0.6
 
 
   # The following adds the Cupertino Icons font to your application.

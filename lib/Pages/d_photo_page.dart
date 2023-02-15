@@ -3,6 +3,7 @@ import 'package:camera/camera.dart';
 import 'dart:async';
 import 'package:loading_animation_widget/loading_animation_widget.dart'; //Spinner
 import 'package:flutter_svg/flutter_svg.dart';
+
 import 'dart:io';
 import './e_obj_page.dart';
 import '../globals.dart' as globals;
@@ -25,6 +26,8 @@ class _LaunchCamera extends State<PhotoPage> {
   dynamic isPictureDone;
   dynamic photo;
 
+ 
+
   @override
   void initState() {
     isCameraReady = false;
@@ -36,7 +39,7 @@ class _LaunchCamera extends State<PhotoPage> {
   Future<void> startCamera() async {
     cameras = await availableCameras();
     cameraController = CameraController(cameras[0], ResolutionPreset.high);
-    await cameraController.initialize().then((value) {
+     await cameraController.initialize().then((value) {
       if (!mounted) {
         return;
       }

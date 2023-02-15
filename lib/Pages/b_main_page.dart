@@ -18,8 +18,7 @@ class MainPage extends StatefulWidget {
 class _LaunchApp extends State<MainPage> {
   final docObjects =
         FirebaseFirestore.instance.collection('objects');
-  //final docObjects =
-        //FirebaseFirestore.instance.collection('objects').doc(globals.phoneNumber);
+
   final translator = GoogleTranslator();
   dynamic timer;
   @override
@@ -33,26 +32,6 @@ class _LaunchApp extends State<MainPage> {
       setState(() {});
     });
   }
-
-
-//Future addObject() async {
-  //docObjects
-    //.set({'city': 'Berlin'},SetOptions(merge: true))
-    //.onError((e, _) => print("Error writing document: $e"));
-//}
-
-Future addNewUser() async {
-
-final query = docObjects.where("city", isEqualTo: "Berlin").get().then((QuerySnapshot snapshot){
-  snapshot.docs.forEach((element) {
-    print(element.data());
-  });
-}
-    );
-  //docObjects
-    //.set({'city': 'Berlin'}).then(
-    //(value) => print(docObjects)).onError((e, _) => print("Error writing document: $e"));
-}
 
 
   @override
@@ -118,7 +97,7 @@ final query = docObjects.where("city", isEqualTo: "Berlin").get().then((QuerySna
             ),
             Expanded(
               flex: 2,
-              child: footerMenu(context),
+              child: footerMenu(),
             ),
           ],
         ),

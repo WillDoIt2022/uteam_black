@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 
 Widget logoImg(timer) {
   return Column(
-    mainAxisAlignment: MainAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.start,
     children: [
       Stack(
         children: [
           Container(
-            height: MediaQueryData.fromWindow(WidgetsBinding.instance.window).size.width *(timer?0.9:0.5),
+            height: MediaQueryData.fromWindow(WidgetsBinding.instance.window).size.width *(timer?0.9:0.58),
             width: MediaQueryData.fromWindow(WidgetsBinding.instance.window).size.width *1,
             decoration: BoxDecoration(
               image: DecorationImage(

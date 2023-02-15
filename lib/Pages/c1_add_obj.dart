@@ -117,7 +117,7 @@ class _AddObj extends State<AddObjPage> {
             ),
             Expanded(
               flex: 2,
-              child: footerMenu(context),
+              child: footerMenu(),
             ),
           ],
         ),

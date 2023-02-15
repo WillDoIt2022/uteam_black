@@ -91,7 +91,7 @@ class _DataBase extends State<DataBasePage> {
                                                             MainAxisAlignment
                                                                 .spaceEvenly,
                                                         children: [
-                                                          Container(
+                                                          SizedBox(
                                                             width: MediaQuery.of(
                                                                         context)
                                                                     .size
@@ -119,7 +119,7 @@ class _DataBase extends State<DataBasePage> {
                                                               ),
                                                             ),
                                                           ),
-                                                          Container(
+                                                          SizedBox(
                                                             width: MediaQuery.of(
                                                                         context)
                                                                     .size
@@ -147,7 +147,7 @@ class _DataBase extends State<DataBasePage> {
                                                               ),
                                                             ),
                                                           ),
-                                                          Container(
+                                                          SizedBox(
                                                             width: MediaQuery.of(
                                                                         context)
                                                                     .size
@@ -333,7 +333,7 @@ class _DataBase extends State<DataBasePage> {
                     ),
                     Expanded(
                       flex: 2,
-                      child: footerMenu(context),
+                      child: footerMenu(),
                     ),
                   ]);
             } else {

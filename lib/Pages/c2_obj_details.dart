@@ -223,9 +223,17 @@ BlocProvider.of<CounterNav>(context)
                                       ),
                                     ),
                                   ),
-                                  SizedBox(
+                                  Container(
                                     width: 290,
                                     height: 42,
+                                    decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        width: 2.0,
+                        color: Color.fromARGB(255, 124, 160, 209),
+                      ),
+                    ),
+                  ),
                                     child: SizedBox(
                                       child: Align(
                                       alignment: Alignment.bottomLeft,

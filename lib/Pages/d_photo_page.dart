@@ -26,8 +26,6 @@ class _LaunchCamera extends State<PhotoPage> {
   dynamic isPictureDone;
   dynamic photo;
 
- 
-
   @override
   void initState() {
     isCameraReady = false;
@@ -39,7 +37,7 @@ class _LaunchCamera extends State<PhotoPage> {
   Future<void> startCamera() async {
     cameras = await availableCameras();
     cameraController = CameraController(cameras[0], ResolutionPreset.high);
-     await cameraController.initialize().then((value) {
+    await cameraController.initialize().then((value) {
       if (!mounted) {
         return;
       }
@@ -136,9 +134,15 @@ class _LaunchCamera extends State<PhotoPage> {
                                                 style: ElevatedButton.styleFrom(
                                                   padding:
                                                       EdgeInsets.only(top: 0),
-                                                  elevation: 0.0,
-                                                  backgroundColor: Colors.white
-                                                      .withOpacity(0.05),
+                                                  //elevation: 0.0,
+                                                  backgroundColor:
+                                                      Color.fromARGB(
+                                                          255, 250, 250, 250),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20.0),
+                                                  ),
                                                 ),
                                                 onPressed: () {
                                                   setState(
@@ -148,7 +152,10 @@ class _LaunchCamera extends State<PhotoPage> {
                                                   );
                                                 },
                                                 child: Text(
-                                                  globals.generalContentArray['back'].toString().toUpperCase(),
+                                                  globals.generalContentArray[
+                                                          'back']
+                                                      .toString()
+                                                      .toUpperCase(),
                                                   style: TextStyle(
                                                     color: Color.fromARGB(
                                                         255, 0, 0, 0),

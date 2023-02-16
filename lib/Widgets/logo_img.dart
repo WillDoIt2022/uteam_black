@@ -8,7 +8,7 @@ Widget logoImg(timer) {
       Stack(
         children: [
           Container(
-            height: MediaQueryData.fromWindow(WidgetsBinding.instance.window).size.width *(timer?0.9:0.58),
+            height: MediaQueryData.fromWindow(WidgetsBinding.instance.window).size.width *(timer?0.89:0.55),
             width: MediaQueryData.fromWindow(WidgetsBinding.instance.window).size.width *1,
             decoration: BoxDecoration(
               image: DecorationImage(

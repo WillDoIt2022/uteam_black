@@ -18,6 +18,7 @@ class DataBasePage extends StatefulWidget {
 
 class _DataBase extends State<DataBasePage> {
   final docObjects = FirebaseFirestore.instance.collection('objects');
+  final controllerSearch = TextEditingController(text: "");
   @override
   void initState() {
     //getUserObjects();
@@ -49,16 +50,64 @@ class _DataBase extends State<DataBasePage> {
                   children: [
                     Expanded(
                       flex: 2,
-                      child: Container(),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Container(
+                            height: 40,
+                            width: MediaQuery.of(context).size.width * 0.9,
+                            decoration: BoxDecoration(
+                              color: Color.fromARGB(255, 124, 160, 209),
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: TextField(
+                              textAlignVertical: TextAlignVertical.center,
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Color.fromARGB(255, 246, 246, 246),
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w700,
+                              ),
+                              controller: controllerSearch,
+                              maxLines: 1,
+                              decoration: InputDecoration(
+                                isCollapsed: true,
+                                border: InputBorder.none,
+                                labelText: 'SEARCH',
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.never,
+                                labelStyle: TextStyle(
+                                    fontSize: 20.0,
+                                    color: Color.fromARGB(255, 246, 246, 246)),
+                                prefixIcon: ImageIcon(
+                                  AssetImage("assets/img/Search.png"),
+                                  color: Color.fromARGB(255, 246, 246, 246),
+                                  size: 25,
+                                ),
+                                suffixIcon: ImageIcon(
+                                  AssetImage("assets/img/Search_Indicator.png"),
+                                  color: Color.fromARGB(255, 246, 246, 246),
+                                  size: 25,
+                                ),
+                                hintText: '',
+                              ),
+                              onChanged: (value) {
+                                controllerSearch.value = TextEditingValue(
+                                    text: value.toUpperCase(),
+                                    selection: controllerSearch.selection);
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     Expanded(
                       flex: 11,
-
                       child: ListView.builder(
                           itemCount: snapshot.data!.docs.length,
                           itemBuilder: (BuildContext context, index) {
                             return ListView(
-                              physics: ClampingScrollPhysics(), 
+                              physics: ClampingScrollPhysics(),
                               shrinkWrap: true,
                               padding: EdgeInsets.all(20),
                               children: <Widget>[
@@ -276,7 +325,7 @@ class _DataBase extends State<DataBasePage> {
                                                                 left: 15,
                                                               ),
                                                               child: Text(
-                                                                "${snapshot.data!.docs[index]['street']}, ${snapshot.data!.docs[index]['building']}" ,
+                                                                "${snapshot.data!.docs[index]['street']}, ${snapshot.data!.docs[index]['building']}",
                                                                 overflow:
                                                                     TextOverflow
                                                                         .ellipsis,
@@ -318,6 +367,7 @@ class _DataBase extends State<DataBasePage> {
                                                       fontFamily: 'Inter',
                                                       fontWeight:
                                                           FontWeight.w700,
+                                                          decoration: TextDecoration.underline,
                                                     ),
                                                   ),
                                                 ]),
@@ -339,9 +389,9 @@ class _DataBase extends State<DataBasePage> {
             } else {
               return Center(
                 child: LoadingAnimationWidget.twoRotatingArc(
-                    color: Color.fromARGB(255, 15, 77, 154),
-                    size: 50,
-                  ),
+                  color: Color.fromARGB(255, 15, 77, 154),
+                  size: 50,
+                ),
               );
             }
           }),

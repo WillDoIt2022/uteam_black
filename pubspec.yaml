@@ -123,6 +123,8 @@ flutter:
       - assets/img/Logo_house.png
       - assets/img/Logo_UTEAM.png
       - assets/img/BackgroundMap.png
+      - assets/img/Search.png
+      - assets/img/Search_Indicator.png
       - assets/svg/Logo_guy.svg
       - assets/svg/Add.svg
       - assets/svg/Edit.svg
@@ -130,6 +132,7 @@ flutter:
       - assets/svg/Profile.svg
       - assets/svg/Settings.svg
       - assets/svg/CameraButton.svg
+      
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

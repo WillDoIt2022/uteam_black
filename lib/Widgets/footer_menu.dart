@@ -20,9 +20,7 @@ class footerMenuWidget extends State<footerMenu> {
   }
 
   currentUrlDeterminer(path) {
-    print("I'm here");
-    print(path);
-    print(ModalRoute.of(context)?.settings.name.toString());
+
     if (ModalRoute.of(context)?.settings.name.toString().contains(path) ==
         true) {
       return 50.0;
@@ -46,7 +44,7 @@ class footerMenuWidget extends State<footerMenu> {
         children: <Widget>[
           IconButton(
             icon: SvgPicture.asset('assets/svg/Profile.svg'),
-            iconSize: 30,
+            iconSize: 50,
             color: Color.fromARGB(255, 255, 255, 255).withOpacity(0.8),
             tooltip: 'Profile',
             onPressed: () {},
@@ -74,14 +72,14 @@ class footerMenuWidget extends State<footerMenu> {
           ),
           IconButton(
             icon: SvgPicture.asset('assets/svg/Geo.svg'),
-            iconSize: 30,
+            iconSize: 50,
             color: Color.fromARGB(255, 255, 255, 255).withOpacity(0.8),
             tooltip: 'Geolocation map',
             onPressed: () {},
           ),
           IconButton(
             icon: SvgPicture.asset('assets/svg/Settings.svg'),
-            iconSize: 30,
+            iconSize: 50,
             color: Color.fromARGB(255, 255, 255, 255).withOpacity(0.8),
             tooltip: 'Settings',
             onPressed: () {},

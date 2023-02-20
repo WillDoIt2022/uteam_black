@@ -83,6 +83,8 @@ dependencies:
   cloud_firestore: ^4.3.1
 #random id generator
   uuid: ^3.0.6
+#to work with files and Firebase storage
+  firebase_storage: ^11.0.13
 
 
   # The following adds the Cupertino Icons font to your application.

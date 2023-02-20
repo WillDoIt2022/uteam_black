@@ -19,11 +19,10 @@ class ObjDetailsPage extends StatefulWidget {
 }
 
 class ObjDetails extends State<ObjDetailsPage> {
-
   bool currentPositionOnMap = false;
   // Initial Selected Value
-  String dropdownLevelValue = 'GROUND FLOOR';
-  String dropdownUULIDValue = 'LOREM';
+  String dropdownLevelValue = globals.level==""?'GROUND FLOOR':globals.level;
+  String dropdownUULIDValue = globals.uulid==""?'LOREM':globals.uulid;
 
   @override
   void initState() {
@@ -56,19 +55,16 @@ class ObjDetails extends State<ObjDetailsPage> {
 
   _getRequests() async {
     setState(() {
-BlocProvider.of<CounterNav>(context)
-                                .add(CounterDecrementEvent());
+      BlocProvider.of<CounterNav>(context).add(CounterDecrementEvent());
     });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
     //debugShowCheckedModeBanner: false, //remove the debug banner "Demo"
     return BlocBuilder<CounterNav, int>(builder: (context, counter) {
       return Scaffold(
-        backgroundColor: Color.fromARGB(255,246,246,246),
+        backgroundColor: Color.fromARGB(255, 246, 246, 246),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -84,26 +80,35 @@ BlocProvider.of<CounterNav>(context)
                       backgroundColor: Colors.white.withOpacity(0.05),
                     ),
                     onPressed: () {
-                      setState(
-                        () {
-                          if (counter == 0) {
-                            Navigator.pop(context);
-                          } else {
-                            BlocProvider.of<CounterNav>(context)
-                                .add(CounterDecrementEvent());
-                          }
-                        },
-                      );
+
+                        setState(
+                          () {
+                            if(globals.objectId==""){
+                            if (counter == 0) {
+                              Navigator.pop(context);
+                            } else {
+                              BlocProvider.of<CounterNav>(context)
+                                  .add(CounterDecrementEvent());
+                            }}else{
+                              Navigator.pop(context);
+                            }
+                          },
+                        );
+                     
                     },
-                    child: Text(globals.generalContentArray['back'].toString().toUpperCase(),
-                    style: TextStyle(
-                                  color: Color.fromARGB(255, 0, 0, 0),
-                                  fontSize: 24,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w700,
-                                ),),
+                    child: Text(
+                      globals.generalContentArray['back']
+                          .toString()
+                          .toUpperCase(),
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0),
+                        fontSize: 24,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                   ),
-                  counter != 2
+                  counter != 2 && globals.objectId == ""
                       ? ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             padding: EdgeInsets.only(top: 25, right: 30),
@@ -114,10 +119,10 @@ BlocProvider.of<CounterNav>(context)
                             setState(
                               () {
                                 if (counter == 0) {
-                                  globals.level = dropdownLevelValue;
                                   currentPositionOnMap = true;
-                                }
-                                if (counter == 1) {
+                                  globals.level=dropdownLevelValue;
+                                }if(counter ==1){
+                                  //if adding a new object
                                   globals.uulid = dropdownUULIDValue;
                                 }
                                 if (counter < 2) {
@@ -129,13 +134,17 @@ BlocProvider.of<CounterNav>(context)
                               },
                             );
                           },
-                          child: Text(globals.generalContentArray['next'].toString().toUpperCase(),
-                          style: TextStyle(
-                                  color: Color.fromARGB(255, 0, 0, 0),
-                                  fontSize: 24,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w700,
-                                ),),
+                          child: Text(
+                            globals.generalContentArray['next']
+                                .toString()
+                                .toUpperCase(),
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 0, 0, 0),
+                              fontSize: 24,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
                         )
                       : Container(),
                 ],
@@ -153,46 +162,50 @@ BlocProvider.of<CounterNav>(context)
                             flex: 3,
                             child: Align(
                               alignment: Alignment.center,
-                              child:Padding(
-                                padding: EdgeInsets.only(top: 10,),
-                              child: Stack(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(20),
-                                      topRight: Radius.circular(20),
-                                      bottomRight: Radius.circular(20),
-                                      bottomLeft: Radius.circular(20),
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  top: 10,
+                                ),
+                                child: Stack(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(20),
+                                        topRight: Radius.circular(20),
+                                        bottomRight: Radius.circular(20),
+                                        bottomLeft: Radius.circular(20),
+                                      ),
+                                      child: Align(
+                                        heightFactor: 1,
+                                        widthFactor: 1,
+                                        child: ObjLocation(
+                                            currentPositionOnMap:
+                                                currentPositionOnMap),
+                                      ),
                                     ),
-                                    child: Align(
-                                      heightFactor: 1,
-                                      widthFactor: 1,
-                                      child: ObjLocation(
-                                          currentPositionOnMap:
-                                              currentPositionOnMap),
+                                    InkWell(
+                                      onTap: () {
+                                        BlocProvider.of<CounterNav>(context)
+                                            .add(CounterIncrementEvent());
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ObjLocation(
+                                                      currentPositionOnMap:
+                                                          currentPositionOnMap,
+                                                    ))).then((val) =>
+                                            val ? _getRequests() : null);
+                                      },
+                                      child: Align(
+                                        heightFactor: 0.8,
+                                        widthFactor: 0.8,
+                                        child: Container(),
+                                      ),
                                     ),
-                                  ),
-                                  InkWell(
-                                    onTap: () {
-                                      BlocProvider.of<CounterNav>(context)
-                                .add(CounterIncrementEvent());
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => ObjLocation(
-                                                    currentPositionOnMap:
-                                                        currentPositionOnMap,
-                                                  ))).then(
-                                         (val) => val ? _getRequests() : null);
-                                    },
-                                    child: Align(
-                                      heightFactor: 0.8,
-                                      widthFactor: 0.8,
-                                      child: Container(),
-                                    ),
-                                  ),
-                                ],
-                              ),),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                           Expanded(
@@ -209,14 +222,14 @@ BlocProvider.of<CounterNav>(context)
                                     child: Align(
                                       alignment: Alignment.topLeft,
                                       child: Text(
-                                        globals.generalContentArray['objDetailsPageText_1']
-                          .toString()
-                          .toUpperCase(),
+                                        globals.generalContentArray[
+                                                'objDetailsPageText_1']
+                                            .toString()
+                                            .toUpperCase(),
                                         style: TextStyle(
                                           fontSize: 13,
-                                          color:
-                                              Color.fromARGB(
-                                                255, 124,160,209),
+                                          color: Color.fromARGB(
+                                              255, 124, 160, 209),
                                           fontFamily: 'Inter',
                                           fontWeight: FontWeight.w700,
                                         ),
@@ -227,28 +240,31 @@ BlocProvider.of<CounterNav>(context)
                                     width: 290,
                                     height: 42,
                                     decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        width: 2.0,
-                        color: Color.fromARGB(255, 124, 160, 209),
-                      ),
-                    ),
-                  ),
-                                    child: SizedBox(
-                                      child: Align(
-                                      alignment: Alignment.bottomLeft,
-                                      child: Text(
-                                        globals.flag?"${globals.street} ${globals.building}":"${globals.newStreet} ${globals.newBuilding}",
-                                        overflow:TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                        color:
-                                            Color.fromARGB(255, 15,77,154),
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w700,
+                                      border: Border(
+                                        bottom: BorderSide(
+                                          width: 2.0,
+                                          color: Color.fromARGB(
+                                              255, 124, 160, 209),
                                         ),
                                       ),
                                     ),
+                                    child: SizedBox(
+                                      child: Align(
+                                        alignment: Alignment.bottomLeft,
+                                        child: Text(
+                                          globals.flag
+                                              ? "${globals.street} ${globals.building}"
+                                              : "${globals.newStreet} ${globals.newBuilding}",
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            color: Color.fromARGB(
+                                                255, 15, 77, 154),
+                                            fontFamily: 'Inter',
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   ),
                                   SizedBox(
@@ -261,14 +277,14 @@ BlocProvider.of<CounterNav>(context)
                                     child: Align(
                                       alignment: Alignment.topLeft,
                                       child: Text(
-                                        globals.generalContentArray['objDetailsPageText_2']
-                          .toString()
-                          .toUpperCase(),
+                                        globals.generalContentArray[
+                                                'objDetailsPageText_2']
+                                            .toString()
+                                            .toUpperCase(),
                                         style: TextStyle(
                                           fontSize: 13,
-                                          color:
-                                              Color.fromARGB(
-                                                255, 124,160,209),
+                                          color: Color.fromARGB(
+                                              255, 124, 160, 209),
                                           fontFamily: 'Inter',
                                           fontWeight: FontWeight.w700,
                                         ),
@@ -290,9 +306,7 @@ BlocProvider.of<CounterNav>(context)
                                               255, 246, 246, 247)),
                                       style: TextStyle(
                                         fontSize: 20,
-                                        color:
-                                            Color.fromARGB(
-                                                255, 15,77,154),
+                                        color: Color.fromARGB(255, 15, 77, 154),
                                         fontFamily: 'Inter',
                                         fontWeight: FontWeight.w700,
                                       ),
@@ -302,7 +316,7 @@ BlocProvider.of<CounterNav>(context)
                                       underline: Container(
                                         height: 2,
                                         color: Color.fromARGB(
-                                                255, 124,160,209), //<-- SEE HERE
+                                            255, 124, 160, 209), //<-- SEE HERE
                                       ),
 
                                       // Array list of items
@@ -317,6 +331,7 @@ BlocProvider.of<CounterNav>(context)
                                       onChanged: (String? newValue) {
                                         setState(() {
                                           dropdownLevelValue = newValue!;
+                                          globals.level=newValue;
                                         });
                                       },
                                     ),
@@ -350,7 +365,7 @@ BlocProvider.of<CounterNav>(context)
                                 'UULID',
                                 style: TextStyle(
                                   fontSize: 36,
-                                  color: Color.fromARGB(255, 15,77,154),
+                                  color: Color.fromARGB(255, 15, 77, 154),
                                   fontFamily: 'Inter',
                                   fontWeight: FontWeight.w700,
                                 ),
@@ -373,12 +388,13 @@ BlocProvider.of<CounterNav>(context)
                                     // Initial Value
                                     value: dropdownUULIDValue,
                                     // Down Arrow Icon
-                                    icon: const Icon(Icons.keyboard_arrow_down,
-                                        color:
-                                            Color.fromARGB(255, 124,160,209),),
+                                    icon: const Icon(
+                                      Icons.keyboard_arrow_down,
+                                      color: Color.fromARGB(255, 124, 160, 209),
+                                    ),
                                     style: TextStyle(
                                       fontSize: 14,
-                                      color: Color.fromARGB(255, 124,160,209),
+                                      color: Color.fromARGB(255, 124, 160, 209),
                                       fontFamily: 'Inter',
                                       fontWeight: FontWeight.w700,
                                     ),
@@ -386,7 +402,7 @@ BlocProvider.of<CounterNav>(context)
                                         Color.fromARGB(255, 255, 255, 255),
                                     underline: Container(
                                       height: 2,
-                                      color: Color.fromARGB(255, 124,160,209), 
+                                      color: Color.fromARGB(255, 124, 160, 209),
                                     ),
 
                                     // Array list of items
@@ -401,6 +417,8 @@ BlocProvider.of<CounterNav>(context)
                                     onChanged: (String? newValue) {
                                       setState(() {
                                         dropdownUULIDValue = newValue!;
+                                        //if editing object
+                                        globals.uulid = dropdownUULIDValue;
                                       });
                                     },
                                   ),
@@ -420,7 +438,8 @@ BlocProvider.of<CounterNav>(context)
                                                 style: TextStyle(
                                                   fontSize: 14,
                                                   fontFamily: 'Inter',
-                                                  color: Color.fromARGB(255, 124,160,209),
+                                                  color: Color.fromARGB(
+                                                      255, 124, 160, 209),
                                                   fontWeight: FontWeight.w700,
                                                 ),
                                               ),
@@ -432,9 +451,10 @@ BlocProvider.of<CounterNav>(context)
                                         dropdownUULIDValue = value as String;
                                       });
                                     },
-                                    icon: const Icon(Icons.keyboard_arrow_down,
-                                        color:
-                                            Color.fromARGB(255, 15,77,154),),
+                                    icon: const Icon(
+                                      Icons.keyboard_arrow_down,
+                                      color: Color.fromARGB(255, 15, 77, 154),
+                                    ),
                                     buttonPadding:
                                         const EdgeInsets.only(left: 15),
                                     dropdownDecoration: BoxDecoration(
@@ -477,28 +497,29 @@ BlocProvider.of<CounterNav>(context)
                                 style: ElevatedButton.styleFrom(
                                   minimumSize: Size(300, 200),
                                   backgroundColor:
-                                      Color.fromARGB(255, 212,223,236),
+                                      Color.fromARGB(255, 212, 223, 236),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30.0),
                                   ),
                                   elevation: 4,
                                   shadowColor:
                                       Color.fromARGB(255, 250, 250, 250),
-                                  ),
+                                ),
                                 onPressed: () {
                                   Navigator.pushNamed(
                                       context, Routes.photoPage);
                                 },
                                 child: Text(
-                                  globals.generalContentArray['objDetailsPageText_4']
-                          .toString()
-                          .toUpperCase(),
+                                  globals.generalContentArray[
+                                          'objDetailsPageText_4']
+                                      .toString()
+                                      .toUpperCase(),
                                   style: TextStyle(
-                      color: Color.fromARGB(255, 15,77,154),
-                      fontSize: 24,
-                      fontFamily: 'Inter',
-                      fontWeight: FontWeight.w700,
-                    ),
+                                    color: Color.fromARGB(255, 15, 77, 154),
+                                    fontSize: 24,
+                                    fontFamily: 'Inter',
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -515,51 +536,53 @@ BlocProvider.of<CounterNav>(context)
             ),
             Expanded(
               flex: 2,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      elevation: 0.0,
-                      backgroundColor: Colors.black.withOpacity(0.0),
-                      shape: CircleBorder(),
-                    ),
-                    child: Icon(Icons.circle,
-                        color: (counter == 0)
-                            ? Color.fromARGB(255, 15,77,154)
-                            : Color.fromARGB(255, 124,160,209),
-                        size: 22),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      elevation: 0.0,
-                      backgroundColor: Colors.black.withOpacity(0.0),
-                      shape: CircleBorder(),
-                    ),
-                    child: Icon(Icons.circle,
-                        color: (counter == 1)
-                            ? Color.fromARGB(255, 15,77,154)
-                            : Color.fromARGB(255, 124,160,209),
-                        size: 22),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      elevation: 0.0,
-                      backgroundColor: Colors.black.withOpacity(0.0),
-                      shape: CircleBorder(),
-                    ),
-                    child: Icon(Icons.circle,
-                        color: (counter == 2)
-                            ? Color.fromARGB(255, 15,77,154)
-                            : Color.fromARGB(255, 124,160,209),
-                        size: 22),
-                  ),
-                ],
-              ),
+              child: globals.objectId == ""
+                  ? Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            elevation: 0.0,
+                            backgroundColor: Colors.black.withOpacity(0.0),
+                            shape: CircleBorder(),
+                          ),
+                          child: Icon(Icons.circle,
+                              color: (counter == 0)
+                                  ? Color.fromARGB(255, 15, 77, 154)
+                                  : Color.fromARGB(255, 124, 160, 209),
+                              size: 22),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            elevation: 0.0,
+                            backgroundColor: Colors.black.withOpacity(0.0),
+                            shape: CircleBorder(),
+                          ),
+                          child: Icon(Icons.circle,
+                              color: (counter == 1)
+                                  ? Color.fromARGB(255, 15, 77, 154)
+                                  : Color.fromARGB(255, 124, 160, 209),
+                              size: 22),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            elevation: 0.0,
+                            backgroundColor: Colors.black.withOpacity(0.0),
+                            shape: CircleBorder(),
+                          ),
+                          child: Icon(Icons.circle,
+                              color: (counter == 2)
+                                  ? Color.fromARGB(255, 15, 77, 154)
+                                  : Color.fromARGB(255, 124, 160, 209),
+                              size: 22),
+                        ),
+                      ],
+                    )
+                  : Container(),
             ),
           ],
         ),

@@ -97,7 +97,7 @@ class _LaunchApp extends State<MainPage> {
             ),
             Expanded(
               flex: 2,
-              child: footerMenu(),
+              child: FooterMenu(),
             ),
           ],
         ),

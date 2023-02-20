@@ -106,28 +106,36 @@ class ObjLocationState extends State<ObjLocation> {
                   ),
                 ),
                 counter != 0
-                    ? ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.only(top: 25, left: 30),
-                          elevation: 0.0,
-                          backgroundColor: Colors.white.withOpacity(0.05),
-                          textStyle: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w700,
+                    ? Padding(
+                padding: EdgeInsets.only(top: 25, left: 30),
+                child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            //padding: EdgeInsets.only(top: 25, left: 30),
+                            //elevation: 0.0,
+                            backgroundColor: Color.fromARGB(255, 250, 250, 250),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            textStyle: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
-                        ),
-                        onPressed: () {
-                          Navigator.pop(context, true);
-                        },
-                        child: Text(
-                          globals.generalContentArray['back'].toString().toUpperCase(),
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 0, 0, 0),
-                            fontSize: 24,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w700,
+                          onPressed: () {
+                            Navigator.pop(context, true);
+                          },
+                          child: Text(
+                            globals.generalContentArray['back']
+                                .toString()
+                                .toUpperCase(),
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 0, 0, 0),
+                              fontSize: 24,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
                       )
@@ -141,7 +149,7 @@ class ObjLocationState extends State<ObjLocation> {
                           margin: const EdgeInsets.only(bottom: 100.0),
                           decoration: BoxDecoration(
                             color: Color.fromARGB(255, 124, 160, 209),
-                              borderRadius: BorderRadius.circular(20.0),
+                            borderRadius: BorderRadius.circular(20.0),
                           ),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,

@@ -128,40 +128,46 @@ class _LaunchCamera extends State<PhotoPage> {
                                     !isPictureDone
                                         ? Align(
                                             alignment: Alignment.topLeft,
-                                            child: SizedBox(
-                                              width: 150,
-                                              child: ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                  padding:
-                                                      EdgeInsets.only(top: 0),
-                                                  //elevation: 0.0,
-                                                  backgroundColor:
-                                                      Color.fromARGB(
-                                                          255, 250, 250, 250),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20.0),
+                                            child: Padding(
+                                              padding: EdgeInsets.only(
+                                                  top: 25, left: 30),
+                                              child: SizedBox(
+                                                width: 150,
+                                                child: ElevatedButton(
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    padding:
+                                                        EdgeInsets.only(top: 0),
+                                                    backgroundColor:
+                                                        Color.fromARGB(
+                                                            255, 250, 250, 250),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20.0),
+                                                    ),
                                                   ),
-                                                ),
-                                                onPressed: () {
-                                                  setState(
-                                                    () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                  );
-                                                },
-                                                child: Text(
-                                                  globals.generalContentArray[
-                                                          'back']
-                                                      .toString()
-                                                      .toUpperCase(),
-                                                  style: TextStyle(
-                                                    color: Color.fromARGB(
-                                                        255, 0, 0, 0),
-                                                    fontSize: 24,
-                                                    fontFamily: 'Inter',
-                                                    fontWeight: FontWeight.w700,
+                                                  onPressed: () {
+                                                    setState(
+                                                      () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                    );
+                                                  },
+                                                  child: Text(
+                                                    globals.generalContentArray[
+                                                            'back']
+                                                        .toString()
+                                                        .toUpperCase(),
+                                                    style: TextStyle(
+                                                      color: Color.fromARGB(
+                                                          255, 0, 0, 0),
+                                                      fontSize: 24,
+                                                      fontFamily: 'Inter',
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                    ),
                                                   ),
                                                 ),
                                               ),
@@ -313,4 +319,3 @@ class _LaunchCamera extends State<PhotoPage> {
         )));
   }
 }
-//SvgPicture.asset('assets/svg/Add.svg'),

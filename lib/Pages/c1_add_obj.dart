@@ -48,7 +48,9 @@ class _AddObj extends State<AddObjPage> {
                         //Navigator.pop(context);
                       },
                       child: Text(
-                        globals.generalContentArray['back'].toString().toUpperCase(),
+                        globals.generalContentArray['back']
+                            .toString()
+                            .toUpperCase(),
                         style: TextStyle(
                           color: Color.fromARGB(255, 0, 0, 0),
                           fontSize: 24,
@@ -93,7 +95,9 @@ class _AddObj extends State<AddObjPage> {
                     ),
                     onPressed: () {
                       globals.flag = true;
-
+                      globals.objectId = "";
+                      globals.level="";
+                      globals.uulid="";
                       BlocProvider.of<CounterNav>(context)
                           .add(CounterResetEvent());
                       Navigator.pushNamed(
@@ -117,7 +121,7 @@ class _AddObj extends State<AddObjPage> {
             ),
             Expanded(
               flex: 2,
-              child: footerMenu(),
+              child: FooterMenu(),
             ),
           ],
         ),

@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:text_tools/text_tools.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart'; //Spinner
 import '../Widgets/footer_menu.dart';
+import '../routes.dart';
 import '../globals.dart' as globals;
 
 // ignore_for_file: prefer_const_constructors
@@ -19,9 +20,9 @@ class DataBasePage extends StatefulWidget {
 class _DataBase extends State<DataBasePage> {
   final docObjects = FirebaseFirestore.instance.collection('objects');
   final controllerSearch = TextEditingController(text: "");
+  dynamic data;
   @override
   void initState() {
-    //getUserObjects();
     super.initState();
   }
 
@@ -34,6 +35,18 @@ class _DataBase extends State<DataBasePage> {
     //print(element.data());
     // });
     // });
+  }
+
+  objectDetailsSet(data) {
+    globals.flag=false;
+    globals.objectId = data['id'];
+    globals.newLatitude = data['latitude'];
+    globals.newLongitude = data['longitude'];
+    globals.uulid = data['uulid'];
+    globals.newStreet = data['street'];
+    globals.newBuilding = data['building'];
+    globals.level = data['level'];
+    globals.imgUrl=data['imgUrl'];
   }
 
   @override
@@ -358,16 +371,27 @@ class _DataBase extends State<DataBasePage> {
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
                                                 children: [
-                                                  Text(
-                                                    'view more'.toUpperCase(),
-                                                    style: TextStyle(
-                                                      fontSize: 16,
-                                                      color: Color.fromARGB(
-                                                          255, 15, 77, 154),
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                          decoration: TextDecoration.underline,
+                                                  InkWell(
+                                                    onTap: () {
+                                                      data = snapshot
+                                                          .data!.docs[index];
+                                                      objectDetailsSet(data);
+                                                      Navigator.pushNamed(
+                                                      context, Routes.objectPage);
+                                                    },
+                                                    child: Text(
+                                                      'view more'.toUpperCase(),
+                                                      style: TextStyle(
+                                                        fontSize: 16,
+                                                        color: Color.fromARGB(
+                                                            255, 15, 77, 154),
+                                                        fontFamily: 'Inter',
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        decoration:
+                                                            TextDecoration
+                                                                .underline,
+                                                      ),
                                                     ),
                                                   ),
                                                 ]),
@@ -383,7 +407,7 @@ class _DataBase extends State<DataBasePage> {
                     ),
                     Expanded(
                       flex: 2,
-                      child: footerMenu(),
+                      child: FooterMenu(),
                     ),
                   ]);
             } else {

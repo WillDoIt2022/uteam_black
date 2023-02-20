@@ -13,6 +13,7 @@ String phoneNumber = "";
 String objectId="";
 String uulid = "";
 String level = "";
+String imgUrl="";
 bool flag = true; //Determine what position to use (Current or New)
 
 //Current position Data

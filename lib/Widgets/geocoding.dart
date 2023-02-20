@@ -50,7 +50,10 @@ for (var i = 0; i < address.length; i++) {
   for (var i = 0; i < address.length; i++) {
            if (address[i]['types'][0] == 'postal_code') {
             globals.newPostalCode = address[i]["long_name"];
-          } else if (address[i]['types'][0] == 'locality') {
+          } else if (address[i]['types'][0] == 'country') {
+            globals.newCountryIso = address[i]["short_name"];
+            globals.newCountry = address[i]["long_name"];
+          }else if (address[i]['types'][0] == 'locality') {
             globals.newCity = address[i]["long_name"];
           } else if (address[i]['types'][0] == 'route') {
             globals.newStreet = address[i]["short_name"];

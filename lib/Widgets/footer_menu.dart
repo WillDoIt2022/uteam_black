@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../routes.dart';
+import'../globals.dart'as globals;
 // ignore_for_file: prefer_const_constructors
 
 //Widget footerMenu(context) {
-class footerMenu extends StatefulWidget {
-  const footerMenu({Key? key})
+class FooterMenu extends StatefulWidget {
+  const FooterMenu({Key? key})
       : super(key: key); //mistake"use key in widget constructions"
   @override
   State<StatefulWidget> createState() {
-    return footerMenuWidget();
+    return FooterMenuWidget();
   }
 }
 
-class footerMenuWidget extends State<footerMenu> {
+class FooterMenuWidget extends State<FooterMenu> {
   @override
   void initState() {
     super.initState();
@@ -67,6 +68,7 @@ class footerMenuWidget extends State<footerMenu> {
             iconSize: 50,
             onPressed: () {
               //Navigator.pushNamedAndRemoveUntil(context, Routes.addObjPage, (Route<dynamic> route) => false);
+              globals.objectId == "";
               Navigator.pushNamed(context, Routes.addObjPage);
             },
           ),

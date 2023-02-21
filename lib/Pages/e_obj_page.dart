@@ -22,56 +22,80 @@ class ObjectPage extends StatefulWidget {
 class _ObjSummary extends State<ObjectPage> {
   var uuid = Uuid();
   String objectId = "";
-  late var object = {
-    "createDate": Timestamp.now(),
-    "id": objectId,
-    "imgUrl":urlDownloadLink,
-    "phoneNumber": globals.phoneNumber,
-    "uulid": globals.uulid,
-    "latitude": globals.flag ? globals.latitude : globals.newLatitude,
-    "longitude": globals.flag ? globals.longitude : globals.newLongitude,
-    "countryIso": globals.flag ? globals.countryIso : globals.newCountryIso,
-    "country": globals.flag ? globals.country : globals.newCountry,
-    "postalCode": globals.flag ? globals.postalCode : globals.newPostalCode,
-    "street": globals.flag ? globals.street : globals.newStreet,
-    "building": globals.flag ? globals.building : globals.newBuilding,
-    "level": globals.level,
-  };
+  late Map<String, dynamic> object = {};
 
-  final docObjects = FirebaseFirestore.instance.collection('objects').doc();
+  final docObjects = FirebaseFirestore.instance.collection('objects');
   dynamic onSave;
   String? urlDownloadLink;
-  UploadTask?uploadTask;
+  UploadTask? uploadTask;
+  String? isPictureDone;
 
   @override
   void initState() {
     super.initState();
-    globals.imgUrl == "" ? onSave = true : onSave = false;
-    //print("Это название файла: ${widget.picture.name}");
+    onSave = globals.onSave;
+    //Detecting if the picture was done by camera
+    widget.picture == null ? isPictureDone = "false" : isPictureDone = "true";
+    print("Это переменная виджета = $isPictureDone");
   }
 
-   Future addNewObject() async {
-
-
-      docObjects
+  Future addNewObject() async {
+    docObjects
+        .doc(globals.objectId)
         .set(object)
         .then((value) => print(object))
         .onError((e, _) => print("Error writing document: $e"));
   }
 
-  Future saveObjectPicture()async{
-    objectId = uuid.v1();
-    globals.objectId = objectId;
+  Future saveObjectPicture() async {
+    if (isPictureDone == "true") {
+      if (globals.objectId == "") {
+        objectId = uuid.v1();
+        globals.objectId = objectId;
 
-    final path='images/$objectId.jpg';
-    final file=File(widget.picture.path);
-    final ref =FirebaseStorage.instance.ref().child(path);
-    uploadTask=ref.putFile(file);
+        final path = 'images/$objectId.jpg';
+        final file = File(widget.picture.path);
+        final ref = FirebaseStorage.instance.ref().child(path);
+        uploadTask = ref.putFile(file);
 
-    final snapshot=await uploadTask!.whenComplete((){});
- urlDownloadLink = await snapshot.ref.getDownloadURL();
-await addNewObject();
+        final snapshot = await uploadTask!.whenComplete(() {});
+        urlDownloadLink = await snapshot.ref.getDownloadURL();
+      } else if (globals.objectId != "") {
+        final path = 'images/${globals.objectId}.jpg';
 
+        final ref = FirebaseStorage.instance.ref().child(path);
+// Delete the file
+        await ref.delete();
+//Create a new one file
+        final file = File(widget.picture.path);
+        uploadTask = ref.putFile(file);
+
+        final snapshot = await uploadTask!.whenComplete(() {});
+        urlDownloadLink = await snapshot.ref.getDownloadURL();
+      }
+    }
+    updateObject();
+    await addNewObject();
+  }
+
+  updateObject() {
+    setState(() {
+      object = {
+        "createDate": Timestamp.now(),
+        "id": globals.objectId,
+        "imgUrl": globals.imgUrl == "" ? urlDownloadLink : globals.imgUrl,
+        "phoneNumber": globals.phoneNumber,
+        "uulid": globals.uulid,
+        "latitude": globals.flag ? globals.latitude : globals.newLatitude,
+        "longitude": globals.flag ? globals.longitude : globals.newLongitude,
+        "countryIso": globals.flag ? globals.countryIso : globals.newCountryIso,
+        "country": globals.flag ? globals.country : globals.newCountry,
+        "postalCode": globals.flag ? globals.postalCode : globals.newPostalCode,
+        "street": globals.flag ? globals.street : globals.newStreet,
+        "building": globals.flag ? globals.building : globals.newBuilding,
+        "level": globals.level,
+      };
+    });
   }
 
   goToEdit(data) {
@@ -87,13 +111,13 @@ await addNewObject();
     } else if (data == "uulid") {
       BlocProvider.of<CounterNav>(context).add(CounterGoToUulidEvent());
       Navigator.pushNamed(context, Routes.objDetailsPage).then((_) {
-        setState(() {
-        });});
+        setState(() {});
+      });
     } else if (data == "photo") {
-      globals.imgUrl="";
+      globals.imgUrl = "";
       Navigator.pushNamed(context, Routes.photoPage).then((_) {
-        setState(() {
-        });});
+        setState(() {});
+      });
     }
   }
 
@@ -181,13 +205,13 @@ await addNewObject();
                           bottomRight: Radius.circular(20),
                           bottomLeft: Radius.circular(20),
                         ),
-                        child: globals.imgUrl==""
+                        child: isPictureDone == "true"
                             ? Image.file(File(widget.picture.path),
                                 fit: BoxFit.cover, width: 200)
                             : SizedBox(
-                              width:200,
-                              height:200,
-                                child:Image.network(globals.imgUrl),
+                                width: 200,
+                                height: 200,
+                                child: Image.network(globals.imgUrl),
                               ),
                       ),
                     ),
@@ -374,6 +398,8 @@ await addNewObject();
                     if (onSave == true) {
                       saveObjectPicture();
                     }
+
+                    globals.onSave = true;
                     setState(() {
                       onSave = !onSave;
                     });

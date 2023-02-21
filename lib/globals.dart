@@ -6,7 +6,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 Completer<GoogleMapController> mapController = Completer();
 //Settings
 String googleApikey = "AIzaSyDp-RK6hvtMgaT6ra-8r9gskR1Sgpm1h88";
-
+//Edit Object or Save object indicator
+bool onSave=true;
 //General Data
 String language = "";
 String phoneNumber = "";

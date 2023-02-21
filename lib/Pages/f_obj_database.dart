@@ -43,6 +43,9 @@ class _DataBase extends State<DataBasePage> {
     globals.newLatitude = data['latitude'];
     globals.newLongitude = data['longitude'];
     globals.uulid = data['uulid'];
+    globals.newCountry=data['country'];
+    globals.newCountryIso=data['countryIso'];
+    globals.newPostalCode=data['postalCode'];
     globals.newStreet = data['street'];
     globals.newBuilding = data['building'];
     globals.level = data['level'];
@@ -376,8 +379,9 @@ class _DataBase extends State<DataBasePage> {
                                                       data = snapshot
                                                           .data!.docs[index];
                                                       objectDetailsSet(data);
+                                                      globals.onSave=false;
                                                       Navigator.pushNamed(
-                                                      context, Routes.objectPage);
+                                                      context, Routes.objectPage,);
                                                     },
                                                     child: Text(
                                                       'view more'.toUpperCase(),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:text_tools/text_tools.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart'; //Spinner
+import 'package:dropdown_button2/dropdown_button2.dart'; //DropDawn buttons
 import '../Widgets/footer_menu.dart';
 import '../routes.dart';
 import '../globals.dart' as globals;
@@ -20,6 +21,17 @@ class DataBasePage extends StatefulWidget {
 class _DataBase extends State<DataBasePage> {
   final docObjects = FirebaseFirestore.instance.collection('objects');
   final controllerSearch = TextEditingController(text: "");
+  final List<String> itemsToFilter = [
+    'All',
+    'Object name',
+    'UULID',
+    'street',
+  ];
+  String? selectedFilteredValue;
+  //final TextEditingController filterItemsController = TextEditingController();
+  List filteredDb = [];
+  List querydDb = [];
+
   dynamic data;
   @override
   void initState() {
@@ -27,9 +39,18 @@ class _DataBase extends State<DataBasePage> {
   }
 
   Future getUserObjects() async {
+    if(filteredDb.isEmpty){
     return await docObjects
         .where("phoneNumber", isEqualTo: globals.phoneNumber.toString())
-        .get();
+        .get()
+        .then((QuerySnapshot snapshot) {
+          
+      filteredDb.addAll(snapshot.docs); 
+      print("I m again here??");
+      print(filteredDb);
+      return filteredDb;
+    });
+    }else{return filteredDb;}
     //.then((QuerySnapshot snapshot) {
     //snapshot.docs.forEach((element) {
     //print(element.data());
@@ -38,19 +59,27 @@ class _DataBase extends State<DataBasePage> {
   }
 
   objectDetailsSet(data) {
-    globals.flag=false;
+    globals.flag = false;
     globals.objectId = data['id'];
     globals.newLatitude = data['latitude'];
     globals.newLongitude = data['longitude'];
     globals.uulid = data['uulid'];
-    globals.newCountry=data['country'];
-    globals.newCountryIso=data['countryIso'];
-    globals.newPostalCode=data['postalCode'];
+    globals.newCountry = data['country'];
+    globals.newCountryIso = data['countryIso'];
+    globals.newPostalCode = data['postalCode'];
     globals.newStreet = data['street'];
     globals.newBuilding = data['building'];
     globals.level = data['level'];
-    globals.imgUrl=data['imgUrl'];
+    globals.imgUrl = data['imgUrl'];
   }
+
+test(){
+filteredDb= filteredDb.where((e) => (e["uulid"].toString().toLowerCase().contains("lor".toString().toLowerCase()))).toList();
+print(filteredDb);
+
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -100,10 +129,45 @@ class _DataBase extends State<DataBasePage> {
                                   color: Color.fromARGB(255, 246, 246, 246),
                                   size: 25,
                                 ),
-                                suffixIcon: ImageIcon(
-                                  AssetImage("assets/img/Search_Indicator.png"),
-                                  color: Color.fromARGB(255, 246, 246, 246),
-                                  size: 25,
+                                suffixIcon: DropdownButtonHideUnderline(
+                                  child: DropdownButton2(
+                                    isExpanded: true,
+                                    isDense: true,
+                                    customButton: ImageIcon(
+                                      AssetImage(
+                                          "assets/img/Search_Indicator.png"),
+                                      color: Color.fromARGB(255, 246, 246, 246),
+                                      size: 25,
+                                    ),
+                                    items: itemsToFilter
+                                        .map((item) => DropdownMenuItem<String>(
+                                              value: item,
+                                              child: Text(
+                                                item.toUpperCase(),
+                                                style: const TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 124, 160, 209),
+                                                  fontFamily: 'Inter',
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 16,
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ))
+                                        .toList(),
+                                    value: selectedFilteredValue,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        selectedFilteredValue = value as String;
+                                        test();
+                                      });
+                                    },
+                                    dropdownWidth:
+                                        MediaQuery.of(context).size.width * 0.4,
+                                    dropdownMaxHeight: 200,
+                                    offset: Offset(-160, 0),
+                                    itemHeight: 40,
+                                  ),
                                 ),
                                 hintText: '',
                               ),
@@ -111,6 +175,7 @@ class _DataBase extends State<DataBasePage> {
                                 controllerSearch.value = TextEditingValue(
                                     text: value.toUpperCase(),
                                     selection: controllerSearch.selection);
+                                    
                               },
                             ),
                           ),
@@ -120,7 +185,7 @@ class _DataBase extends State<DataBasePage> {
                     Expanded(
                       flex: 11,
                       child: ListView.builder(
-                          itemCount: snapshot.data!.docs.length,
+                          itemCount: filteredDb.length,
                           itemBuilder: (BuildContext context, index) {
                             return ListView(
                               physics: ClampingScrollPhysics(),
@@ -299,9 +364,11 @@ class _DataBase extends State<DataBasePage> {
                                                                       .only(
                                                                 left: 15,
                                                               ),
-                                                              child: Text(
+                                                              child: Text(//"1",
+                                                              //filteredDb[index].toString(),
+                                                              
                                                                 snapshot.data!
-                                                                            .docs[
+                                                                            [
                                                                         index]
                                                                     ['uulid'],
                                                                 overflow:
@@ -341,7 +408,7 @@ class _DataBase extends State<DataBasePage> {
                                                                 left: 15,
                                                               ),
                                                               child: Text(
-                                                                "${snapshot.data!.docs[index]['street']}, ${snapshot.data!.docs[index]['building']}",
+                                                                "${snapshot.data![index]['street']}, ${snapshot.data![index]['building']}",
                                                                 overflow:
                                                                     TextOverflow
                                                                         .ellipsis,
@@ -379,9 +446,11 @@ class _DataBase extends State<DataBasePage> {
                                                       data = snapshot
                                                           .data!.docs[index];
                                                       objectDetailsSet(data);
-                                                      globals.onSave=false;
+                                                      globals.onSave = false;
                                                       Navigator.pushNamed(
-                                                      context, Routes.objectPage,);
+                                                        context,
+                                                        Routes.objectPage,
+                                                      );
                                                     },
                                                     child: Text(
                                                       'view more'.toUpperCase(),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import '../BLoC/obj_details_counter.dart';
 import '../globals.dart' as globals;
 import '../Widgets/geocoding.dart';
@@ -20,10 +21,17 @@ class ObjLocationState extends State<ObjLocation> {
   LatLng location = LatLng(48.8583701, 2.2944813);
   LatLng currentLocation = LatLng(globals.latitude, globals.longitude);
   LatLng newLocation = LatLng(globals.newLatitude, globals.newLongitude);
+  String? _mapStyle;
+
   @override
   void initState() {
     super.initState();
-
+    rootBundle.loadString('assets/style/map_style.txt').then((string) {
+      _mapStyle = string;
+    }).catchError((error) {
+      print(error.toString());
+    });
+    setState(() {});
     //Do not rerender the map with current position, if it is already done
     if (widget.currentPositionOnMap == false) {
       updateCameraLocation(currentLocation);
@@ -98,17 +106,19 @@ class ObjLocationState extends State<ObjLocation> {
                     },
                     onMapCreated: (GoogleMapController controller) {
                       if (!globals.mapController.isCompleted) {
+                        controller.setMapStyle(_mapStyle);
+
                         globals.mapController.complete(controller);
                       } else {
-                        return;
+                        controller.setMapStyle(_mapStyle);
                       }
                     },
                   ),
                 ),
                 counter != 0
                     ? Padding(
-                padding: EdgeInsets.only(top: 25, left: 30),
-                child: ElevatedButton(
+                        padding: EdgeInsets.only(top: 25, left: 30),
+                        child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             //padding: EdgeInsets.only(top: 25, left: 30),
                             //elevation: 0.0,

@@ -21,8 +21,9 @@ class ObjDetailsPage extends StatefulWidget {
 class ObjDetails extends State<ObjDetailsPage> {
   bool currentPositionOnMap = false;
   // Initial Selected Value
-  String dropdownLevelValue = globals.level==""?'GROUND FLOOR':globals.level;
-  String dropdownUULIDValue = globals.uulid==""?'LOREM':globals.uulid;
+  String dropdownLevelValue =
+      globals.level == "" ? 'GROUND FLOOR' : globals.level;
+  String dropdownUULIDValue = globals.uulid == "" ? 'LOREM' : globals.uulid;
 
   @override
   void initState() {
@@ -31,7 +32,7 @@ class ObjDetails extends State<ObjDetailsPage> {
   }
 
   // List of items in our Level dropdown menu
-  var items = [
+  var itemsFloor = [
     'GROUND FLOOR',
     '1st FLOOR',
     '2nd FLOOR',
@@ -80,21 +81,20 @@ class ObjDetails extends State<ObjDetailsPage> {
                       backgroundColor: Colors.white.withOpacity(0.05),
                     ),
                     onPressed: () {
-
-                        setState(
-                          () {
-                            if(globals.objectId==""){
+                      setState(
+                        () {
+                          if (globals.objectId == "") {
                             if (counter == 0) {
                               Navigator.pop(context);
                             } else {
                               BlocProvider.of<CounterNav>(context)
                                   .add(CounterDecrementEvent());
-                            }}else{
-                              Navigator.pop(context);
                             }
-                          },
-                        );
-                     
+                          } else {
+                            Navigator.pop(context);
+                          }
+                        },
+                      );
                     },
                     child: Text(
                       globals.generalContentArray['back']
@@ -120,8 +120,9 @@ class ObjDetails extends State<ObjDetailsPage> {
                               () {
                                 if (counter == 0) {
                                   currentPositionOnMap = true;
-                                  globals.level=dropdownLevelValue;
-                                }if(counter ==1){
+                                  globals.level = dropdownLevelValue;
+                                }
+                                if (counter == 1) {
                                   //if adding a new object
                                   globals.uulid = dropdownUULIDValue;
                                 }
@@ -249,19 +250,22 @@ class ObjDetails extends State<ObjDetailsPage> {
                                       ),
                                     ),
                                     child: SizedBox(
-                                      child: Align(
-                                        alignment: Alignment.bottomLeft,
-                                        child: Text(
-                                          globals.flag
-                                              ? "${globals.street} ${globals.building}"
-                                              : "${globals.newStreet} ${globals.newBuilding}",
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            color: Color.fromARGB(
-                                                255, 15, 77, 154),
-                                            fontFamily: 'Inter',
-                                            fontWeight: FontWeight.w700,
+                                      child: Padding(
+                                        padding: EdgeInsets.only(left: 15),
+                                        child: Align(
+                                          alignment: Alignment.bottomLeft,
+                                          child: Text(
+                                            globals.flag
+                                                ? "${globals.street} ${globals.building}"
+                                                : "${globals.newStreet} ${globals.newBuilding}",
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              color: Color.fromARGB(
+                                                  255, 15, 77, 154),
+                                              fontFamily: 'Inter',
+                                              fontWeight: FontWeight.w700,
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -293,34 +297,45 @@ class ObjDetails extends State<ObjDetailsPage> {
                                   ),
                                   SizedBox(
                                     width: 290,
-                                    height: 50,
-                                    child: DropdownButton(
-                                      menuMaxHeight: 200,
+                                    height: 10,
+                                  ),
+                                  SizedBox(
+                                    width: 290,
+                                    height: 30,
+                                    child: DropdownButton2(
+                                      buttonWidth: 290,
+                                      buttonPadding:
+                                          const EdgeInsets.only(left: 15),
                                       isExpanded: true,
+                                      isDense: true,
                                       // Initial Value
+                                      underline: Container(
+                                        height: 2,
+                                        color:
+                                            Color.fromARGB(255, 124, 160, 209),
+                                      ),
                                       value: dropdownLevelValue,
-                                      // Down Arrow Icon
-                                      icon: const Icon(
-                                          Icons.keyboard_arrow_down,
-                                          color: Color.fromARGB(
-                                              255, 246, 246, 247)),
+
                                       style: TextStyle(
                                         fontSize: 20,
                                         color: Color.fromARGB(255, 15, 77, 154),
                                         fontFamily: 'Inter',
                                         fontWeight: FontWeight.w700,
                                       ),
+                                      // Down Arrow Icon
+                                      icon: const Icon(
+                                          Icons.keyboard_arrow_down,
+                                          color:
+                                              Color.fromARGB(255, 15, 77, 154)),
 
-                                      dropdownColor:
-                                          Color.fromARGB(255, 255, 255, 255),
-                                      underline: Container(
-                                        height: 2,
-                                        color: Color.fromARGB(
-                                            255, 124, 160, 209), //<-- SEE HERE
+                                      dropdownMaxHeight: 200,
+                                      dropdownDecoration: BoxDecoration(
+                                        //borderRadius: BorderRadius.circular(30),
+                                        color:
+                                            Color.fromARGB(255, 222, 229, 239),
                                       ),
-
                                       // Array list of items
-                                      items: items.map((String items) {
+                                      items: itemsFloor.map((String items) {
                                         return DropdownMenuItem(
                                           value: items,
                                           child: Text(items),
@@ -331,7 +346,7 @@ class ObjDetails extends State<ObjDetailsPage> {
                                       onChanged: (String? newValue) {
                                         setState(() {
                                           dropdownLevelValue = newValue!;
-                                          globals.level=newValue;
+                                          globals.level = newValue;
                                         });
                                       },
                                     ),
@@ -380,75 +395,34 @@ class ObjDetails extends State<ObjDetailsPage> {
                               children: [
                                 SizedBox(
                                   width: 290,
-                                  height: 50,
-                                  child: DropdownButton(
-                                    borderRadius: BorderRadius.circular(30),
-                                    menuMaxHeight: 170,
+                                  height: 30,
+                                  child: DropdownButton2(
+                                    buttonWidth: 290,
                                     isExpanded: true,
-                                    // Initial Value
-                                    value: dropdownUULIDValue,
-                                    // Down Arrow Icon
-                                    icon: const Icon(
-                                      Icons.keyboard_arrow_down,
-                                      color: Color.fromARGB(255, 124, 160, 209),
-                                    ),
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Color.fromARGB(255, 124, 160, 209),
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                    dropdownColor:
-                                        Color.fromARGB(255, 255, 255, 255),
+                                    isDense: true,
                                     underline: Container(
                                       height: 2,
                                       color: Color.fromARGB(255, 124, 160, 209),
                                     ),
-
-                                    // Array list of items
-                                    items: itemsuulid.map((String val) {
+                                    value: dropdownUULIDValue.toUpperCase(),
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Color.fromARGB(255, 124, 160, 209),
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                    //menuMaxHeight: 200,
+                                    items: itemsuulid.map((String items) {
                                       return DropdownMenuItem(
-                                        value: val,
-                                        child: Text(val),
+                                        value: items,
+                                        child: Text(items),
                                       );
                                     }).toList(),
-                                    // After selecting the desired option,it will
-                                    // change button value to selected value
-                                    onChanged: (String? newValue) {
-                                      setState(() {
-                                        dropdownUULIDValue = newValue!;
-                                        //if editing object
-                                        globals.uulid = dropdownUULIDValue;
-                                      });
-                                    },
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 0,
-                                  height: 0,
-                                  child: DropdownButton2(
-                                    isExpanded: true,
 
-                                    //menuMaxHeight: 200,
-                                    items: itemsuulid
-                                        .map((item) => DropdownMenuItem<String>(
-                                              value: item,
-                                              child: Text(
-                                                item,
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontFamily: 'Inter',
-                                                  color: Color.fromARGB(
-                                                      255, 124, 160, 209),
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                              ),
-                                            ))
-                                        .toList(),
-                                    value: dropdownUULIDValue,
                                     onChanged: (value) {
                                       setState(() {
                                         dropdownUULIDValue = value as String;
+                                        globals.uulid=value;
                                       });
                                     },
                                     icon: const Icon(
@@ -458,11 +432,10 @@ class ObjDetails extends State<ObjDetailsPage> {
                                     buttonPadding:
                                         const EdgeInsets.only(left: 15),
                                     dropdownDecoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(30),
-                                      color: Color.fromARGB(255, 76, 78, 82),
+                                      //borderRadius: BorderRadius.circular(30),
+                                      color: Color.fromARGB(255, 222, 229, 239),
                                     ),
-                                    buttonHeight: 40,
-                                    buttonWidth: 290,
+
                                     itemHeight: 40,
                                     dropdownMaxHeight: 170,
                                   ),

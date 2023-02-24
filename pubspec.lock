@@ -574,6 +574,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  string_capitalize_extension:
+    dependency: "direct main"
+    description:
+      name: string_capitalize_extension
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.1"
   string_scanner:
     dependency: transitive
     description:

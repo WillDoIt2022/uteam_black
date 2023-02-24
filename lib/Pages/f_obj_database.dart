@@ -22,40 +22,35 @@ class _DataBase extends State<DataBasePage> {
   final docObjects = FirebaseFirestore.instance.collection('objects');
   final controllerSearch = TextEditingController(text: "");
   final List<String> itemsToFilter = [
-    'All',
-    'Object name',
+    '* All',
+    '* Object name',
     'UULID',
-    'street',
+    'STREET',
   ];
   String? selectedFilteredValue;
   //final TextEditingController filterItemsController = TextEditingController();
   List filteredDb = [];
-  List querydDb = [];
-
+  List sourceDb = [];
+  bool filteredDbflag = false;
   dynamic data;
   @override
   void initState() {
     super.initState();
+    getUserObjects();
   }
 
   Future getUserObjects() async {
-    if(filteredDb.isEmpty){
-    return await docObjects
+    await docObjects
         .where("phoneNumber", isEqualTo: globals.phoneNumber.toString())
         .get()
         .then((QuerySnapshot snapshot) {
-          
-      filteredDb.addAll(snapshot.docs); 
-      print("I m again here??");
-      print(filteredDb);
-      return filteredDb;
+      filteredDb = snapshot.docs.toList();
+      sourceDb = snapshot.docs;
+      print("Connecting to DB...");
+      setState(() {
+        filteredDbflag = true;
+      });
     });
-    }else{return filteredDb;}
-    //.then((QuerySnapshot snapshot) {
-    //snapshot.docs.forEach((element) {
-    //print(element.data());
-    // });
-    // });
   }
 
   objectDetailsSet(data) {
@@ -73,425 +68,376 @@ class _DataBase extends State<DataBasePage> {
     globals.imgUrl = data['imgUrl'];
   }
 
-test(){
-filteredDb= filteredDb.where((e) => (e["uulid"].toString().toLowerCase().contains("lor".toString().toLowerCase()))).toList();
-print(filteredDb);
-
+  filterDbFunctionFunction() {
+    filteredDb = sourceDb;
+    setState(() {
+      filteredDb = filteredDb
+          .where((e) => (e[selectedFilteredValue.toString().toLowerCase()]
+              .contains(controllerSearch.text.toString().toLowerCase())))
+          .toList();
+    });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
     //debugShowCheckedModeBanner: false, //remove the debug banner "Demo"
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 246, 246, 246),
-      body: FutureBuilder(
-          future: getUserObjects(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.hasData == true) {
-              return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+      body: filteredDbflag
+          ? Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Expanded(
+                flex: 2,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Expanded(
-                      flex: 2,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Container(
-                            height: 40,
-                            width: MediaQuery.of(context).size.width * 0.9,
-                            decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 124, 160, 209),
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                            child: TextField(
-                              textAlignVertical: TextAlignVertical.center,
-                              style: TextStyle(
-                                fontSize: 20,
+                    Container(
+                      height: 40,
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 124, 160, 209),
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      child: TextField(
+                        textAlignVertical: TextAlignVertical.center,
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Color.fromARGB(255, 246, 246, 246),
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w700,
+                        ),
+                        controller: controllerSearch,
+                        maxLines: 1,
+                        decoration: InputDecoration(
+                          isCollapsed: true,
+                          border: InputBorder.none,
+                          labelText: 'SEARCH',
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                          labelStyle: TextStyle(
+                              fontSize: 20.0,
+                              color: Color.fromARGB(255, 246, 246, 246)),
+                          prefixIcon: ImageIcon(
+                            AssetImage("assets/img/Search.png"),
+                            color: Color.fromARGB(255, 246, 246, 246),
+                            size: 25,
+                          ),
+                          suffixIcon: DropdownButtonHideUnderline(
+                            child: DropdownButton2(
+                              isExpanded: true,
+                              isDense: true,
+                              customButton: ImageIcon(
+                                AssetImage("assets/img/Search_Indicator.png"),
                                 color: Color.fromARGB(255, 246, 246, 246),
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w700,
+                                size: 25,
                               ),
-                              controller: controllerSearch,
-                              maxLines: 1,
-                              decoration: InputDecoration(
-                                isCollapsed: true,
-                                border: InputBorder.none,
-                                labelText: 'SEARCH',
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.never,
-                                labelStyle: TextStyle(
-                                    fontSize: 20.0,
-                                    color: Color.fromARGB(255, 246, 246, 246)),
-                                prefixIcon: ImageIcon(
-                                  AssetImage("assets/img/Search.png"),
-                                  color: Color.fromARGB(255, 246, 246, 246),
-                                  size: 25,
-                                ),
-                                suffixIcon: DropdownButtonHideUnderline(
-                                  child: DropdownButton2(
-                                    isExpanded: true,
-                                    isDense: true,
-                                    customButton: ImageIcon(
-                                      AssetImage(
-                                          "assets/img/Search_Indicator.png"),
-                                      color: Color.fromARGB(255, 246, 246, 246),
-                                      size: 25,
-                                    ),
-                                    items: itemsToFilter
-                                        .map((item) => DropdownMenuItem<String>(
-                                              value: item,
-                                              child: Text(
-                                                item.toUpperCase(),
-                                                style: const TextStyle(
-                                                  color: Color.fromARGB(
-                                                      255, 124, 160, 209),
-                                                  fontFamily: 'Inter',
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: 16,
-                                                ),
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ))
-                                        .toList(),
-                                    value: selectedFilteredValue,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        selectedFilteredValue = value as String;
-                                        test();
-                                      });
-                                    },
-                                    dropdownWidth:
-                                        MediaQuery.of(context).size.width * 0.4,
-                                    dropdownMaxHeight: 200,
-                                    offset: Offset(-160, 0),
-                                    itemHeight: 40,
-                                  ),
-                                ),
-                                hintText: '',
-                              ),
-                              onChanged: (value) {
-                                controllerSearch.value = TextEditingValue(
-                                    text: value.toUpperCase(),
-                                    selection: controllerSearch.selection);
-                                    
+                              items: itemsToFilter
+                                  .map((item) => DropdownMenuItem<String>(
+                                        value: item,
+                                        child: Text(
+                                          item.toUpperCase(),
+                                          style: const TextStyle(
+                                            color: Color.fromARGB(
+                                                255, 124, 160, 209),
+                                            fontFamily: 'Inter',
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 16,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ))
+                                  .toList(),
+                              value: selectedFilteredValue,
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  selectedFilteredValue = newValue;
+                                });
                               },
+                              dropdownWidth:
+                                  MediaQuery.of(context).size.width * 0.4,
+                              dropdownMaxHeight: 200,
+                              offset: Offset(-160, 0),
+                              itemHeight: 40,
                             ),
                           ),
-                        ],
+                          hintText: '',
+                        ),
+                        onChanged: (value) {
+                          controllerSearch.value = TextEditingValue(
+                              text: value.toUpperCase(),
+                              selection: controllerSearch.selection);
+                          filterDbFunctionFunction();
+                        },
                       ),
                     ),
-                    Expanded(
-                      flex: 11,
-                      child: ListView.builder(
-                          itemCount: filteredDb.length,
-                          itemBuilder: (BuildContext context, index) {
-                            return ListView(
-                              physics: ClampingScrollPhysics(),
-                              shrinkWrap: true,
-                              padding: EdgeInsets.all(20),
-                              children: <Widget>[
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                  child: Container(
-                                    height: 150,
-                                    width: 330,
-                                    decoration: BoxDecoration(
-                                      color: Color.fromARGB(255, 222, 229, 239),
-                                      borderRadius: BorderRadius.circular(30.0),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          0, 20, 0, 00),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Expanded(
-                                              flex: 2,
-                                              child: Row(
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 11,
+                child: ListView.builder(
+                    itemCount: filteredDb.length,
+                    itemBuilder: (BuildContext context, index) {
+                      return ListView(
+                        physics: ClampingScrollPhysics(),
+                        shrinkWrap: true,
+                        padding: EdgeInsets.all(20),
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            child: Container(
+                              height: 150,
+                              width: 330,
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(255, 222, 229, 239),
+                                borderRadius: BorderRadius.circular(30.0),
+                              ),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(0, 20, 0, 00),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Expanded(
+                                        flex: 2,
+                                        child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Column(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment
                                                           .spaceEvenly,
                                                   children: [
-                                                    Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceEvenly,
-                                                        children: [
-                                                          SizedBox(
-                                                            width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width *
-                                                                0.4,
-                                                            child: Text(
-                                                              'object name'
-                                                                  .toUpperCase(),
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .right,
-                                                              style: TextStyle(
-                                                                fontSize: 16,
-                                                                color: Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        124,
-                                                                        160,
-                                                                        209),
-                                                                fontFamily:
-                                                                    'Inter',
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w700,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          SizedBox(
-                                                            width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width *
-                                                                0.4,
-                                                            child: Text(
-                                                              'uulid'
-                                                                  .toUpperCase(),
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .right,
-                                                              style: TextStyle(
-                                                                fontSize: 16,
-                                                                color: Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        124,
-                                                                        160,
-                                                                        209),
-                                                                fontFamily:
-                                                                    'Inter',
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w700,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          SizedBox(
-                                                            width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width *
-                                                                0.4,
-                                                            child: Text(
-                                                              'location'
-                                                                  .toUpperCase(),
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .right,
-                                                              style: TextStyle(
-                                                                fontSize: 16,
-                                                                color: Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        124,
-                                                                        160,
-                                                                        209),
-                                                                fontFamily:
-                                                                    'Inter',
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w700,
-                                                              ),
-                                                            ),
-                                                          )
-                                                        ]),
-                                                    Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceEvenly,
-                                                        children: [
-                                                          SizedBox(
-                                                            width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width *
-                                                                0.5,
-                                                            child: Padding(
-                                                              padding:
-                                                                  EdgeInsets
-                                                                      .only(
-                                                                left: 15,
-                                                              ),
-                                                              child: Text(
-                                                                TextTools
-                                                                    .toUppercaseFirstLetter(
-                                                                        text:
-                                                                            'some name'),
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .left,
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize: 16,
-                                                                  color: Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          124,
-                                                                          160,
-                                                                          209),
-                                                                  fontFamily:
-                                                                      'Inter',
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w700,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          SizedBox(
-                                                            width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width *
-                                                                0.5,
-                                                            child: Padding(
-                                                              padding:
-                                                                  EdgeInsets
-                                                                      .only(
-                                                                left: 15,
-                                                              ),
-                                                              child: Text(//"1",
-                                                              //filteredDb[index].toString(),
-                                                              
-                                                                snapshot.data!
-                                                                            [
-                                                                        index]
-                                                                    ['uulid'],
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .left,
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize: 16,
-                                                                  color: Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          124,
-                                                                          160,
-                                                                          209),
-                                                                  fontFamily:
-                                                                      'Inter',
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w700,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          SizedBox(
-                                                            width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width *
-                                                                0.5,
-                                                            child: Padding(
-                                                              padding:
-                                                                  EdgeInsets
-                                                                      .only(
-                                                                left: 15,
-                                                              ),
-                                                              child: Text(
-                                                                "${snapshot.data![index]['street']}, ${snapshot.data![index]['building']}",
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .left,
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize: 16,
-                                                                  color: Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          124,
-                                                                          160,
-                                                                          209),
-                                                                  fontFamily:
-                                                                      'Inter',
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w700,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ])
-                                                  ])),
-                                          Expanded(
-                                            flex: 1,
-                                            child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  InkWell(
-                                                    onTap: () {
-                                                      data = snapshot
-                                                          .data!.docs[index];
-                                                      objectDetailsSet(data);
-                                                      globals.onSave = false;
-                                                      Navigator.pushNamed(
-                                                        context,
-                                                        Routes.objectPage,
-                                                      );
-                                                    },
-                                                    child: Text(
-                                                      'view more'.toUpperCase(),
-                                                      style: TextStyle(
-                                                        fontSize: 16,
-                                                        color: Color.fromARGB(
-                                                            255, 15, 77, 154),
-                                                        fontFamily: 'Inter',
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        decoration:
-                                                            TextDecoration
-                                                                .underline,
+                                                    SizedBox(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.4,
+                                                      child: Text(
+                                                        'object name'
+                                                            .toUpperCase(),
+                                                        textAlign:
+                                                            TextAlign.right,
+                                                        style: TextStyle(
+                                                          fontSize: 16,
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              124,
+                                                              160,
+                                                              209),
+                                                          fontFamily: 'Inter',
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                ]),
-                                          ),
-                                        ],
-                                      ),
+                                                    SizedBox(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.4,
+                                                      child: Text(
+                                                        'uulid'.toUpperCase(),
+                                                        textAlign:
+                                                            TextAlign.right,
+                                                        style: TextStyle(
+                                                          fontSize: 16,
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              124,
+                                                              160,
+                                                              209),
+                                                          fontFamily: 'Inter',
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.4,
+                                                      child: Text(
+                                                        'location'
+                                                            .toUpperCase(),
+                                                        textAlign:
+                                                            TextAlign.right,
+                                                        style: TextStyle(
+                                                          fontSize: 16,
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              124,
+                                                              160,
+                                                              209),
+                                                          fontFamily: 'Inter',
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ]),
+                                              Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    SizedBox(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.5,
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                          left: 15,
+                                                        ),
+                                                        child: Text(
+                                                          TextTools
+                                                              .toUppercaseFirstLetter(
+                                                                  text:
+                                                                      'some name'),
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          textAlign:
+                                                              TextAlign.left,
+                                                          style: TextStyle(
+                                                            fontSize: 16,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    124,
+                                                                    160,
+                                                                    209),
+                                                            fontFamily: 'Inter',
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.5,
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                          left: 15,
+                                                        ),
+                                                        child: Text(
+                                                         TextTools.toUppercaseFirstLetter(text:filteredDb[index]
+                                                              ["uulid"]),
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          textAlign:
+                                                              TextAlign.left,
+                                                          style: TextStyle(
+                                                            fontSize: 16,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    124,
+                                                                    160,
+                                                                    209),
+                                                            fontFamily: 'Inter',
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.5,
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                          left: 15,
+                                                        ),
+                                                        child: Text(
+                                                          TextTools.toUppercaseFirstLetter(text:"${filteredDb[index]['street']}, ${filteredDb[index]['building']}"),
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          textAlign:
+                                                              TextAlign.left,
+                                                          style: TextStyle(
+                                                            fontSize: 16,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    124,
+                                                                    160,
+                                                                    209),
+                                                            fontFamily: 'Inter',
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ])
+                                            ])),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            InkWell(
+                                              onTap: () {
+                                                data = filteredDb[index];
+                                                objectDetailsSet(data);
+                                                globals.onSave = false;
+                                                Navigator.pushNamed(
+                                                  context,
+                                                  Routes.objectPage,
+                                                );
+                                              },
+                                              child: Text(
+                                                'view more'.toUpperCase(),
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Color.fromARGB(
+                                                      255, 15, 77, 154),
+                                                  fontFamily: 'Inter',
+                                                  fontWeight: FontWeight.w700,
+                                                  decoration:
+                                                      TextDecoration.underline,
+                                                ),
+                                              ),
+                                            ),
+                                          ]),
                                     ),
-                                  ),
+                                  ],
                                 ),
-                              ],
-                            );
-                          }),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: FooterMenu(),
-                    ),
-                  ]);
-            } else {
-              return Center(
-                child: LoadingAnimationWidget.twoRotatingArc(
-                  color: Color.fromARGB(255, 15, 77, 154),
-                  size: 50,
-                ),
-              );
-            }
-          }),
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    }),
+              ),
+              Expanded(
+                flex: 2,
+                child: FooterMenu(),
+              ),
+            ])
+          : Center(
+              child: LoadingAnimationWidget.twoRotatingArc(
+                color: Color.fromARGB(255, 15, 77, 154),
+                size: 50,
+              ),
+            ),
     );
   }
 }

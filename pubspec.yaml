@@ -72,6 +72,7 @@ dependencies:
   translator: ^0.1.4
 #To capitilized the letters and more options to do 
   text_tools: ^0.0.2
+  string_capitalize_extension: ^0.0.1
 
 #Left package without ver to install, and terminal will install those ver, 
 #wich is relative to others packages (in this package conflict with cameras package)

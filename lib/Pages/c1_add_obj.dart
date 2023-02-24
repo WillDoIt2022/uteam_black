@@ -35,10 +35,9 @@ class _AddObj extends State<AddObjPage> {
                 child: Align(
                   alignment: Alignment.bottomLeft,
                   child: SizedBox(
-                    width: 150,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.only(top: 25, right: 10),
+                        padding: EdgeInsets.only(top: 25, left: 30),
                         elevation: 0.0,
                         backgroundColor: Colors.white.withOpacity(0.05),
                       ),

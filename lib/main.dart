@@ -38,6 +38,8 @@ class MyApp extends StatefulWidget {
 class _Launch extends State<MyApp> {
   dynamic picture;
   dynamic currentPositionOnMap;
+  dynamic toShowAddress;
+dynamic onEditAdress;
 
   @override
   void initState() {
@@ -112,7 +114,7 @@ class _Launch extends State<MyApp> {
           Routes.addObjPage: (BuildContext context) => AddObjPage(),
           Routes.objDetailsPage: (BuildContext context) => ObjDetailsPage(),
           Routes.objLocation: (BuildContext context) =>
-              ObjLocation(currentPositionOnMap: currentPositionOnMap),
+              ObjLocation(currentPositionOnMap: currentPositionOnMap, toShowAddress:toShowAddress,onEditAdress:onEditAdress),
           Routes.photoPage: (BuildContext context) => PhotoPage(),
           Routes.objectPage: (BuildContext context) => ObjectPage(
                 picture: picture,

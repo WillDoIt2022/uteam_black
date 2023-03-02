@@ -23,7 +23,6 @@ class _DataBase extends State<DataBasePage> {
   final controllerSearch = TextEditingController(text: "");
   final List<String> itemsToFilter = [
     'All',
-    '* Object name',
     'UULID',
     'location',
   ];

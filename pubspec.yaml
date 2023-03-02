@@ -60,10 +60,16 @@ dependencies:
 
 #To get current user geo latitude and longitude
   geolocator: ^8.2.0
+#Google places autocomplete
+  flutter_google_places: ^0.3.0
+#Google places autocomplete
+  google_maps_webservice: ^0.0.19
+  google_api_headers: ^1.5.0+1
 
 #To translate an address into latitude and longitude coordinates 
 #1 request per second
   geocode: ^1.0.2
+
 
 #Dio package will be used for HTTP requests. 
   dio: ^4.0.4
@@ -73,6 +79,8 @@ dependencies:
 #To capitilized the letters and more options to do 
   text_tools: ^0.0.2
   string_capitalize_extension: ^0.0.1
+#Dropdown list 
+  searchfield: ^0.7.5
 
 #Left package without ver to install, and terminal will install those ver, 
 #wich is relative to others packages (in this package conflict with cameras package)
@@ -84,7 +92,7 @@ dependencies:
   cloud_firestore: ^4.3.1
 #random id generator
   uuid: ^3.0.6
-#to work with files and Firebase storage
+#textfield with dropdown list
   firebase_storage: ^11.0.13
 
 

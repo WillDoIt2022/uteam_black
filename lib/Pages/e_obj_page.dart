@@ -416,7 +416,7 @@ class _ObjSummary extends State<ObjectPage> {
                                 ),
                               ),
                               child: Text(
-                                globals.level,
+                                globals.level.toUpperCase(),
                                 style: TextStyle(
                                   fontSize: 20,
                                   color: Color.fromARGB(255, 15, 77, 154),

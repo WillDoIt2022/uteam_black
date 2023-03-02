@@ -20,10 +20,11 @@ class ObjDetailsPage extends StatefulWidget {
 
 class ObjDetails extends State<ObjDetailsPage> {
   bool currentPositionOnMap = false;
+
   // Initial Selected Value
   String dropdownLevelValue =
-      globals.level == "" ? 'GROUND FLOOR' : globals.level;
-  String dropdownUULIDValue = globals.uulid == "" ? 'LOREM' : globals.uulid;
+      globals.level == "" ? 'ground floor' : globals.level;
+  String dropdownUULIDValue = globals.uulid == "" ? 'lorem' : globals.uulid;
 
   @override
   void initState() {
@@ -33,30 +34,41 @@ class ObjDetails extends State<ObjDetailsPage> {
 
   // List of items in our Level dropdown menu
   var itemsFloor = [
-    'GROUND FLOOR',
-    '1st FLOOR',
-    '2nd FLOOR',
-    '3d FLOOR',
-    '5th FLOOR',
-    '6th FLOOR',
-    '7th FLOOR',
-    '8th FLOOR',
-    '9th FLOOR',
-    '10th FLOOR',
+    'ground floor',
+    '1st floor',
+    '2nd floor',
+    '3d floor',
+    '5th floor',
+    '6th floor',
+    '7th floor',
+    '8th floor',
+    '9th floor',
+    '10th floor',
   ];
 
   // List of items in our UULID dropdown menu
   var itemsuulid = [
-    'LOREM',
-    'QUISQUAM EST',
-    'DOLOREM',
-    'NEQUE PORRO',
-    'QUI',
+    'lorem',
+    'quisquam est',
+    'dolorem',
+    'neque porro',
+    'qui',
   ];
 
-  _getRequests() async {
+  _goToGooleMapPage(toShowAddress, onEditAdress) {
+    Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ObjLocation(
+                    currentPositionOnMap: currentPositionOnMap,
+                    toShowAddress: toShowAddress,
+                    onEditAdress: onEditAdress)))
+        .then((val) => val ? _toUpdateWidget() : null);
+  }
+
+  _toUpdateWidget() async {
     setState(() {
-      BlocProvider.of<CounterNav>(context).add(CounterDecrementEvent());
+      BlocProvider.of<CounterNav>(context).add(CounterResetEvent());
     });
   }
 
@@ -81,6 +93,7 @@ class ObjDetails extends State<ObjDetailsPage> {
                       backgroundColor: Colors.white.withOpacity(0.05),
                     ),
                     onPressed: () {
+                      print(counter);
                       setState(
                         () {
                           if (globals.objectId == "") {
@@ -116,6 +129,7 @@ class ObjDetails extends State<ObjDetailsPage> {
                             backgroundColor: Colors.white.withOpacity(0.05),
                           ),
                           onPressed: () {
+                            print(counter);
                             setState(
                               () {
                                 if (counter == 0) {
@@ -181,22 +195,16 @@ class ObjDetails extends State<ObjDetailsPage> {
                                         widthFactor: 1,
                                         child: ObjLocation(
                                             currentPositionOnMap:
-                                                currentPositionOnMap),
+                                                currentPositionOnMap,
+                                            toShowAddress: false,
+                                            onEditAdress: false),
                                       ),
                                     ),
                                     InkWell(
                                       onTap: () {
                                         BlocProvider.of<CounterNav>(context)
                                             .add(CounterIncrementEvent());
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ObjLocation(
-                                                      currentPositionOnMap:
-                                                          currentPositionOnMap,
-                                                    ))).then((val) =>
-                                            val ? _getRequests() : null);
+                                        _goToGooleMapPage(true, false);
                                       },
                                       child: Align(
                                         heightFactor: 0.8,
@@ -249,22 +257,29 @@ class ObjDetails extends State<ObjDetailsPage> {
                                         ),
                                       ),
                                     ),
-                                    child: SizedBox(
-                                      child: Padding(
-                                        padding: EdgeInsets.only(left: 15),
-                                        child: Align(
-                                          alignment: Alignment.bottomLeft,
-                                          child: Text(
-                                            globals.flag
-                                                ? "${globals.street} ${globals.building}"
-                                                : "${globals.newStreet} ${globals.newBuilding}",
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              color: Color.fromARGB(
-                                                  255, 15, 77, 154),
-                                              fontFamily: 'Inter',
-                                              fontWeight: FontWeight.w700,
+                                    child: InkWell(
+                                      onTap: () {
+                                        BlocProvider.of<CounterNav>(context)
+                                            .add(CounterDecrementEvent());
+                                        _goToGooleMapPage(false, true);
+                                      },
+                                      child: SizedBox(
+                                        child: Padding(
+                                          padding: EdgeInsets.only(left: 15),
+                                          child: Align(
+                                            alignment: Alignment.bottomLeft,
+                                            child: Text(
+                                              globals.flag
+                                                  ? "${globals.street}, ${globals.building}"
+                                                  : "${globals.newStreet}, ${globals.newBuilding}",
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                color: Color.fromARGB(
+                                                    255, 15, 77, 154),
+                                                fontFamily: 'Inter',
+                                                fontWeight: FontWeight.w700,
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -338,7 +353,7 @@ class ObjDetails extends State<ObjDetailsPage> {
                                       items: itemsFloor.map((String items) {
                                         return DropdownMenuItem(
                                           value: items,
-                                          child: Text(items),
+                                          child: Text(items.toUpperCase()),
                                         );
                                       }).toList(),
                                       // After selecting the desired option,it will
@@ -404,7 +419,7 @@ class ObjDetails extends State<ObjDetailsPage> {
                                       height: 2,
                                       color: Color.fromARGB(255, 124, 160, 209),
                                     ),
-                                    value: dropdownUULIDValue.toUpperCase(),
+                                    value: dropdownUULIDValue,
                                     style: TextStyle(
                                       fontSize: 20,
                                       color: Color.fromARGB(255, 124, 160, 209),
@@ -415,14 +430,14 @@ class ObjDetails extends State<ObjDetailsPage> {
                                     items: itemsuulid.map((String items) {
                                       return DropdownMenuItem(
                                         value: items,
-                                        child: Text(items),
+                                        child: Text(items.toUpperCase()),
                                       );
                                     }).toList(),
 
                                     onChanged: (value) {
                                       setState(() {
                                         dropdownUULIDValue = value as String;
-                                        globals.uulid=value;
+                                        globals.uulid = value;
                                       });
                                     },
                                     icon: const Icon(

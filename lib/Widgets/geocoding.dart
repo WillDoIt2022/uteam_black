@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'language_determiner.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import './translator.dart';
 import '../globals.dart' as globals;
 // ignore_for_file: prefer_const_constructors
@@ -9,7 +10,7 @@ convertToAddress() async {
 
     double lat = globals.flag?globals.latitude:globals.newLatitude;
     double long = globals.flag?globals.longitude:globals.newLongitude;
-    String apikey = globals.googleApikey;
+    String apikey = dotenv.env['GOOGLE_APIKEY']!;
       dynamic address = "";
 
     String apiurl =

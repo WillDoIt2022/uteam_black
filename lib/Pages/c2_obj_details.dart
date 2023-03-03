@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart'; //for switch case usage
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:text_tools/text_tools.dart';
 import '../BLoC/obj_details_counter.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'c2_obj_location.dart';
@@ -271,7 +272,10 @@ class ObjDetails extends State<ObjDetailsPage> {
                                             child: Text(
                                               globals.flag
                                                   ? "${globals.street}, ${globals.building}"
-                                                  : "${globals.newStreet}, ${globals.newBuilding}",
+                                                  : TextTools
+                                                      .toUppercaseFirstLetter(
+                                                          text:
+                                                              "${globals.newStreet}, ${globals.newBuilding}"),
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                 fontSize: 20,

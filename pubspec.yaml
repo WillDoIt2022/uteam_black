@@ -64,7 +64,10 @@ dependencies:
   flutter_google_places: ^0.3.0
 #Google places autocomplete
   google_maps_webservice: ^0.0.19
+#Google header reader (json)
   google_api_headers: ^1.5.0+1
+#for enable .env file
+  flutter_dotenv: ^5.0.2
 
 #To translate an address into latitude and longitude coordinates 
 #1 request per second
@@ -79,8 +82,8 @@ dependencies:
 #To capitilized the letters and more options to do 
   text_tools: ^0.0.2
   string_capitalize_extension: ^0.0.1
-#Dropdown list 
-  searchfield: ^0.7.5
+#Internet connection checker 
+  data_connection_checker: ^0.3.4
 
 #Left package without ver to install, and terminal will install those ver, 
 #wich is relative to others packages (in this package conflict with cameras package)
@@ -145,6 +148,7 @@ flutter:
       - assets/svg/Settings.svg
       - assets/svg/CameraButton.svg
       - assets/style/map_style.txt
+      - assets/.env
       
 
   # An image asset can refer to one or more resolution-specific "variants", see

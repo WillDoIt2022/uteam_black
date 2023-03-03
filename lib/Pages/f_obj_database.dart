@@ -45,7 +45,6 @@ class _DataBase extends State<DataBasePage> {
         .then((QuerySnapshot snapshot) {
       filteredDb = snapshot.docs.toList();
       sourceDb = snapshot.docs;
-      print("Connecting to DB...");
       setState(() {
         filteredDbflag = true;
       });
@@ -68,7 +67,6 @@ class _DataBase extends State<DataBasePage> {
   }
 
   filterDbFunctionFunction() {
-    print(selectedFilteredValue.toString().toLowerCase());
     filteredDb = sourceDb;
     if (selectedFilteredValue.toString().toLowerCase() == "all") {
       setState(() {
@@ -82,7 +80,6 @@ class _DataBase extends State<DataBasePage> {
             .toList();
       });
     } else if (selectedFilteredValue.toString().toLowerCase() == "location") {
-      print("Im here");
       setState(() {
         filteredDb = filteredDb
             .where((e) => (e["street"]
@@ -183,6 +180,8 @@ class _DataBase extends State<DataBasePage> {
                               onChanged: (String? newValue) {
                                 setState(() {
                                   selectedFilteredValue = newValue;
+                                  controllerSearch.text="";
+                                  filteredDb = sourceDb;
                                 });
                               },
                               dropdownWidth:

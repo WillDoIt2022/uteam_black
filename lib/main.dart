@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'BLoC/obj_details_counter.dart';
 import 'Widgets/geocoding.dart';
 import 'Pages/a_welcome_page.dart';
@@ -17,9 +18,10 @@ import "routes.dart";
 import 'globals.dart' as globals;
 // ignore_for_file: prefer_const_constructors
 
-void main() async {
+Future main() async {
   //Initializing Database when starting the application.
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: "assets/.env");
   await Firebase.initializeApp();
   runApp(const MyApp());
 }

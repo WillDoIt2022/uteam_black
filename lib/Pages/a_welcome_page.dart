@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async'; //For timer working
 import 'dart:math'; //For random number code generator
 import 'package:another_flushbar/flushbar.dart'; //notifys
+import 'package:data_connection_checker/data_connection_checker.dart';//Internet connection checker
 import '../Widgets/logo_img.dart';
 import '../Widgets/log_in.dart';
 import '../Widgets/welcome_txt.dart';
@@ -30,6 +31,11 @@ class _LaunchApp extends State<WelcomePage> {
   void initState() {
     super.initState();
 
+
+//Internet Connection Checker
+WidgetsBinding.instance
+            .addPostFrameCallback((_) => internetConnectionChecker());
+
     next = true;
     timer = true;
     //Go to Log in password page in a 5 seconds
@@ -42,7 +48,15 @@ class _LaunchApp extends State<WelcomePage> {
     });
   }
 
-
+internetConnectionChecker ()async{
+bool result = await DataConnectionChecker().hasConnection;
+if(result == true) {
+  print('YAY! Free cute dog pics!');
+} else {
+  print('No internet :( Reason:');
+  print(DataConnectionChecker().lastTryResults);
+}
+}
 
 
   randomCodeGenerator() {

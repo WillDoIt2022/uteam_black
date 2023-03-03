@@ -7,6 +7,7 @@ import 'package:flutter/services.dart'
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:google_api_headers/google_api_headers.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../BLoC/obj_details_counter.dart';
 import '../globals.dart' as globals;
 import '../Widgets/geocoding.dart';
@@ -27,34 +28,31 @@ class ObjLocation extends StatefulWidget {
 }
 
 class ObjLocationState extends State<ObjLocation> {
-  //Completer<GoogleMapController> mapController = Completer();
-  //GoogleMapController? controller;
+  //to show Container with choosen address or now
   bool toShowAddress = false;
+  //if User wants to search object by address or no 
   bool onEditAdress = false;
+  //What street to show
   dynamic street = globals.flag ? globals.street : globals.newStreet;
+  //What building to show to show
   dynamic building = globals.flag ? globals.building : globals.newBuilding;
-  LatLng location = LatLng(48.8583701, 2.2944813);
+
+  //LatLng location = LatLng(48.8583701, 2.2944813);
+  //auto detected user location
   LatLng currentLocation = LatLng(globals.latitude, globals.longitude);
+  //new location, which was choosen by User
   LatLng newLocation = LatLng(globals.newLatitude, globals.newLongitude);
+  //settings of customized map
   String? _mapStyle;
-
+  //here we keep current mapController, to move map
   dynamic currentMapController;
-
+  //here we keep dropdown list of address suggestions
   String searchLocation = "Search Location";
-
-  dynamic controllerSearchAddress = TextEditingController(text: "");
-  // List of items in our Level dropdown menu
-  List<Map<String, dynamic>> addressItems = [
-    {"id": 1, "street": "Puskinskaya", "building": 5},
-    {"id": 2, "street": "Derebasovskaya", "building": 6},
-    {"id": 3, "street": "Khreshatik", "building": 9},
-    {"id": 4, "street": "Saksaganskogo", "building": 23},
-    {"id": 5, "street": "Kablukova", "building": 18},
-  ];
 
   @override
   void initState() {
     super.initState();
+    //connecting customize Google map setting
     rootBundle.loadString('assets/style/map_style.txt').then((string) {
       _mapStyle = string;
     }).catchError((error) {
@@ -62,14 +60,69 @@ class ObjLocationState extends State<ObjLocation> {
     });
     toShowAddress = widget.toShowAddress;
     onEditAdress = widget.onEditAdress;
-    controllerSearchAddress = TextEditingController(text: "$street, $building");
+    //To build searchBar box for searching object by address, after widhet built 
+    onEditAdress
+        ? WidgetsBinding.instance
+            .addPostFrameCallback((_) => openSearchBarByAddress())
+        : null;
+
     setState(() {});
-    //Do not rerender the map with current position, if it is already done
+    //Do not rerender the map with current position if already done
     if (widget.currentPositionOnMap == false) {
       updateCameraLocation(currentLocation);
     } else {
       return;
     }
+  }
+
+  openSearchBarByAddress() async {
+    var place = await PlacesAutocomplete.show(
+        context: context,
+        apiKey: dotenv.env['GOOGLE_APIKEY']!,
+        mode: Mode.overlay,
+        logo: Text(""), //to hide Google logo
+        language: globals.countryIso,
+        types: [],
+        strictbounds: false,
+        components: [Component(Component.country, globals.countryIso)],
+        //google_map_webservice package
+        onError: (err) {
+          print(err);
+        });
+
+    if (place != null) {
+      setState(() {
+        searchLocation = place.description.toString();
+      });
+    }
+    //form google_maps_webservice package
+    final plist = GoogleMapsPlaces(
+      apiKey: dotenv.env['GOOGLE_APIKEY'],
+      apiHeaders: await GoogleApiHeaders().getHeaders(),
+      //from google_api_headers package
+    );
+    String placeid = place?.placeId ?? "0";
+    final detail = await plist.getDetailsByPlaceId(placeid);
+    final geometry = detail.result.geometry!;
+    final lat = geometry.location.lat;
+    final lang = geometry.location.lng;
+    var newlatlang = LatLng(lat, lang);
+    print(newlatlang);
+
+    globals.newLatitude = geometry.location.lat;
+    globals.newLongitude = geometry.location.lng;
+    globals.flag = false;
+    convertToAddress().then((value) {
+      setState(() {
+        street = globals.newStreet;
+        building = globals.newBuilding;
+        newLocation = LatLng(globals.newLatitude, globals.newLongitude);
+      });
+    });
+    CameraPosition newCameraPosition =
+        CameraPosition(target: newlatlang, zoom: 18);
+    currentMapController
+        .animateCamera(CameraUpdate.newCameraPosition(newCameraPosition));
   }
 
   Future updateCameraLocation(location) async {
@@ -104,7 +157,7 @@ class ObjLocationState extends State<ObjLocation> {
               return false;
             }
           } else {
-            //This ыуе a default behavior
+            //This is a default behavior
             return false;
           }
         },
@@ -234,6 +287,7 @@ class ObjLocationState extends State<ObjLocation> {
                                       toShowAddress = false;
                                       onEditAdress = true;
                                     });
+                                    openSearchBarByAddress();
                                   },
                                   child: Row(
                                     crossAxisAlignment:
@@ -241,18 +295,19 @@ class ObjLocationState extends State<ObjLocation> {
                                     children: [
                                       Padding(
                                         padding: EdgeInsets.only(left: 15),
-                                        child: Text(
-                                          textAlign: TextAlign.left,
-                                          '$street $building',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Color.fromARGB(
-                                                255, 246, 246, 246),
-                                            fontFamily: 'Inter',
-                                            fontWeight: FontWeight.w700,
+                                        child: SizedBox(
+                                          child: Text(
+                                            '$street $building',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              color: Color.fromARGB(
+                                                  255, 15, 77, 154),
+                                              fontFamily: 'Inter',
+                                              fontWeight: FontWeight.w700,
+                                            ),
                                           ),
                                         ),
-                                      ),
+                                      )
                                     ],
                                   ),
                                 ),
@@ -296,7 +351,11 @@ class ObjLocationState extends State<ObjLocation> {
                                 width: 290,
                                 height: 10,
                               ),
-                              Container(
+                              InkWell(
+                                onTap: () {
+                                  openSearchBarByAddress();
+                                },
+                                child: Container(
                                   width: 290,
                                   height: 30,
                                   decoration: BoxDecoration(
@@ -307,79 +366,19 @@ class ObjLocationState extends State<ObjLocation> {
                                               Color.fromARGB(255, 15, 77, 154)),
                                     ),
                                   ),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      var place = await PlacesAutocomplete.show(
-                                          context: context,
-                                          apiKey: globals.googleApikey,
-                                          mode: Mode.overlay,
-                                          types: [],
-                                          strictbounds: false,
-                                          components: [
-                                            Component(Component.country,
-                                                globals.countryIso)
-                                          ],
-                                          //google_map_webservice package
-                                          onError: (err) {
-                                            print(err);
-                                          });
-
-                                      if (place != null) {
-                                        setState(() {
-                                          searchLocation =
-                                              place.description.toString();
-                                        });
-                                      }
-                                      //form google_maps_webservice package
-                                      final plist = GoogleMapsPlaces(
-                                        apiKey: globals.googleApikey,
-                                        apiHeaders: await GoogleApiHeaders()
-                                            .getHeaders(),
-                                        //from google_api_headers package
-                                      );
-                                      String placeid = place?.placeId ?? "0";
-                                      final detail = await plist
-                                          .getDetailsByPlaceId(placeid);
-                                      final geometry = detail.result.geometry!;
-                                      final lat = geometry.location.lat;
-                                      final lang = geometry.location.lng;
-                                      var newlatlang = LatLng(lat, lang);
-                                      print(newlatlang);
-
-                                      globals.newLatitude =
-                                          geometry.location.lat;
-                                      globals.newLongitude =
-                                          geometry.location.lng;
-                                      globals.flag = false;
-                                      convertToAddress().then((value) {
-                                        setState(() {
-                                          street = globals.newStreet;
-                                          building = globals.newBuilding;
-                                          newLocation = LatLng(
-                                              globals.newLatitude,
-                                              globals.newLongitude);
-                                        });
-                                      });
-                                      CameraPosition newCameraPosition =
-                                          CameraPosition(
-                                              target: newlatlang, zoom: 18);
-                                      currentMapController.animateCamera(
-                                          CameraUpdate.newCameraPosition(
-                                              newCameraPosition));
-                                    },
-                                    child: SizedBox(
-                                      child: Text(
-                                        '$street $building',
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          color:
-                                              Color.fromARGB(255, 15, 77, 154),
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w700,
-                                        ),
+                                  child: SizedBox(
+                                    child: Text(
+                                      '$street $building',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: Color.fromARGB(255, 15, 77, 154),
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w700,
                                       ),
                                     ),
-                                  )),
+                                  ),
+                                ),
+                              ),
                             ]),
                       )
                     : Container(),

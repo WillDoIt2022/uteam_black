@@ -5,6 +5,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'BLoC/obj_details_counter.dart';
+import'BLoC/network_checker.dart';
 import 'Widgets/geocoding.dart';
 import 'Pages/a_welcome_page.dart';
 import 'Pages/b_main_page.dart';
@@ -45,11 +46,17 @@ dynamic onEditAdress;
 
   @override
   void initState() {
-    determinePosition();
+    
+    
+    //determinePosition();
     super.initState();
   }
 
+  
+
   determinePosition() async {
+    
+
     bool serviceEnabled;
     LocationPermission permission;
     // Test if location services are enabled.
@@ -104,7 +111,10 @@ dynamic onEditAdress;
       providers: [
         BlocProvider<CounterNav>(
           create: (context) => CounterNav(),
+          
         ),
+        BlocProvider<NetworkChecker>(
+          create: (context) => NetworkChecker(),)
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false, //remove the debug banner "Demo"

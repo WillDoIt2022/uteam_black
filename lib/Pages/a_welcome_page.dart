@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'dart:async'; //For timer working
 import 'dart:math'; //For random number code generator
 import 'package:another_flushbar/flushbar.dart'; //notifys
-import 'package:data_connection_checker/data_connection_checker.dart';//Internet connection checker
+import 'package:data_connection_checker/data_connection_checker.dart'; //Internet connection checker
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../BLoC/network_checker.dart';
 import '../Widgets/logo_img.dart';
 import '../Widgets/log_in.dart';
 import '../Widgets/welcome_txt.dart';
@@ -11,7 +13,6 @@ import '../globals.dart' as globals;
 // ignore_for_file: prefer_const_constructors
 
 class WelcomePage extends StatefulWidget {
-
   const WelcomePage({Key? key})
       : super(key: key); //mistake"use key in widget constructions"
   @override
@@ -26,38 +27,39 @@ class _LaunchApp extends State<WelcomePage> {
   dynamic timer;
   dynamic next;
   dynamic randomCode;
+  //bool isInternet = false;
 
   @override
   void initState() {
     super.initState();
-
+    print(BlocProvider.of<NetworkChecker>(context).state);
+    BlocProvider.of<NetworkChecker>(context)
+        .add(CheckInternetConnectionEvent());
+    print(BlocProvider.of<NetworkChecker>(context).state);
 
 //Internet Connection Checker
-WidgetsBinding.instance
-            .addPostFrameCallback((_) => internetConnectionChecker());
+    //WidgetsBinding.instance
+    //.addPostFrameCallback((_) => internetConnectionChecker());
 
     next = true;
     timer = true;
     //Go to Log in password page in a 5 seconds
-    Timer(Duration(seconds: 5), () {
-      setState(
-        () {
-          timer = false;
-        },
-      );
-    });
+    timerStart();
   }
 
-internetConnectionChecker ()async{
-bool result = await DataConnectionChecker().hasConnection;
-if(result == true) {
-  print('YAY! Free cute dog pics!');
-} else {
-  print('No internet :( Reason:');
-  print(DataConnectionChecker().lastTryResults);
-}
-}
-
+  timerStart() {
+    Timer(Duration(seconds: 5), () {
+      if (BlocProvider.of<NetworkChecker>(context).state == false) {
+        return;
+      } else {
+        setState(
+          () {
+            timer = false;
+          },
+        );
+      }
+    });
+  }
 
   randomCodeGenerator() {
     Random random = Random();
@@ -77,8 +79,9 @@ if(result == true) {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color.fromARGB(255,246,246,246),
-        body: Column(
+      backgroundColor: Color.fromARGB(255, 246, 246, 246),
+      body: Stack(children: [
+        Column(
           mainAxisAlignment: MainAxisAlignment.start,
           // ignore: prefer_const_literals_to_create_immutables
           children: <Widget>[
@@ -96,11 +99,10 @@ if(result == true) {
                                 elevation: 0.0,
                                 backgroundColor: Colors.white.withOpacity(0.05),
                               ),
-                              onPressed: () {
+                              onPressed: () async {
                                 setState(
                                   () {
                                     if (controllerPhone.text.length < 17) {
-
                                       Flushbar(
                                         title: 'Warning',
                                         titleColor: Colors.yellow,
@@ -126,7 +128,9 @@ if(result == true) {
                                 );
                               },
                               child: Text(
-                                globals.generalContentArray['next'].toString().toUpperCase(),
+                                globals.generalContentArray['next']
+                                    .toString()
+                                    .toUpperCase(),
                                 style: TextStyle(
                                   color: Color.fromARGB(255, 0, 0, 0),
                                   fontSize: 24,
@@ -157,7 +161,9 @@ if(result == true) {
                                 );
                               },
                               child: Text(
-                                globals.generalContentArray['back'].toString().toUpperCase(),
+                                globals.generalContentArray['back']
+                                    .toString()
+                                    .toUpperCase(),
                                 style: TextStyle(
                                   color: Color.fromARGB(255, 0, 0, 0),
                                   fontSize: 24,
@@ -182,6 +188,34 @@ if(result == true) {
                         controllerCode, randomCode),
                   ),
           ],
-        ));
+        ),
+        BlocBuilder<NetworkChecker, bool>(
+            builder: (context, networkStatus) => !networkStatus
+                ? Column(children: [
+                    Expanded(
+                      flex: 1,
+                      child: InkWell(
+                        onTap: () {
+                          BlocProvider.of<NetworkChecker>(context)
+                              .add(CheckInternetConnectionEvent());
+                          timerStart();
+                        },
+                        child: Container(
+                          width: MediaQueryData.fromWindow(
+                                      WidgetsBinding.instance.window)
+                                  .size
+                                  .width *
+                              1,
+                          color: Colors.grey.withOpacity(0.3),
+                          child: Center(
+                              child:
+                                  Text("Network connection: $networkStatus")),
+                        ),
+                      ),
+                    ),
+                  ])
+                : Container())
+      ]),
+    );
   }
 }

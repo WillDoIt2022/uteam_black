@@ -520,8 +520,8 @@ class ObjDetails extends State<ObjDetailsPage> {
                         ],
                   },
                   fallbackBuilder: (BuildContext context) => <Widget>[
-                    Text('Widget XX'),
-                    Text('Widget XX'),
+                    Text('Uuups, no such page found'),
+
                   ],
                 ),
               ),

@@ -35,7 +35,9 @@ class _LaunchApp extends State<WelcomePage> {
     print(BlocProvider.of<NetworkChecker>(context).state);
     BlocProvider.of<NetworkChecker>(context)
         .add(CheckInternetConnectionEvent());
-    print(BlocProvider.of<NetworkChecker>(context).state);
+    print('Network Status in a Welcome page=' +
+        BlocProvider.of<NetworkChecker>(context).state.toString());
+    //print(BlocProvider.of<NetworkChecker>(context).state);
 
 //Internet Connection Checker
     //WidgetsBinding.instance
@@ -44,7 +46,7 @@ class _LaunchApp extends State<WelcomePage> {
     next = true;
     timer = true;
     //Go to Log in password page in a 5 seconds
-    timerStart();
+    //timerStart();
   }
 
   timerStart() {
@@ -78,144 +80,196 @@ class _LaunchApp extends State<WelcomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color.fromARGB(255, 246, 246, 246),
-      body: Stack(children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          // ignore: prefer_const_literals_to_create_immutables
-          children: <Widget>[
-            Expanded(
-              flex: 2,
-              child: !timer
-                  ? next
-                      ? Align(
-                          alignment: Alignment.topRight,
-                          child: SizedBox(
-                            width: 150,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                padding: EdgeInsets.only(top: 25),
-                                elevation: 0.0,
-                                backgroundColor: Colors.white.withOpacity(0.05),
-                              ),
-                              onPressed: () async {
-                                setState(
-                                  () {
-                                    if (controllerPhone.text.length < 17) {
-                                      Flushbar(
-                                        title: 'Warning',
-                                        titleColor: Colors.yellow,
-                                        titleSize: 18,
-                                        message: 'Phone number is invalid',
-                                        messageSize: 14,
-                                        duration: Duration(seconds: 4),
-                                        flushbarPosition: FlushbarPosition.TOP,
-                                      ).show(context);
-                                      return;
-                                    } else {
-                                      next = !next;
-                                      print(controllerPhone.text);
-                                      globals.phoneNumber =
-                                          controllerPhone.text;
+    return BlocBuilder<NetworkChecker, dynamic>(
+        builder: (context, networkStatus) {
+      return Scaffold(
+          backgroundColor: Color.fromARGB(255, 246, 246, 246),
+          body: Stack(children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              // ignore: prefer_const_literals_to_create_immutables
+              children: <Widget>[
+                Expanded(
+                  flex: 2,
+                  child: networkStatus == true
+                      ? next
+                          ? Align(
+                              alignment: Alignment.topRight,
+                              child: SizedBox(
+                                width: 150,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    padding: EdgeInsets.only(top: 25),
+                                    elevation: 0.0,
+                                    backgroundColor:
+                                        Colors.white.withOpacity(0.05),
+                                  ),
+                                  onPressed: () async {
+                                    setState(
+                                      () {
+                                        if (controllerPhone.text.length < 17) {
+                                          Flushbar(
+                                            title: 'Warning',
+                                            titleColor: Colors.yellow,
+                                            titleSize: 18,
+                                            message: 'Phone number is invalid',
+                                            messageSize: 14,
+                                            duration: Duration(seconds: 4),
+                                            flushbarPosition:
+                                                FlushbarPosition.TOP,
+                                          ).show(context);
+                                          return;
+                                        } else {
+                                          next = !next;
+                                          print(controllerPhone.text);
+                                          globals.phoneNumber =
+                                              controllerPhone.text;
 
-                                      controllerCode =
-                                          TextEditingController(text: "");
+                                          controllerCode =
+                                              TextEditingController(text: "");
 
-                                      randomCodeGenerator();
-                                    }
+                                          randomCodeGenerator();
+                                        }
+                                      },
+                                    );
                                   },
-                                );
-                              },
-                              child: Text(
-                                globals.generalContentArray['next']
-                                    .toString()
-                                    .toUpperCase(),
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 0, 0, 0),
-                                  fontSize: 24,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w700,
+                                  child: Text(
+                                    globals.generalContentArray['next']
+                                        .toString()
+                                        .toUpperCase(),
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                      fontSize: 24,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        )
-                      : Align(
-                          alignment: Alignment.topLeft,
-                          child: SizedBox(
-                            width: 150,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                padding: EdgeInsets.only(top: 25),
-                                elevation: 0.0,
-                                backgroundColor: Colors.white.withOpacity(0.05),
-                              ),
-                              onPressed: () {
-                                setState(
-                                  () {
-                                    if (!next) {
-                                      next = !next;
-                                    }
+                            )
+                          : Align(
+                              alignment: Alignment.topLeft,
+                              child: SizedBox(
+                                width: 150,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    padding: EdgeInsets.only(top: 25),
+                                    elevation: 0.0,
+                                    backgroundColor:
+                                        Colors.white.withOpacity(0.05),
+                                  ),
+                                  onPressed: () {
+                                    setState(
+                                      () {
+                                        if (!next) {
+                                          next = !next;
+                                        }
+                                      },
+                                    );
                                   },
-                                );
-                              },
-                              child: Text(
-                                globals.generalContentArray['back']
-                                    .toString()
-                                    .toUpperCase(),
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 0, 0, 0),
-                                  fontSize: 24,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w700,
+                                  child: Text(
+                                    globals.generalContentArray['back']
+                                        .toString()
+                                        .toUpperCase(),
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                      fontSize: 24,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        )
-                  : Container(),
+                            )
+                      : Container(),
+                ),
+                Expanded(
+                  flex: networkStatus == 'checking' || networkStatus == false
+                      ? 8
+                      : 5,
+                  child: logoImg(
+                      networkStatus == 'checking' || networkStatus == false
+                          ? true
+                          : false),
+                ),
+                networkStatus == 'checking' || networkStatus == false
+                    ? Expanded(flex: 5, child: welcomeTxt())
+                    : Expanded(
+                        flex: 8,
+                        child: loginWidget(context, next, controllerPhone,
+                            controllerCode, randomCode),
+                      ),
+              ],
             ),
-            Expanded(
-              flex: timer ? 8 : 5,
-              child: logoImg(timer),
-            ),
-            timer
-                ? Expanded(flex: 5, child: welcomeTxt())
-                : Expanded(
-                    flex: 8,
-                    child: loginWidget(context, next, controllerPhone,
-                        controllerCode, randomCode),
-                  ),
-          ],
-        ),
-        BlocBuilder<NetworkChecker, bool>(
-            builder: (context, networkStatus) => !networkStatus
+            networkStatus == false
                 ? Column(children: [
                     Expanded(
                       flex: 1,
-                      child: InkWell(
-                        onTap: () {
-                          BlocProvider.of<NetworkChecker>(context)
-                              .add(CheckInternetConnectionEvent());
-                          timerStart();
-                        },
-                        child: Container(
-                          width: MediaQueryData.fromWindow(
-                                      WidgetsBinding.instance.window)
-                                  .size
-                                  .width *
-                              1,
-                          color: Colors.grey.withOpacity(0.3),
-                          child: Center(
-                              child:
-                                  Text("Network connection: $networkStatus")),
+                      child: Container(
+                        width: MediaQueryData.fromWindow(
+                                    WidgetsBinding.instance.window)
+                                .size
+                                .width *
+                            1,
+                        color: Colors.grey.withOpacity(0.3),
+                        child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child:Padding(
+                            padding: EdgeInsets.only(bottom: 150),
+                          child: SizedBox(
+                            width: 300,
+                            height: 200,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    Color.fromARGB(255, 246, 246, 246),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0),
+                                  
+                                ),
+                                elevation: 1,
+                                shadowColor: Color.fromARGB(255, 250, 250, 250),
+                              ),
+                             
+                              onPressed: () {
+                                BlocProvider.of<NetworkChecker>(context)
+                                    .add(CheckInternetConnectionEvent());
+                              },
+                              child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Text(
+                                      "Network connection\nfailed".toUpperCase(),
+                                      style: TextStyle(
+                                        color: Color.fromARGB(255, 15, 77, 154),
+                                        fontSize: 14,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    Text(
+                                      "Please, check your connection and try again"
+                                          .toUpperCase(),
+                                      style: TextStyle(
+                                        color:
+                                            Color.fromARGB(255, 124, 160, 209),
+                                        fontSize: 14,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ]),
+                            ),
+                          ),),
                         ),
                       ),
                     ),
                   ])
-                : Container())
-      ]),
-    );
+                : Container(),
+          ]));
+    });
   }
 }

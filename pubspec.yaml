@@ -97,6 +97,8 @@ dependencies:
   uuid: ^3.0.6
 #textfield with dropdown list
   firebase_storage: ^11.0.13
+#to check permissions to camera, location, etc
+  permission_handler: ^10.2.0
 
 
 

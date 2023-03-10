@@ -20,9 +20,11 @@ import 'globals.dart' as globals;
 // ignore_for_file: prefer_const_constructors
 
 Future main() async {
-  //Initializing Database when starting the application.
+  //Initializing acces to cameras.
   WidgetsFlutterBinding.ensureInitialized();
+  //Initializing .env file
   await dotenv.load(fileName: "assets/.env");
+  //Initializing Database when starting the application.
   await Firebase.initializeApp();
   runApp(const MyApp());
 }
@@ -51,7 +53,6 @@ class _Launch extends State<MyApp> {
   Widget build(BuildContext context) {
     globals.mapController =
         Completer(); //initializing our controller for google maps.
-    
 
     return MultiBlocProvider(
       providers: [
@@ -62,7 +63,6 @@ class _Launch extends State<MyApp> {
           create: (context) => NetworkChecker(),
         )
       ],
-
       child: MaterialApp(
         debugShowCheckedModeBanner: false, //remove the debug banner "Demo"
         initialRoute: '/',

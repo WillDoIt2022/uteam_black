@@ -32,21 +32,13 @@ class _LaunchApp extends State<WelcomePage> {
   @override
   void initState() {
     super.initState();
-    print(BlocProvider.of<NetworkChecker>(context).state);
     BlocProvider.of<NetworkChecker>(context)
         .add(CheckInternetConnectionEvent());
-    print('Network Status in a Welcome page=' +
-        BlocProvider.of<NetworkChecker>(context).state.toString());
-    //print(BlocProvider.of<NetworkChecker>(context).state);
-
 //Internet Connection Checker
     //WidgetsBinding.instance
     //.addPostFrameCallback((_) => internetConnectionChecker());
-
     next = true;
     timer = true;
-    //Go to Log in password page in a 5 seconds
-    //timerStart();
   }
 
   timerStart() {
@@ -215,7 +207,7 @@ class _LaunchApp extends State<WelcomePage> {
                         child: Align(
                           alignment: Alignment.bottomCenter,
                           child:Padding(
-                            padding: EdgeInsets.only(bottom: 150),
+                            padding: EdgeInsets.only(bottom: 200),
                           child: SizedBox(
                             width: 300,
                             height: 200,

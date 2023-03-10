@@ -68,7 +68,7 @@ Widget logInEnterCode(context, controllerCode, randomCode) {
             border: InputBorder.none,
             labelText: '',
             hintText: '',
-            contentPadding: EdgeInsets.only(left: 24.0, bottom:10),
+            contentPadding: EdgeInsets.only(left: 24.0),
           ),
         ),
       ),

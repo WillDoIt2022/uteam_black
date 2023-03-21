@@ -37,6 +37,7 @@ class _ObjSummary extends State<ObjectPage> {
   void initState() {
     super.initState();
     onSave = globals.onSave;
+    globals.objectId==''?globals.objectId='onEdit':null;
     //Detecting if the picture was done by camera
     widget.picture == null ? isPictureDone = "false" : isPictureDone = "true";
   }
@@ -44,7 +45,7 @@ class _ObjSummary extends State<ObjectPage> {
   Future saveObjectPicture() async {
     onLoading = true;
     if (isPictureDone == "true") {
-      if (globals.objectId == "") {
+      if (globals.objectId == "onEdit") {
         objectId = uuid.v1();
         globals.objectId = objectId;
 
@@ -248,7 +249,7 @@ class _ObjSummary extends State<ObjectPage> {
                           children: [
                             InkWell(
                               onTap: () {
-                                !onSave || globals.objectId == ""
+                                !onSave 
                                     ? null
                                     : goToEdit("photo");
                               },
@@ -294,7 +295,7 @@ class _ObjSummary extends State<ObjectPage> {
                           ),
                           InkWell(
                             onTap: () {
-                              !onSave || globals.objectId == ""
+                              !onSave
                                   ? null
                                   : goToEdit("uulid");
                             },
@@ -341,7 +342,7 @@ class _ObjSummary extends State<ObjectPage> {
                           ),
                           InkWell(
                             onTap: () {
-                              !onSave || globals.objectId == ""
+                              !onSave 
                                   ? null
                                   : goToEdit("address");
                             },
@@ -364,8 +365,6 @@ class _ObjSummary extends State<ObjectPage> {
                                         .toUpperCase()
                                     : "${globals.newStreet}, ${globals.newBuilding}"
                                         .toUpperCase(),
-                                //"$street. $building".toUpperCase(),
-                                //overflow: TextOverflow.fade,
                                 maxLines: 1,
                                 softWrap: false,
                                 style: TextStyle(
@@ -398,7 +397,7 @@ class _ObjSummary extends State<ObjectPage> {
                           ),
                           InkWell(
                             onTap: () {
-                              !onSave || globals.objectId == ""
+                              !onSave 
                                   ? null
                                   : goToEdit("address");
                             },

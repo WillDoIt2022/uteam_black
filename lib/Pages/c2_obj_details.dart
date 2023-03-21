@@ -20,9 +20,10 @@ class ObjDetailsPage extends StatefulWidget {
   }
 }
 
-class ObjDetails extends State<ObjDetailsPage> {
+class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
   bool currentPositionOnMap = false;
   bool cameraPermissionStatus = false;
+  late AppLifecycleState _notification;
 
   // Initial Selected Value
   String dropdownLevelValue =
@@ -32,28 +33,50 @@ class ObjDetails extends State<ObjDetailsPage> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     currentPositionOnMap = false;
     checkCameraPermissions();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   checkCameraPermissions() async {
     var status = await Permission.camera.status;
     if (status.isDenied) {
       // We didn't ask for permission yet or the permission has been denied before but not permanently.
+      setState(() {
+        cameraPermissionStatus = true;
+      });
       print("Permission is denined.");
     } else if (status.isGranted) {
       //permission is already granted.
       print("Permission is already granted.");
-      cameraPermissionStatus = true;
-      //openAppSettings();
+            setState(() {
+        cameraPermissionStatus = false;
+      });
     } else if (status.isPermanentlyDenied) {
       //permission is permanently denied.
-      cameraPermissionStatus = false;
+      setState(() {
+        cameraPermissionStatus = true;
+      });
       print("Permission is permanently denied");
     } else if (status.isRestricted) {
       //permission is OS restricted.
-      cameraPermissionStatus = false;
+      setState(() {
+        cameraPermissionStatus = true;
+      });
       print("Permission is OS restricted.");
+    }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      checkCameraPermissions();
     }
   }
 

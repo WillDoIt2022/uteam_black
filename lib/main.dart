@@ -5,8 +5,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'BLoC/obj_details_counter.dart';
 import 'BLoC/network_checker.dart';
-import 'Widgets/determine_current_position.dart';
-
 import 'Pages/a_welcome_page.dart';
 import 'Pages/b_main_page.dart';
 import 'Pages/c1_add_obj.dart';

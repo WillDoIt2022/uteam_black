@@ -39,6 +39,7 @@ class _ObjSummary extends State<ObjectPage> {
     onSave = globals.onSave;
     globals.objectId==''?globals.objectId='onEdit':null;
     //Detecting if the picture was done by camera
+    // ignore: unnecessary_null_comparison
     widget.picture == null ? isPictureDone = "false" : isPictureDone = "true";
   }
 

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart'; //for switch case usage
 import 'package:flutter_bloc/flutter_bloc.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:text_tools/text_tools.dart';
+import 'package:another_flushbar/flushbar.dart'; //notifys
 import 'package:permission_handler/permission_handler.dart';
 import '../BLoC/obj_details_counter.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'c2_obj_location.dart';
 import '../routes.dart';
 import '../globals.dart' as globals;
-
 // ignore_for_file: prefer_const_constructors
 
 class ObjDetailsPage extends StatefulWidget {
@@ -23,7 +24,7 @@ class ObjDetailsPage extends StatefulWidget {
 class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
   bool currentPositionOnMap = false;
   bool cameraPermissionStatus = false;
-  late AppLifecycleState _notification;
+
 
   // Initial Selected Value
   String dropdownLevelValue =
@@ -120,6 +121,18 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
     });
   }
 
+  noAdressNotification(){
+    Flushbar(
+      title: 'object'.toUpperCase(),
+      titleColor: Colors.red,
+      titleSize: 18,
+      message: 'Building number should be set',
+      messageSize: 14,
+      duration: Duration(seconds: 3),
+      flushbarPosition: FlushbarPosition.TOP,
+    ).show(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     //debugShowCheckedModeBanner: false, //remove the debug banner "Demo"
@@ -142,7 +155,6 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                           backgroundColor: Colors.white.withOpacity(0.05),
                         ),
                         onPressed: () {
-                          print(counter);
                           setState(
                             () {
                               if (globals.objectId == "") {

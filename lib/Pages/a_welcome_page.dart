@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'dart:async'; //For timer working
 import 'dart:math'; //For random number code generator
 import 'package:another_flushbar/flushbar.dart'; //notifys
-import 'package:data_connection_checker/data_connection_checker.dart'; //Internet connection checker
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../BLoC/network_checker.dart';
 import '../Widgets/logo_img.dart';

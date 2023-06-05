@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../styles/app_textstyles.dart';
+import 'package:easy_mask/easy_mask.dart'; //mask for phone
 import '../globals.dart' as globals;
 // ignore_for_file: prefer_const_constructors
 
@@ -13,16 +15,13 @@ Widget logInAddPhone(controllerPhone) {
           globals.generalContentArray['logInPhoneText_1']
               .toString()
               .toUpperCase(),
-          style: AppTextStyle.textSize32Light,
+          style: AppTextStyle.textSize36Light,
         ),
       ),
-
-
       SizedBox(
                   width: 300,
                   height: 39,
-
-                child: ElevatedButton(
+                  child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color.fromARGB(255, 250, 184, 108),
                       shape: RoundedRectangleBorder(
@@ -40,7 +39,7 @@ Widget logInAddPhone(controllerPhone) {
                           .toUpperCase(),
                       style: TextStyle(
                         color: Color.fromARGB(255, 255, 255, 255),
-                        fontSize: 20,
+                        fontSize: 24,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w700,
                       ),
@@ -48,7 +47,6 @@ Widget logInAddPhone(controllerPhone) {
                     ),
                   ),
                 ),
-                
       Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
@@ -74,9 +72,13 @@ Widget logInAddPhone(controllerPhone) {
                     .width *
                 0.6,
               child: TextField(
-                style: AppTextStyle.textSize12Dark,
-                keyboardType: TextInputType.emailAddress,
+                style: AppTextStyle.textSize16Dark,
+                keyboardType: TextInputType.number,
                 controller: controllerPhone,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  TextInputMask(mask: '\\+99 999 999 99 99', reverse: false)
+                ],
                 maxLines: 1,
                 decoration: InputDecoration(
                   enabledBorder: UnderlineInputBorder(

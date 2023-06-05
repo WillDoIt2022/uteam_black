@@ -61,15 +61,23 @@ class _AddObj extends State<AddObjPage> {
                   ),
                 )),
             Expanded(
-              flex: 5,
+              flex: 6,
               child: Align(
                 alignment: Alignment.center,
                 child: Container(
-                  width: 139,
-                  height: 140,
+                  height:
+                      MediaQueryData.fromWindow(WidgetsBinding.instance.window)
+                              .size
+                              .width *
+                          0.5,
+                  width:
+                      MediaQueryData.fromWindow(WidgetsBinding.instance.window)
+                              .size
+                              .width *
+                          1,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('assets/img/Logo_house.png'),
+                      image: AssetImage('assets/img/app_img/Main_pic_2.PNG'),
                       fit: BoxFit.contain,
                     ),
                   ),
@@ -77,45 +85,68 @@ class _AddObj extends State<AddObjPage> {
               ),
             ),
             Expanded(
-              flex: 7,
-              child: Align(
-                alignment: Alignment.center,
-                child: SizedBox(
-                  width: 300,
-                  height: 200,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 212, 223, 236),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
+              flex: 6,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    height: MediaQueryData.fromWindow(
+                                WidgetsBinding.instance.window)
+                            .size
+                            .width *
+                        0.12,
+                    width: MediaQueryData.fromWindow(
+                                WidgetsBinding.instance.window)
+                            .size
+                            .width *
+                        0.1,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/img/app_img/UTEAM_logo.png'),
+                        fit: BoxFit.contain,
                       ),
-                      elevation: 1,
-                      shadowColor: Color.fromARGB(255, 250, 250, 250),
-                    ),
-                    onPressed: () {
-                      globals.flag = true;
-                      globals.objectId = "";
-                      globals.level="";
-                      globals.uulid="";
-                      BlocProvider.of<CounterNav>(context)
-                          .add(CounterResetEvent());
-                      Navigator.pushNamed(
-                          context, '/main_page/add_obj/obj_details');
-                    },
-                    child: Text(
-                      globals.generalContentArray['addObjPageText_1']
-                          .toString()
-                          .toUpperCase(),
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 15, 77, 154),
-                        fontSize: 24,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w700,
-                      ),
-                      textAlign: TextAlign.center,
                     ),
                   ),
-                ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: SizedBox(
+                      width: 300,
+                      height: 200,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color.fromARGB(255, 212, 223, 236),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          elevation: 1,
+                          shadowColor: Color.fromARGB(255, 250, 250, 250),
+                        ),
+                        onPressed: () {
+                          globals.flag = true;
+                          globals.objectId = "";
+                          globals.level = "";
+                          globals.uulid = "";
+                          BlocProvider.of<CounterNav>(context)
+                              .add(CounterResetEvent());
+                          Navigator.pushNamed(
+                              context, '/main_page/add_obj/obj_details');
+                        },
+                        child: Text(
+                          globals.generalContentArray['addObjPageText_1']
+                              .toString()
+                              .toUpperCase(),
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 15, 77, 154),
+                            fontSize: 32,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w700,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
             Expanded(

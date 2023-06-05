@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'dart:async'; //For timer working
+//import 'dart:async'; //For timer working
 import 'dart:math'; //For random number code generator
 import 'package:another_flushbar/flushbar.dart'; //notifys
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../BLoC/network_checker.dart';
 import '../Widgets/logo_img.dart';
@@ -21,9 +22,9 @@ class WelcomePage extends StatefulWidget {
 }
 
 class _LaunchApp extends State<WelcomePage> {
-  final controllerPhone = TextEditingController(text: "+33");
+  final controllerPhone = TextEditingController(text: "");
   dynamic controllerCode = TextEditingController(text: "");
-  dynamic timer;
+  //dynamic timer;
   dynamic next;
   dynamic randomCode;
   //bool isInternet = false;
@@ -33,26 +34,23 @@ class _LaunchApp extends State<WelcomePage> {
     super.initState();
     BlocProvider.of<NetworkChecker>(context)
         .add(CheckInternetConnectionEvent());
-//Internet Connection Checker
-    //WidgetsBinding.instance
-    //.addPostFrameCallback((_) => internetConnectionChecker());
     next = true;
-    timer = true;
+    //timer = true;
   }
 
-  timerStart() {
-    Timer(Duration(seconds: 5), () {
-      if (BlocProvider.of<NetworkChecker>(context).state == false) {
-        return;
-      } else {
-        setState(
-          () {
-            timer = false;
-          },
-        );
-      }
-    });
-  }
+  //timerStart() {
+  //Timer(Duration(seconds: 5), () {
+  // if (BlocProvider.of<NetworkChecker>(context).state == false) {
+  //    return;
+  //  } else {
+  //    setState(
+  //      () {
+  //        timer = false;
+  //      },
+  //   );
+  //  }
+  // });
+  // }
 
   randomCodeGenerator() {
     Random random = Random();
@@ -81,7 +79,7 @@ class _LaunchApp extends State<WelcomePage> {
               // ignore: prefer_const_literals_to_create_immutables
               children: <Widget>[
                 Expanded(
-                  flex: 2,
+                  flex: 1,
                   child: networkStatus == true
                       ? next
                           ? Align(
@@ -98,28 +96,26 @@ class _LaunchApp extends State<WelcomePage> {
                                   onPressed: () async {
                                     setState(
                                       () {
-                                        if (controllerPhone.text.length < 17) {
+                                        if (EmailValidator.validate(
+                                            controllerPhone.text)) {
+                                          next = !next;
+                                          globals.phoneNumber =
+                                              controllerPhone.text;
+                                          controllerCode =
+                                              TextEditingController(text: "");
+                                          randomCodeGenerator();
+                                        } else {
                                           Flushbar(
                                             title: 'Warning',
                                             titleColor: Colors.yellow,
                                             titleSize: 18,
-                                            message: 'Phone number is invalid',
+                                            message: 'Email address is invalid',
                                             messageSize: 14,
                                             duration: Duration(seconds: 4),
                                             flushbarPosition:
                                                 FlushbarPosition.TOP,
                                           ).show(context);
                                           return;
-                                        } else {
-                                          next = !next;
-                                          print(controllerPhone.text);
-                                          globals.phoneNumber =
-                                              controllerPhone.text;
-
-                                          controllerCode =
-                                              TextEditingController(text: "");
-
-                                          randomCodeGenerator();
                                         }
                                       },
                                     );
@@ -176,7 +172,7 @@ class _LaunchApp extends State<WelcomePage> {
                 ),
                 Expanded(
                   flex: networkStatus == 'checking' || networkStatus == false
-                      ? 8
+                      ? 6
                       : 5,
                   child: logoImg(
                       networkStatus == 'checking' || networkStatus == false
@@ -184,9 +180,9 @@ class _LaunchApp extends State<WelcomePage> {
                           : false),
                 ),
                 networkStatus == 'checking' || networkStatus == false
-                    ? Expanded(flex: 5, child: welcomeTxt())
+                    ? Expanded(flex: 4, child: welcomeTxt())
                     : Expanded(
-                        flex: 8,
+                        flex: 6,
                         child: loginWidget(context, next, controllerPhone,
                             controllerCode, randomCode),
                       ),
@@ -205,56 +201,58 @@ class _LaunchApp extends State<WelcomePage> {
                         color: Colors.grey.withOpacity(0.3),
                         child: Align(
                           alignment: Alignment.bottomCenter,
-                          child:Padding(
+                          child: Padding(
                             padding: EdgeInsets.only(bottom: 200),
-                          child: SizedBox(
-                            width: 300,
-                            height: 200,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    Color.fromARGB(255, 246, 246, 246),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30.0),
-                                  
+                            child: SizedBox(
+                              width: 300,
+                              height: 200,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 246, 246, 246),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30.0),
+                                  ),
+                                  elevation: 1,
+                                  shadowColor:
+                                      Color.fromARGB(255, 250, 250, 250),
                                 ),
-                                elevation: 1,
-                                shadowColor: Color.fromARGB(255, 250, 250, 250),
+                                onPressed: () {
+                                  BlocProvider.of<NetworkChecker>(context)
+                                      .add(CheckInternetConnectionEvent());
+                                },
+                                child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Text(
+                                        "Network connection\nfailed"
+                                            .toUpperCase(),
+                                        style: TextStyle(
+                                          color:
+                                              Color.fromARGB(255, 15, 77, 154),
+                                          fontSize: 14,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      Text(
+                                        "Please, check your connection and try again"
+                                            .toUpperCase(),
+                                        style: TextStyle(
+                                          color: Color.fromARGB(
+                                              255, 124, 160, 209),
+                                          fontSize: 14,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ]),
                               ),
-                             
-                              onPressed: () {
-                                BlocProvider.of<NetworkChecker>(context)
-                                    .add(CheckInternetConnectionEvent());
-                              },
-                              child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Text(
-                                      "Network connection\nfailed".toUpperCase(),
-                                      style: TextStyle(
-                                        color: Color.fromARGB(255, 15, 77, 154),
-                                        fontSize: 14,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    Text(
-                                      "Please, check your connection and try again"
-                                          .toUpperCase(),
-                                      style: TextStyle(
-                                        color:
-                                            Color.fromARGB(255, 124, 160, 209),
-                                        fontSize: 14,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ]),
                             ),
-                          ),),
+                          ),
                         ),
                       ),
                     ),

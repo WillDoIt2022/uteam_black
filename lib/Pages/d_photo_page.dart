@@ -217,7 +217,7 @@ class _LaunchCamera extends State<PhotoPage> {
                                       "<",
                                       style: TextStyle(
                                         fontSize: 20,
-                                        color: Color.fromARGB(255, 15, 77, 154),
+                                        color: Color.fromARGB(255, 124, 160, 209),
                                         fontFamily: 'Inter',
                                         fontWeight: FontWeight.w700,
                                       ),
@@ -248,7 +248,7 @@ class _LaunchCamera extends State<PhotoPage> {
                                         style: TextStyle(
                                           fontSize: 20,
                                           color:
-                                              Color.fromARGB(255, 15, 77, 154),
+                                              Color.fromARGB(255, 124, 160, 209),
                                           fontFamily: 'Inter',
                                           fontWeight: FontWeight.w700,
                                         ),
@@ -286,7 +286,7 @@ class _LaunchCamera extends State<PhotoPage> {
                                         style: TextStyle(
                                           fontSize: 20,
                                           color:
-                                              Color.fromARGB(255, 15, 77, 154),
+                                              Color.fromARGB(255, 124, 160, 209),
                                           fontFamily: 'Inter',
                                           fontWeight: FontWeight.w700,
                                         ),
@@ -298,7 +298,7 @@ class _LaunchCamera extends State<PhotoPage> {
                                       ">",
                                       style: TextStyle(
                                         fontSize: 20,
-                                        color: Color.fromARGB(255, 15, 77, 154),
+                                        color: Color.fromARGB(255, 124, 160, 209),
                                         fontFamily: 'Inter',
                                         fontWeight: FontWeight.w700,
                                       ),

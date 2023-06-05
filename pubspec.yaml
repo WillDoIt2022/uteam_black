@@ -46,6 +46,8 @@ dependencies:
   dropdown_button2: ^1.9.2
 #for phone mask
   easy_mask: ^2.0.1
+#email validator 
+  email_validator: ^2.1.17
 
   flutter_bloc: ^8.1.1
 
@@ -134,6 +136,9 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+      - assets/img/app_img/UTEAM_logo.png
+      - assets/img/app_img/Main_pic.PNG
+      - assets/img/app_img/Main_pic_2.PNG
       - assets/img/Logo_guy.png
       - assets/img/Logo_box.png
       - assets/img/Logo_dashbord.png
@@ -168,6 +173,10 @@ flutter:
     - family: Inter
       fonts:
         - asset: fonts/Inter-VariableFont_slnt,wght.ttf
+          weight: 400
+        - asset: fonts/SourceSansPro-Bold.ttf
+          weight: 700
+
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

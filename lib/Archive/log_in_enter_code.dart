@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:another_flushbar/flushbar.dart'; //notifys
-import '../styles/app_textstyles.dart';
 import '../globals.dart' as globals;
 import '../routes.dart';
 // ignore_for_file: prefer_const_constructors
@@ -11,17 +10,20 @@ Widget logInEnterCode(context, controllerCode, randomCode) {
     mainAxisAlignment: MainAxisAlignment.start,
     children: <Widget>[
       SizedBox(
-        //height: 140,
+        height: 140,
         child: Text(
           textAlign: TextAlign.center,
           globals.generalContentArray['logInCodeText_1']
               .toString()
               .toUpperCase(),
-          style: AppTextStyle.textSize32Light,
+          style: TextStyle(
+            fontSize: 36,
+            color: Color.fromARGB(255, 124, 160, 209),
+            fontFamily: 'Inter',
+            fontWeight: FontWeight.w700,
+          ),
         ),
       ),
-      SizedBox(
-                  height: 39,),
       Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
@@ -53,11 +55,8 @@ Widget logInEnterCode(context, controllerCode, randomCode) {
                 fontFamily: 'Inter',
                 fontWeight: FontWeight.w700,
               ),
+              keyboardType: TextInputType.number,
               controller: controllerCode,
-              obscureText: true,
-              obscuringCharacter: "*",
-              enableSuggestions: false,
-              autocorrect: false,
               onChanged: (text) {
                 if (int.parse(controllerCode.text) == randomCode) {
                   //Navigator.pushReplacementNamed(context, Routes.mainPage);
@@ -78,7 +77,10 @@ Widget logInEnterCode(context, controllerCode, randomCode) {
                   return;
                 }
               },
-
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(4),
+              ],
               maxLines: 1,
               decoration: InputDecoration(
                 //isDense: true,
@@ -93,7 +95,7 @@ Widget logInEnterCode(context, controllerCode, randomCode) {
                 border: InputBorder.none,
                 labelText: '',
                 hintText: '',
-                contentPadding: EdgeInsets.all(0),
+                contentPadding: EdgeInsets.only(left: 24.0),
               ),
             ),
           ),

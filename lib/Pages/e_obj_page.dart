@@ -37,7 +37,7 @@ class _ObjSummary extends State<ObjectPage> {
   void initState() {
     super.initState();
     onSave = globals.onSave;
-    globals.objectId==''?globals.objectId='onEdit':null;
+    globals.objectId == '' ? globals.objectId = 'onEdit' : null;
     //Detecting if the picture was done by camera
     // ignore: unnecessary_null_comparison
     widget.picture == null ? isPictureDone = "false" : isPictureDone = "true";
@@ -250,9 +250,7 @@ class _ObjSummary extends State<ObjectPage> {
                           children: [
                             InkWell(
                               onTap: () {
-                                !onSave 
-                                    ? null
-                                    : goToEdit("photo");
+                                !onSave ? null : goToEdit("photo");
                               },
                               child: ClipRRect(
                                 borderRadius: BorderRadius.only(
@@ -296,9 +294,7 @@ class _ObjSummary extends State<ObjectPage> {
                           ),
                           InkWell(
                             onTap: () {
-                              !onSave
-                                  ? null
-                                  : goToEdit("uulid");
+                              !onSave ? null : goToEdit("uulid");
                             },
                             child: Container(
                               width: 290,
@@ -343,9 +339,7 @@ class _ObjSummary extends State<ObjectPage> {
                           ),
                           InkWell(
                             onTap: () {
-                              !onSave 
-                                  ? null
-                                  : goToEdit("address");
+                              !onSave ? null : goToEdit("address");
                             },
                             child: Container(
                               width: 290,
@@ -398,9 +392,7 @@ class _ObjSummary extends State<ObjectPage> {
                           ),
                           InkWell(
                             onTap: () {
-                              !onSave 
-                                  ? null
-                                  : goToEdit("address");
+                              !onSave ? null : goToEdit("address");
                             },
                             child: Container(
                               width: 290,
@@ -430,67 +422,181 @@ class _ObjSummary extends State<ObjectPage> {
                       ),
                     ),
                     Expanded(
-                      flex: 3,
-                      child: Center(
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: Size(300, 80),
-                            backgroundColor: onSave
-                                ? Color.fromARGB(255, 124, 160, 209)
-                                : Color.fromARGB(255, 76, 78, 82),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                            elevation: 1,
-                            shadowColor: Color.fromARGB(255, 250, 250, 250),
-                            textStyle: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 36,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          onPressed: () {
-                            if (onSave == true) {
-                              saveObjectPicture();
-                            }
+                        flex: 3,
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
 
-                            globals.onSave = true;
-                            setState(() {
-                              onSave = !onSave;
-                            });
-                          },
-                          child: Text(
-                            onSave
-                                ? globals
-                                    .generalContentArray['objectPageText_1']
-                                    .toString()
-                                    .toUpperCase()
-                                : globals
-                                    .generalContentArray['objectPageText_2']
-                                    .toString()
-                                    .toUpperCase(),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                    ),
+                              onSave
+                                  ? SizedBox(
+                                    width: MediaQueryData.fromWindow(
+                                                      WidgetsBinding
+                                                          .instance.window)
+                                                  .size
+                                                  .width *
+                                              0.62,
+                                    child:Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        SizedBox(
+                                          height: MediaQueryData.fromWindow(
+                                                      WidgetsBinding
+                                                          .instance.window)
+                                                  .size
+                                                  .width *
+                                              0.08,
+                                          width: MediaQueryData.fromWindow(
+                                                      WidgetsBinding
+                                                          .instance.window)
+                                                  .size
+                                                  .width *
+                                              0.28,
+                                          child: ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Color.fromARGB(
+                                                  255, 222, 229, 239),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(50.0),
+                                              ),
+                                              elevation: 1,
+                                              shadowColor: Color.fromARGB(
+                                                  255, 250, 250, 250),
+                                            ),
+                                            onPressed: () {},
+                                            child: Text(
+                                              globals.generalContentArray[
+                                                      'objectPageText_3']
+                                                  .toString()
+                                                  .toUpperCase(),
+                                              style: TextStyle(
+                                                color: Color.fromARGB(
+                                                    255, 79, 135, 199),
+                                                fontSize: 16,
+                                                fontFamily: 'Inter',
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: MediaQueryData.fromWindow(
+                                                      WidgetsBinding
+                                                          .instance.window)
+                                                  .size
+                                                  .width *
+                                              0.08,
+                                          width: MediaQueryData.fromWindow(
+                                                      WidgetsBinding
+                                                          .instance.window)
+                                                  .size
+                                                  .width *
+                                              0.28,
+                                          child: ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Color.fromARGB(
+                                                  255, 222, 229, 239),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(50.0),
+                                              ),
+                                              elevation: 1,
+                                              shadowColor: Color.fromARGB(
+                                                  255, 250, 250, 250),
+                                            ),
+                                            onPressed: () {},
+                                            child: Text(
+                                              globals.generalContentArray[
+                                                      'objectPageText_4']
+                                                  .toString()
+                                                  .toUpperCase(),
+                                              style: TextStyle(
+                                                color: Color.fromARGB(
+                                                    255, 79, 135, 199),
+                                                fontSize: 16,
+                                                fontFamily: 'Inter',
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),)
+                                  : Container(),
+                              Center(
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    minimumSize: Size(300, 80),
+                                    backgroundColor: onSave
+                                        ? Color.fromARGB(255, 124, 160, 209)
+                                        : Color.fromARGB(255, 222, 229, 239),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30.0),
+                                    ),
+                                    elevation: 1,
+                                    shadowColor:
+                                        Color.fromARGB(255, 250, 250, 250),
+                                  ),
+                                  onPressed: () {
+                                    if (onSave == true) {
+                                      saveObjectPicture();
+                                    }
+
+                                    globals.onSave = true;
+                                    setState(() {
+                                      onSave = !onSave;
+                                    });
+                                  },
+                                  child: Text(
+                                    onSave
+                                        ? globals.generalContentArray[
+                                                'objectPageText_1']
+                                            .toString()
+                                            .toUpperCase()
+                                        : globals.generalContentArray[
+                                                'objectPageText_2']
+                                            .toString()
+                                            .toUpperCase(),
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: onSave
+                                          ? Color.fromARGB(255, 255, 255, 255)
+                                          : Color.fromARGB(255, 79, 135, 199),
+                                      fontSize: 36,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                  ])),
                     Expanded(flex: 2, child: FooterMenu()),
                   ],
                 ),
                 onLoading
                     ? Column(
-
-                        children: [Expanded(flex: 1, child:
-                          Container(
-                            width: MediaQueryData.fromWindow(WidgetsBinding.instance.window).size.width *1,
-                            color: Colors.grey.withOpacity(0.3),
-                            child: Center(child:LoadingAnimationWidget.twoRotatingArc(
-                              color: Color.fromARGB(255, 15, 77, 154),
-                              size: 50,
-                            ),),
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              width: MediaQueryData.fromWindow(
+                                          WidgetsBinding.instance.window)
+                                      .size
+                                      .width *
+                                  1,
+                              color: Colors.grey.withOpacity(0.3),
+                              child: Center(
+                                child: LoadingAnimationWidget.twoRotatingArc(
+                                  color: Color.fromARGB(255, 15, 77, 154),
+                                  size: 50,
+                                ),
+                              ),
+                            ),
                           ),
-                     ), ],
+                        ],
                       )
                     : Container(),
               ],

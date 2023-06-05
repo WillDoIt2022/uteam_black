@@ -16,8 +16,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _LaunchApp extends State<MainPage> {
-  final docObjects =
-        FirebaseFirestore.instance.collection('objects');
+  final docObjects = FirebaseFirestore.instance.collection('objects');
 
   final translator = GoogleTranslator();
   dynamic timer;
@@ -32,7 +31,6 @@ class _LaunchApp extends State<MainPage> {
       setState(() {});
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -75,24 +73,39 @@ class _LaunchApp extends State<MainPage> {
               child: Container(),
             ),
             Expanded(
-              flex: 10,
+              flex: 7,
               child: logoImg(timer),
             ),
             Expanded(
-              flex: 2,
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: Text(
-                  globals.generalContentArray['mainPageText_1']
-                      .toString()
-                      .toUpperCase(),
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Color.fromARGB(255, 124, 160, 209),
-                    fontFamily: 'Inter',
-                    fontWeight: FontWeight.w700,
+              flex: 7,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+            height: MediaQueryData.fromWindow(WidgetsBinding.instance.window).size.width *0.1,
+            width: MediaQueryData.fromWindow(WidgetsBinding.instance.window).size.width *0.1,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/img/app_img/UTEAM_logo.png'),
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Text(
+                      globals.generalContentArray['mainPageText_1']
+                          .toString()
+                          .toUpperCase(),
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Color.fromARGB(255, 124, 160, 209),
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
             Expanded(

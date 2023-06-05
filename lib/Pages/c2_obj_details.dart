@@ -25,7 +25,6 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
   bool currentPositionOnMap = false;
   bool cameraPermissionStatus = false;
 
-
   // Initial Selected Value
   String dropdownLevelValue =
       globals.level == "" ? 'ground floor' : globals.level;
@@ -56,7 +55,7 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
     } else if (status.isGranted) {
       //permission is already granted.
       print("Permission is already granted.");
-            setState(() {
+      setState(() {
         cameraPermissionStatus = false;
       });
     } else if (status.isPermanentlyDenied) {
@@ -121,7 +120,7 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
     });
   }
 
-  noAdressNotification(){
+  noAdressNotification() {
     Flushbar(
       title: 'object'.toUpperCase(),
       titleColor: Colors.red,
@@ -434,21 +433,89 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                                           },
                                         ),
                                       ),
+                                       SizedBox(
+                                        height: 40,
+                                      ),
+                                         Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              SizedBox(
+                                                height:
+                                                    MediaQueryData.fromWindow(
+                                                                WidgetsBinding
+                                                                    .instance
+                                                                    .window)
+                                                            .size
+                                                            .width *
+                                                        0.1,
+                                                width:
+                                                    MediaQueryData.fromWindow(
+                                                                WidgetsBinding
+                                                                    .instance
+                                                                    .window)
+                                                            .size
+                                                            .width *
+                                                        0.7,
+                                                child: ElevatedButton(
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        Color.fromARGB(
+                                                            255, 250, 184, 108),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50.0),
+                                                    ),
+                                                    elevation: 1,
+                                                    shadowColor: Color.fromARGB(
+                                                        255, 250, 250, 250),
+                                                  ),
+                                                  onPressed: () {},
+                                                  child: Text(
+                                                    globals.generalContentArray[
+                                                            'objDetailsPageText_3']
+                                                        .toString()
+                                                        .toUpperCase(),
+                                                    style: TextStyle(
+                                                      color: Color.fromARGB(
+                                                          255, 255, 255, 255),
+                                                      fontSize: 16,
+                                                      fontFamily: 'Inter',
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ),
+                                              ),
+                                            ]),
+                                      
                                     ],
                                   )),
                             ],
                         1: (BuildContext context) => <Widget>[
                               Expanded(
-                                flex: 5,
+                                flex: 6,
                                 child: Align(
                                   alignment: Alignment.center,
                                   child: Container(
-                                    width: 140,
-                                    height: 140,
+                                    height: MediaQueryData.fromWindow(
+                                                WidgetsBinding.instance.window)
+                                            .size
+                                            .width *
+                                        0.5,
+                                    width: MediaQueryData.fromWindow(
+                                                WidgetsBinding.instance.window)
+                                            .size
+                                            .width *
+                                        1,
                                     decoration: BoxDecoration(
                                       image: DecorationImage(
                                         image: AssetImage(
-                                            'assets/img/Logo_house.png'),
+                                            'assets/img/app_img/Main_pic_2.PNG'),
                                         fit: BoxFit.contain,
                                       ),
                                     ),
@@ -471,7 +538,7 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                                 ),
                               ),
                               Expanded(
-                                flex: 4,
+                                flex: 3,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -534,16 +601,24 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                             ],
                         2: (BuildContext context) => <Widget>[
                               Expanded(
-                                flex: 5,
+                                flex: 6,
                                 child: Align(
                                   alignment: Alignment.center,
                                   child: Container(
-                                    width: 140,
-                                    height: 140,
+                                    height: MediaQueryData.fromWindow(
+                                                WidgetsBinding.instance.window)
+                                            .size
+                                            .width *
+                                        0.5,
+                                    width: MediaQueryData.fromWindow(
+                                                WidgetsBinding.instance.window)
+                                            .size
+                                            .width *
+                                        1,
                                     decoration: BoxDecoration(
                                       image: DecorationImage(
                                         image: AssetImage(
-                                            'assets/img/Logo_house.png'),
+                                            'assets/img/app_img/Main_pic_2.PNG'),
                                         fit: BoxFit.contain,
                                       ),
                                     ),
@@ -551,7 +626,7 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                                 ),
                               ),
                               Expanded(
-                                flex: 7,
+                                flex: 6,
                                 child: Align(
                                   alignment: Alignment.center,
                                   child: ElevatedButton(
@@ -578,7 +653,7 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                                           .toUpperCase(),
                                       style: TextStyle(
                                         color: Color.fromARGB(255, 15, 77, 154),
-                                        fontSize: 24,
+                                        fontSize: 32,
                                         fontFamily: 'Inter',
                                         fontWeight: FontWeight.w700,
                                       ),

@@ -139,6 +139,9 @@ flutter:
       - assets/img/app_img/UTEAM_logo.png
       - assets/img/app_img/Main_pic.PNG
       - assets/img/app_img/Main_pic_2.PNG
+      - assets/img/app_img/lang/ukraine_flag.png
+      - assets/img/app_img/lang/france_flag.png
+      - assets/img/app_img/lang/usa_flag.png
       - assets/img/Logo_guy.png
       - assets/img/Logo_box.png
       - assets/img/Logo_dashbord.png

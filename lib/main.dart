@@ -43,6 +43,7 @@ class _Launch extends State<MyApp> {
 
   @override
   void initState() {
+    globals.selectedLanguage="en";
     //determinePosition();
     super.initState();
   }

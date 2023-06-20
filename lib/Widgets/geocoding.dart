@@ -31,11 +31,13 @@ convertToAddress() async {
 if(globals.flag){
 for (var i = 0; i < address.length; i++) {
           if (address[i]['types'][0] == 'country') {
-            globals.language = address[i]["short_name"].toLowerCase();
+            // uncomment this for auto lang translator
+            //globals.language = address[i]["short_name"].toLowerCase();
             globals.countryIso = address[i]["short_name"];
             globals.country = address[i]["long_name"];
-            languageDeterminer();
-            translateLanguage();
+            // uncomment this for auto lang translator
+            //languageDeterminer();
+            //translateLanguage();
           } else if (address[i]['types'][0] == 'postal_code') {
             globals.postalCode = address[i]["long_name"];
           } else if (address[i]['types'][0] == 'locality') {

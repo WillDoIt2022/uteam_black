@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 //import 'dart:async'; //For timer working
 import 'dart:math'; //For random number code generator
 import 'package:another_flushbar/flushbar.dart'; //notifys
-import 'package:dropdown_button2/dropdown_button2.dart'; //DropDawn buttons
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../BLoC/network_checker.dart';
 import '../Widgets/logo_img.dart';
 import '../Widgets/log_in.dart';
+import "../Widgets/language_determiner.dart";
+import "../Widgets/translator.dart";
 import '../Widgets/welcome_txt.dart';
 import '../globals.dart' as globals;
 
@@ -31,6 +32,12 @@ class _LaunchApp extends State<WelcomePage> {
   dynamic selectLang;
   //bool isInternet = false;
 
+  final List<String> itemsLang = [
+    'en',
+    'fr',
+    'ua',
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -38,6 +45,7 @@ class _LaunchApp extends State<WelcomePage> {
         .add(CheckInternetConnectionEvent());
     next = true;
     selectLang = false;
+    print(globals.language);
     //timer = true;
   }
 
@@ -184,14 +192,14 @@ class _LaunchApp extends State<WelcomePage> {
                                 padding: const EdgeInsets.only(top: 25),
                                 child: IconButton(
                                   icon: Image.asset(
-                                      'assets/img/app_img/lang/usa_flag.png'),
+                                      'assets/img/app_img/lang/${globals.selectedLanguage}_flag.png'),
                                   iconSize: 50,
                                   constraints: BoxConstraints(),
                                   onPressed: () {
                                     setState(
                                       () {
                                         selectLang = !selectLang;
-                                        print(selectLang);
+                                        print(globals.language);
                                       },
                                     );
                                   },
@@ -200,15 +208,20 @@ class _LaunchApp extends State<WelcomePage> {
                             ]),
                 ),
                 Expanded(
-                  flex: networkStatus == 'checking' || networkStatus == false
+                  flex: networkStatus == 'checking' ||
+                          networkStatus == false ||
+                          selectLang == true
                       ? 6
                       : 5,
-                  child: logoImg(
-                      networkStatus == 'checking' || networkStatus == false
-                          ? true
-                          : false),
+                  child: logoImg(networkStatus == 'checking' ||
+                          networkStatus == false ||
+                          selectLang == true
+                      ? true
+                      : false),
                 ),
-                networkStatus == 'checking' || networkStatus == false
+                networkStatus == 'checking' ||
+                        networkStatus == false ||
+                        selectLang == true
                     ? Expanded(flex: 4, child: welcomeTxt())
                     : Expanded(
                         flex: 6,
@@ -287,189 +300,108 @@ class _LaunchApp extends State<WelcomePage> {
                     ),
                   ])
                 : selectLang
-                    ?Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [ 
-                    Expanded(
-                        flex: 1,
-                        child: Container(
-                          width: MediaQueryData.fromWindow(
-                                      WidgetsBinding.instance.window)
-                                  .size
-                                  .width *
-                              1,
-                          color: Colors.grey.withOpacity(0.3),
-                          child: ListView(
-                            padding: const EdgeInsets.only(top: 25),
-                            children: <Widget>[
-                              Container(
-                                height: MediaQueryData.fromWindow(
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                width: MediaQueryData.fromWindow(
                                             WidgetsBinding.instance.window)
                                         .size
                                         .width *
-                                    0.1,
-                                margin: EdgeInsets.only(
-                                  left: MediaQueryData.fromWindow(
-                                              WidgetsBinding.instance.window)
-                                          .size
-                                          .width *
-                                      0.72,
-                                      right: MediaQueryData.fromWindow(
-                                              WidgetsBinding.instance.window)
-                                          .size
-                                          .width *
-                                      0.05,
-                                      
-                                ),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(20.0),
-                                    topLeft: Radius.circular(20.0),
-                                  ),
-                                  color: Color.fromARGB(255, 79, 135, 199),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      "en".toUpperCase(),
-                                      style: TextStyle(
-                                        color:
-                                            Color.fromARGB(255, 255, 255, 255),
-                                        fontSize: 18,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                      textAlign: TextAlign.left,
-                                    ),
-                                    IconButton(
-                                      icon: Image.asset(
-                                          'assets/img/app_img/lang/usa_flag.png'),
-                                      iconSize: 50,
-                                      constraints: BoxConstraints(),
-                                      onPressed: () {
-                                        setState(
-                                          () {
-                                            selectLang = !selectLang;
-                                            print(selectLang);
-                                          },
-                                        );
-                                      },
-                                    ),
-                                  ],
-                                ),
+                                    1,
+                                color: Colors.grey.withOpacity(0.3),
+                                child: ListView.builder(
+                                    padding: const EdgeInsets.only(top: 25),
+                                    // the number of items in the list
+                                    itemCount: itemsLang.length,
+                                    // display each item of the product list
+                                    itemBuilder: (context, index) {
+                                      return Container(
+                                        height: MediaQueryData.fromWindow(
+                                                    WidgetsBinding
+                                                        .instance.window)
+                                                .size
+                                                .width *
+                                            0.1,
+                                        margin: EdgeInsets.only(
+                                          left: MediaQueryData.fromWindow(
+                                                      WidgetsBinding
+                                                          .instance.window)
+                                                  .size
+                                                  .width *
+                                              0.72,
+                                          right: MediaQueryData.fromWindow(
+                                                      WidgetsBinding
+                                                          .instance.window)
+                                                  .size
+                                                  .width *
+                                              0.05,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.only(
+                                            topRight: Radius.circular(
+                                                index == 0 ? 20.0 : 0),
+                                            topLeft: Radius.circular(
+                                                index == 0 ? 20.0 : 0),
+                                            bottomRight: Radius.circular(
+                                                index == itemsLang.length - 1
+                                                    ? 20.0
+                                                    : 0),
+                                            bottomLeft: Radius.circular(
+                                                index == itemsLang.length - 1
+                                                    ? 20.0
+                                                    : 0),
+                                          ),
+                                          color:
+                                              Color.fromARGB(255, 79, 135, 199),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                              itemsLang[index]
+                                                  .toString()
+                                                  .toUpperCase(),
+                                              style: TextStyle(
+                                                color: Color.fromARGB(
+                                                    255, 255, 255, 255),
+                                                fontSize: 18,
+                                                fontFamily: 'Inter',
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                              textAlign: TextAlign.left,
+                                            ),
+                                            IconButton(
+                                              icon: Image.asset(
+                                                  'assets/img/app_img/lang/${itemsLang[index].toString()}_flag.png'),
+                                              iconSize: 50,
+                                              constraints: BoxConstraints(),
+                                              onPressed: () async {
+                                                globals.language =
+                                                    itemsLang[index].toString();
+                                                globals.selectedLanguage =
+                                                    itemsLang[index].toString();
+
+                                                languageDeterminer();
+                                                await translateLanguage();
+                                                await Future.delayed(
+                                                    const Duration(seconds: 1),
+                                                    () {
+                                                  selectLang = !selectLang;
+                                                  setState(() {});
+                                                });
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }),
                               ),
-                              Container(
-                                height: MediaQueryData.fromWindow(
-                                            WidgetsBinding.instance.window)
-                                        .size
-                                        .width *
-                                    0.1,
-                                margin: EdgeInsets.only(
-                                  left: MediaQueryData.fromWindow(
-                                              WidgetsBinding.instance.window)
-                                          .size
-                                          .width *
-                                      0.72,
-                                      right: MediaQueryData.fromWindow(
-                                              WidgetsBinding.instance.window)
-                                          .size
-                                          .width *
-                                      0.05,
-                                ),
-                                color: Color.fromARGB(255, 79, 135, 199),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      "Fr".toUpperCase(),
-                                      style: TextStyle(
-                                        color:
-                                            Color.fromARGB(255, 255, 255, 255),
-                                        fontSize: 18,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                      textAlign: TextAlign.left,
-                                    ),
-                                    IconButton(
-                                      icon: Image.asset(
-                                          'assets/img/app_img/lang/france_flag.png'),
-                                      iconSize: 50,
-                                      constraints: BoxConstraints(),
-                                      onPressed: () {
-                                        setState(
-                                          () {
-                                            selectLang = !selectLang;
-                                            print(selectLang);
-                                          },
-                                        );
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                height: MediaQueryData.fromWindow(
-                                            WidgetsBinding.instance.window)
-                                        .size
-                                        .width *
-                                    0.1,
-                                margin: EdgeInsets.only(
-                                 left: MediaQueryData.fromWindow(
-                                              WidgetsBinding.instance.window)
-                                          .size
-                                          .width *
-                                      0.72,
-                                      right: MediaQueryData.fromWindow(
-                                              WidgetsBinding.instance.window)
-                                          .size
-                                          .width *
-                                      0.05,
-                                      
-                                ),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                    bottomRight: Radius.circular(20.0),
-                                    bottomLeft: Radius.circular(20.0),
-                                  ),
-                                  color: Color.fromARGB(255, 79, 135, 199),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      "ua".toUpperCase(),
-                                      style: TextStyle(
-                                        color:
-                                            Color.fromARGB(255, 255, 255, 255),
-                                        fontSize: 18,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                      textAlign: TextAlign.left,
-                                    ),
-                                    IconButton(
-                                      icon: Image.asset(
-                                          'assets/img/app_img/lang/ukraine_flag.png'),
-                                      iconSize: 50,
-                                      constraints: BoxConstraints(),
-                                      onPressed: () {
-                                        setState(
-                                          () {
-                                            selectLang = !selectLang;
-                                            print(selectLang);
-                                          },
-                                        );
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      )])
+                            )
+                          ])
                     : Container(),
           ]));
     });

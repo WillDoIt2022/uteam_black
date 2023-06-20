@@ -7,5 +7,5 @@ Widget loginWidget(context, next, controllerPhone, controllerCode, randomCode) {
   print(randomCode);
   return next
       ? logInAddPhone(controllerPhone)
-      : logInEnterCode(context,controllerCode, randomCode);
+      : logInEnterCode(context,controllerCode, randomCode,controllerPhone);
 }

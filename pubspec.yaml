@@ -94,6 +94,7 @@ dependencies:
 #DataBase connect
   firebase_database: ^10.0.9
   firebase_core: ^2.4.1
+  firebase_auth: ^4.2.6
   cloud_firestore: ^4.3.1
 #random id generator
   uuid: ^3.0.6
@@ -139,9 +140,9 @@ flutter:
       - assets/img/app_img/UTEAM_logo.png
       - assets/img/app_img/Main_pic.PNG
       - assets/img/app_img/Main_pic_2.PNG
-      - assets/img/app_img/lang/ukraine_flag.png
-      - assets/img/app_img/lang/france_flag.png
-      - assets/img/app_img/lang/usa_flag.png
+      - assets/img/app_img/lang/ua_flag.png
+      - assets/img/app_img/lang/fr_flag.png
+      - assets/img/app_img/lang/en_flag.png
       - assets/img/Logo_guy.png
       - assets/img/Logo_box.png
       - assets/img/Logo_dashbord.png

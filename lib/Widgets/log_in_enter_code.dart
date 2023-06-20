@@ -4,9 +4,10 @@ import 'package:another_flushbar/flushbar.dart'; //notifys
 import '../styles/app_textstyles.dart';
 import '../globals.dart' as globals;
 import '../routes.dart';
+import './auth.dart';
 // ignore_for_file: prefer_const_constructors
 
-Widget logInEnterCode(context, controllerCode, randomCode) {
+Widget logInEnterCode(context, controllerCode, randomCode,controllerPhone) {
   return Column(
     mainAxisAlignment: MainAxisAlignment.start,
     children: <Widget>[
@@ -58,23 +59,13 @@ Widget logInEnterCode(context, controllerCode, randomCode) {
               obscuringCharacter: "*",
               enableSuggestions: false,
               autocorrect: false,
-              onChanged: (text) {
-                if (int.parse(controllerCode.text) == randomCode) {
+              onChanged: (text) async{
+                if (controllerCode.text.length == 7) {
                   //Navigator.pushReplacementNamed(context, Routes.mainPage);
+                  await Auth().registerWithEmailAndPassword(controllerPhone.text,controllerCode.text);
                   Navigator.pushNamedAndRemoveUntil(context, Routes.mainPage,
                       (Route<dynamic> route) => false);
-                } else if (controllerCode.text.length == 4 &&
-                    int.parse(controllerCode.text) != randomCode) {
-                  Flushbar(
-                    title: 'Warning',
-                    titleColor: Colors.yellow,
-                    titleSize: 18,
-                    message: 'Check if the specified code is correct',
-                    messageSize: 14,
-                    duration: Duration(seconds: 3),
-                    flushbarPosition: FlushbarPosition.TOP,
-                  ).show(context);
-                } else {
+                }  else {
                   return;
                 }
               },

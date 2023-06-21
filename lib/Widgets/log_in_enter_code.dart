@@ -7,7 +7,7 @@ import '../routes.dart';
 import './auth.dart';
 // ignore_for_file: prefer_const_constructors
 
-Widget logInEnterCode(context, controllerCode, randomCode,controllerPhone) {
+Widget logInEnterCode(context, controllerCode, controllerPhone) {
   return Column(
     mainAxisAlignment: MainAxisAlignment.start,
     children: <Widget>[

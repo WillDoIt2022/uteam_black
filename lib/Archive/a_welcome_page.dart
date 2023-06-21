@@ -23,12 +23,12 @@ class WelcomePage extends StatefulWidget {
   }
 }
 
-class _LaunchApp extends State<WelcomePage>
-    with SingleTickerProviderStateMixin {
+class _LaunchApp extends State<WelcomePage> with SingleTickerProviderStateMixin{
   final controllerPhone = TextEditingController(text: "");
   dynamic controllerCode = TextEditingController(text: "");
   //dynamic timer;
-  dynamic logIn;
+  dynamic next;
+  dynamic randomCode;
   dynamic selectLang;
   //bool isInternet = false;
 
@@ -39,24 +39,39 @@ class _LaunchApp extends State<WelcomePage>
   ];
 
   late AnimationController controller;
-  late Animation<double> animation;
+late Animation<double> animation;
 
   @override
   void initState() {
     super.initState();
     BlocProvider.of<NetworkChecker>(context)
         .add(CheckInternetConnectionEvent());
-
-    logIn = true;
+    next = true;
     selectLang = false;
     print(globals.language);
     controller =
-        AnimationController(duration: Duration(seconds: 2), vsync: this);
+        AnimationController(duration:  Duration(seconds: 2), vsync: this);
     animation = CurvedAnimation(parent: controller, curve: Curves.linear);
     controller.forward();
-
+    //timer = true;
   }
 
+
+
+  randomCodeGenerator() {
+    Random random = Random();
+    randomCode = random.nextInt(8999) + 1000; // from 1000 upto 9999 included
+
+    Flushbar(
+      title: '$randomCode',
+      titleColor: Colors.green,
+      titleSize: 18,
+      message: 'Code to access',
+      messageSize: 14,
+      duration: Duration(seconds: 3),
+      flushbarPosition: FlushbarPosition.TOP,
+    ).show(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +86,95 @@ class _LaunchApp extends State<WelcomePage>
               children: <Widget>[
                 Expanded(
                   flex: 1,
-                  child:  networkStatus == 'checking'?Row(
+                  child: networkStatus == true
+                      ? next
+                          ? Align(
+                              alignment: Alignment.topRight,
+                              child: SizedBox(
+                                width: 150,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    padding: EdgeInsets.only(top: 25),
+                                    elevation: 0.0,
+                                    backgroundColor:
+                                        Colors.white.withOpacity(0.05),
+                                  ),
+                                  onPressed: () async {
+                                    setState(
+                                      () {
+                                        if (EmailValidator.validate(
+                                            controllerPhone.text)) {
+                                          next = !next;
+                                          globals.phoneNumber =
+                                              controllerPhone.text;
+                                          controllerCode =
+                                              TextEditingController(text: "");
+                                          randomCodeGenerator();
+                                        } else {
+                                          Flushbar(
+                                            title: 'Warning',
+                                            titleColor: Colors.yellow,
+                                            titleSize: 18,
+                                            message: 'Email address is invalid',
+                                            messageSize: 14,
+                                            duration: Duration(seconds: 4),
+                                            flushbarPosition:
+                                                FlushbarPosition.TOP,
+                                          ).show(context);
+                                          return;
+                                        }
+                                      },
+                                    );
+                                  },
+                                  child: Text(
+                                    globals.generalContentArray['next']
+                                        .toString()
+                                        .toUpperCase(),
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                      fontSize: 24,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          : Align(
+                              alignment: Alignment.topLeft,
+                              child: SizedBox(
+                                width: 150,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    padding: EdgeInsets.only(top: 25),
+                                    elevation: 0.0,
+                                    backgroundColor:
+                                        Colors.white.withOpacity(0.05),
+                                  ),
+                                  onPressed: () {
+                                    setState(
+                                      () {
+                                        if (!next) {
+                                          next = !next;
+                                        }
+                                      },
+                                    );
+                                  },
+                                  child: Text(
+                                    globals.generalContentArray['back']
+                                        .toString()
+                                        .toUpperCase(),
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                      fontSize: 24,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                      : Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
@@ -97,8 +200,7 @@ class _LaunchApp extends State<WelcomePage>
                                   },
                                 ),
                               ),
-                            ])
-                      : Container(),
+                            ]),
                 ),
                 Expanded(
                   flex: networkStatus == 'checking' ||
@@ -115,11 +217,10 @@ class _LaunchApp extends State<WelcomePage>
                 networkStatus == 'checking' ||
                         networkStatus == false ||
                         selectLang == true
-                    ? Expanded(
-                        flex: 6, child: welcomeTxt(animation, controller))
+                    ? Expanded(flex: 6, child: welcomeTxt(animation, controller))
                     : Expanded(
                         flex: 6,
-                        child: loginWidget(context, logIn, controllerPhone,
+                        child: loginWidget(context, next, controllerPhone,
                             controllerCode),
                       ),
               ],

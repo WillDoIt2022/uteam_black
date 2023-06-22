@@ -74,7 +74,7 @@ class _LaunchApp extends State<MainPage> {
             ),
             Expanded(
               flex: 7,
-              child: logoImg(timer),
+              child: logoImg(true),
             ),
             Expanded(
               flex: 7,

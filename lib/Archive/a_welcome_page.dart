@@ -6,7 +6,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../BLoC/network_checker.dart';
 import '../Widgets/logo_img.dart';
-import '../Widgets/log_in.dart';
+//import '../Widgets/log_in.dart';
 import "../Widgets/language_determiner.dart";
 import "../Widgets/translator.dart";
 import '../Widgets/welcome_txt.dart';
@@ -208,11 +208,12 @@ late Animation<double> animation;
                           selectLang == true
                       ? 4
                       : 4,
-                  child: logoImg(networkStatus == 'checking' ||
-                          networkStatus == false ||
-                          selectLang == true
-                      ? true
-                      : false),
+                  child: Container(),
+                  //logoImg(networkStatus == 'checking' ||
+                        //  networkStatus == false ||
+                      //    selectLang == true
+                    //  ? true
+                    //  : false),
                 ),
                 networkStatus == 'checking' ||
                         networkStatus == false ||
@@ -220,8 +221,9 @@ late Animation<double> animation;
                     ? Expanded(flex: 6, child: welcomeTxt(animation, controller))
                     : Expanded(
                         flex: 6,
-                        child: loginWidget(context, next, controllerPhone,
-                            controllerCode),
+                        child: Container(),
+                        //loginWidget(context, next, controllerPhone,
+                           // controllerCode),
                       ),
               ],
             ),

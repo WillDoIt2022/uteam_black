@@ -6,6 +6,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'BLoC/obj_details_counter.dart';
 import 'BLoC/network_checker.dart';
 import 'Pages/a_welcome_page.dart';
+import 'Pages/aa_registration_page.dart';
 import 'Pages/b_main_page.dart';
 import 'Pages/c1_add_obj.dart';
 import 'Pages/c2_obj_details.dart';
@@ -68,6 +69,7 @@ class _Launch extends State<MyApp> {
         title: "UTEAM",
         routes: {
           Routes.welcomePage: (BuildContext context) => WelcomePage(),
+          Routes.registrationPage: (BuildContext context) => RegistrationPage(),
           Routes.mainPage: (BuildContext context) => MainPage(),
           Routes.addObjPage: (BuildContext context) => AddObjPage(),
           Routes.objDetailsPage: (BuildContext context) => ObjDetailsPage(),

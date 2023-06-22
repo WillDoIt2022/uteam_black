@@ -6,11 +6,11 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../BLoC/network_checker.dart';
 import '../Widgets/logo_img.dart';
-import '../Widgets/log_in.dart';
 import "../Widgets/language_determiner.dart";
 import "../Widgets/translator.dart";
 import '../Widgets/welcome_txt.dart';
 import '../globals.dart' as globals;
+import '../routes.dart';
 
 // ignore_for_file: prefer_const_constructors
 
@@ -27,10 +27,7 @@ class _LaunchApp extends State<WelcomePage>
     with SingleTickerProviderStateMixin {
   final controllerPhone = TextEditingController(text: "");
   dynamic controllerCode = TextEditingController(text: "");
-  //dynamic timer;
-  dynamic logIn;
   dynamic selectLang;
-  //bool isInternet = false;
 
   final List<String> itemsLang = [
     'en',
@@ -46,17 +43,20 @@ class _LaunchApp extends State<WelcomePage>
     super.initState();
     BlocProvider.of<NetworkChecker>(context)
         .add(CheckInternetConnectionEvent());
-
-    logIn = true;
     selectLang = false;
-    print(globals.language);
     controller =
         AnimationController(duration: Duration(seconds: 2), vsync: this);
     animation = CurvedAnimation(parent: controller, curve: Curves.linear);
     controller.forward();
-
+    timer();
   }
 
+  timer() async {
+    await Future.delayed(Duration(milliseconds: 5000));
+    //Reffers to Registration Form
+    Navigator.pushNamedAndRemoveUntil(
+        context, Routes.registrationPage, (Route<dynamic> route) => false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,58 +70,39 @@ class _LaunchApp extends State<WelcomePage>
               // ignore: prefer_const_literals_to_create_immutables
               children: <Widget>[
                 Expanded(
-                  flex: 1,
-                  child:  networkStatus == 'checking'?Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                              Container(
-                                width: MediaQueryData.fromWindow(
-                                            WidgetsBinding.instance.window)
-                                        .size
-                                        .width *
-                                    0.24,
-                                padding: const EdgeInsets.only(top: 25),
-                                child: IconButton(
-                                  icon: Image.asset(
-                                      'assets/img/app_img/lang/${globals.selectedLanguage}_flag.png'),
-                                  iconSize: 50,
-                                  constraints: BoxConstraints(),
-                                  onPressed: () {
-                                    setState(
-                                      () {
-                                        selectLang = !selectLang;
-                                        print(globals.language);
-                                      },
-                                    );
+                    flex: 1,
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: MediaQueryData.fromWindow(
+                                        WidgetsBinding.instance.window)
+                                    .size
+                                    .width *
+                                0.24,
+                            padding: const EdgeInsets.only(top: 25),
+                            child: IconButton(
+                              icon: Image.asset(
+                                  'assets/img/app_img/lang/${globals.selectedLanguage}_flag.png'),
+                              iconSize: 50,
+                              constraints: BoxConstraints(),
+                              onPressed: () {
+                                setState(
+                                  () {
+                                    selectLang = !selectLang;
+                                    print(globals.language);
                                   },
-                                ),
-                              ),
-                            ])
-                      : Container(),
-                ),
+                                );
+                              },
+                            ),
+                          ),
+                        ])),
                 Expanded(
-                  flex: networkStatus == 'checking' ||
-                          networkStatus == false ||
-                          selectLang == true
-                      ? 4
-                      : 4,
-                  child: logoImg(networkStatus == 'checking' ||
-                          networkStatus == false ||
-                          selectLang == true
-                      ? true
-                      : false),
+                  flex: 4,
+                  child: logoImg(true),
                 ),
-                networkStatus == 'checking' ||
-                        networkStatus == false ||
-                        selectLang == true
-                    ? Expanded(
-                        flex: 6, child: welcomeTxt(animation, controller))
-                    : Expanded(
-                        flex: 6,
-                        child: loginWidget(context, logIn, controllerPhone,
-                            controllerCode),
-                      ),
+                Expanded(flex: 6, child: welcomeTxt(animation, controller))
               ],
             ),
             networkStatus == false

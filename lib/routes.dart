@@ -1,5 +1,6 @@
 class Routes{
 static const welcomePage='/';
+static const registrationPage='/registration_page';
 static const mainPage='/main_page';
 static const addObjPage='/main_page/add_obj';
 static const objDetailsPage='/main_page/add_obj/obj_details';

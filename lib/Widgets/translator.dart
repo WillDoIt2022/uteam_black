@@ -2,8 +2,6 @@ import 'package:translator/translator.dart';
 import '../globals.dart' as globals;
 
 translateLanguage() {
-  print("I'm here");
-  print(globals.language);
   if (globals.language == "en") {
     return;
   } else {
@@ -17,7 +15,5 @@ translateLanguage() {
         
       });
     });
-
-    print(globals.generalContentArray);
   }
 }

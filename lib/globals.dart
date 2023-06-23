@@ -6,15 +6,16 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 Completer<GoogleMapController> mapController = Completer();
 
 //Edit Object or Save object indicator
-bool onSave=true;
+bool onSave = true;
 //General Data
+bool userID = false;
 String selectedLanguage = "";
 String language = "";
 String phoneNumber = "";
-String objectId="";
+String objectId = "";
 String uulid = "";
 String level = "";
-String imgUrl="";
+String imgUrl = "";
 bool flag = true; //Determine what position to use (Current or New)
 
 //Current position Data
@@ -46,15 +47,14 @@ Map<String, String> generalContentArray = {
   //'logInCodeText_1': 'enter yours\npassword',
   'mainPageText_1': 'you entered as a guest',
   'addObjPageText_1': 'add new\nobject',
-'objDetailsPageText_1': 'location',
-'objDetailsPageText_2': 'level',
-'objDetailsPageText_3': 'immovable not on the map',
-'objDetailsPageText_4': 'add\nphoto',
-'photoPageText_1': 'make\nanother\nphoto',
-'photoPageText_2': 'use this\n photo',
-'objectPageText_1': 'save',
-'objectPageText_2': 'edit',
-'objectPageText_3': '+ object',
-'objectPageText_4': '+ access',
+  'objDetailsPageText_1': 'location',
+  'objDetailsPageText_2': 'level',
+  'objDetailsPageText_3': 'immovable not on the map',
+  'objDetailsPageText_4': 'add\nphoto',
+  'photoPageText_1': 'make\nanother\nphoto',
+  'photoPageText_2': 'use this\n photo',
+  'objectPageText_1': 'save',
+  'objectPageText_2': 'edit',
+  'objectPageText_3': '+ object',
+  'objectPageText_4': '+ access',
 };
-

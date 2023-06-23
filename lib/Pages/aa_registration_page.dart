@@ -6,11 +6,14 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../BLoC/network_checker.dart';
 import '../Widgets/logo_img.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import "../Widgets/language_determiner.dart";
 import "../Widgets/translator.dart";
 import '../Widgets/welcome_txt.dart';
 import '../styles/app_textstyles.dart';
 import '../styles/app_colors.dart';
+import '../Widgets/auth.dart';
+import "../routes.dart";
 import '../globals.dart' as globals;
 
 // ignore_for_file: prefer_const_constructors
@@ -27,7 +30,9 @@ class RegistrationPage extends StatefulWidget {
 class _Register extends State<RegistrationPage>
     with SingleTickerProviderStateMixin {
   final controllerEmail = TextEditingController(text: "");
-  dynamic controllerCode = TextEditingController(text: "");
+  dynamic controllerPassword = TextEditingController(text: "");
+  dynamic controllerRepeatPassword = TextEditingController(text: "");
+  dynamic controllerName = TextEditingController(text: "");
   //dynamic timer;
   dynamic signUp;
 
@@ -76,7 +81,7 @@ class _Register extends State<RegistrationPage>
                                   .size
                                   .width *
                               0.8,
-                              //color: Colors.green,
+                          //color: Colors.green,
                           child: Text(
                             textAlign: TextAlign.left,
                             "login".toString().toUpperCase(),
@@ -92,7 +97,7 @@ class _Register extends State<RegistrationPage>
                           child: TextField(
                             style: TextStyle(
                               fontSize: 12,
-                              height:0,
+                              height: 0,
                               color: Color.fromARGB(255, 0, 0, 0),
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.w700,
@@ -101,7 +106,7 @@ class _Register extends State<RegistrationPage>
                             controller: controllerEmail,
                             maxLines: 1,
                             decoration: InputDecoration(
-                              //filled: true, 
+                              //filled: true,
                               //fillColor: Colors.deepPurpleAccent,
                               isDense: true,
                               enabledBorder: UnderlineInputBorder(
@@ -115,8 +120,8 @@ class _Register extends State<RegistrationPage>
                               border: InputBorder.none,
                               labelText: '',
                               hintText: '',
-                              contentPadding:
-                                  EdgeInsets.only(left: 10, bottom: 10, top:10),
+                              contentPadding: EdgeInsets.only(
+                                  left: 10, bottom: 10, top: 10),
                             ),
                           ),
                         ),
@@ -151,13 +156,13 @@ class _Register extends State<RegistrationPage>
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.w700,
                             ),
-                            controller: controllerCode,
+                            controller: controllerPassword,
                             obscureText: true,
                             obscuringCharacter: "*",
                             enableSuggestions: false,
                             autocorrect: false,
                             onChanged: (text) async {
-                              if (controllerCode.text.length == 7) {
+                              if (controllerPassword.text.length == 7) {
                                 //Navigator.pushReplacementNamed(context, Routes.mainPage);
                                 //await Auth().registerWithEmailAndPassword(controllerPhone.text,controllerCode.text);
                                 //Navigator.pushNamedAndRemoveUntil(context, Routes.mainPage,
@@ -168,7 +173,7 @@ class _Register extends State<RegistrationPage>
                             },
                             maxLines: 1,
                             decoration: InputDecoration(
-                              //filled: true, 
+                              //filled: true,
                               //fillColor: Colors.deepPurpleAccent,
                               isDense: true,
                               enabledBorder: UnderlineInputBorder(
@@ -188,208 +193,213 @@ class _Register extends State<RegistrationPage>
                           ),
                         ),
                       ]),
-                       
-                      signUp==false? Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        SizedBox(
-                          width: MediaQueryData.fromWindow(
-                                      WidgetsBinding.instance.window)
-                                  .size
-                                  .width *
-                              0.8,
-                          //color: Colors.green,
-                          child: Text(
-                            textAlign: TextAlign.left,
-                            "repeat password".toString().toUpperCase(),
-                            style: AppTextStyle.textSize13Grey,
-                          ),
-                        ),
-                        SizedBox(
-                          width: MediaQueryData.fromWindow(
-                                      WidgetsBinding.instance.window)
-                                  .size
-                                  .width *
-                              0.8,
-                          child: TextField(
-                            style: TextStyle(
-                              fontSize: 12,
-                              height: 0,
-                              color: Color.fromARGB(255, 0, 0, 0),
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w700,
-                            ),
-                            controller: controllerCode,
-                            obscureText: true,
-                            obscuringCharacter: "*",
-                            enableSuggestions: false,
-                            autocorrect: false,
-                            onChanged: (text) async {
-                              if (controllerCode.text.length == 7) {
-                                //Navigator.pushReplacementNamed(context, Routes.mainPage);
-                                //await Auth().registerWithEmailAndPassword(controllerPhone.text,controllerCode.text);
-                                //Navigator.pushNamedAndRemoveUntil(context, Routes.mainPage,
-                                //(Route<dynamic> route) => false);
-                              } else {
-                                return;
-                              }
-                            },
-                            maxLines: 1,
-                            decoration: InputDecoration(
-                              //filled: true, 
-                              //fillColor: Colors.deepPurpleAccent,
-                              isDense: true,
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Color.fromARGB(255, 15, 77, 154)),
+                  signUp == false
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                              SizedBox(
+                                width: MediaQueryData.fromWindow(
+                                            WidgetsBinding.instance.window)
+                                        .size
+                                        .width *
+                                    0.8,
+                                //color: Colors.green,
+                                child: Text(
+                                  textAlign: TextAlign.left,
+                                  "repeat password".toString().toUpperCase(),
+                                  style: AppTextStyle.textSize13Grey,
+                                ),
                               ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Color.fromARGB(255, 15, 77, 154)),
+                              SizedBox(
+                                width: MediaQueryData.fromWindow(
+                                            WidgetsBinding.instance.window)
+                                        .size
+                                        .width *
+                                    0.8,
+                                child: TextField(
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    height: 0,
+                                    color: Color.fromARGB(255, 0, 0, 0),
+                                    fontFamily: 'Inter',
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                  controller: controllerRepeatPassword,
+                                  obscureText: true,
+                                  obscuringCharacter: "*",
+                                  enableSuggestions: false,
+                                  autocorrect: false,
+                                  onChanged: (text) async {
+                                    if (controllerRepeatPassword.text.length ==
+                                        7) {
+                                      //Navigator.pushReplacementNamed(context, Routes.mainPage);
+                                      //await Auth().registerWithEmailAndPassword(controllerPhone.text,controllerCode.text);
+                                      //Navigator.pushNamedAndRemoveUntil(context, Routes.mainPage,
+                                      //(Route<dynamic> route) => false);
+                                    } else {
+                                      return;
+                                    }
+                                  },
+                                  maxLines: 1,
+                                  decoration: InputDecoration(
+                                    //filled: true,
+                                    //fillColor: Colors.deepPurpleAccent,
+                                    isDense: true,
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color:
+                                              Color.fromARGB(255, 15, 77, 154)),
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color:
+                                              Color.fromARGB(255, 15, 77, 154)),
+                                    ),
+                                    border: InputBorder.none,
+                                    labelText: '',
+                                    hintText: '',
+                                    contentPadding: EdgeInsets.only(
+                                        left: 10, bottom: 10, top: 10),
+                                  ),
+                                ),
                               ),
-                              border: InputBorder.none,
-                              labelText: '',
-                              hintText: '',
-                              contentPadding: EdgeInsets.only(
-                                  left: 10, bottom: 10, top: 10),
-                            ),
-                          ),
-                        ),
-                      ]):Container(),
-                      signUp==false? Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        SizedBox(
-                          width: MediaQueryData.fromWindow(
-                                      WidgetsBinding.instance.window)
-                                  .size
-                                  .width *
-                              0.8,
-                          //color: Colors.green,
-                          child: Text(
-                            textAlign: TextAlign.left,
-                            "name".toString().toUpperCase(),
-                            style: AppTextStyle.textSize13Grey,
-                          ),
-                        ),
-                        SizedBox(
-                          width: MediaQueryData.fromWindow(
-                                      WidgetsBinding.instance.window)
-                                  .size
-                                  .width *
-                              0.8,
-                          child: TextField(
-                            style: TextStyle(
-                              fontSize: 12,
-                              height: 0,
-                              color: Color.fromARGB(255, 0, 0, 0),
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w700,
-                            ),
-                            controller: controllerCode,
-                            obscureText: true,
-                            obscuringCharacter: "*",
-                            enableSuggestions: false,
-                            autocorrect: false,
-                            onChanged: (text) async {
-                              if (controllerCode.text.length == 7) {
-                                //Navigator.pushReplacementNamed(context, Routes.mainPage);
-                                //await Auth().registerWithEmailAndPassword(controllerPhone.text,controllerCode.text);
-                                //Navigator.pushNamedAndRemoveUntil(context, Routes.mainPage,
-                                //(Route<dynamic> route) => false);
-                              } else {
-                                return;
-                              }
-                            },
-                            maxLines: 1,
-                            decoration: InputDecoration(
-                              //filled: true, 
-                              //fillColor: Colors.deepPurpleAccent,
-                              isDense: true,
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Color.fromARGB(255, 15, 77, 154)),
+                            ])
+                      : Container(),
+                  signUp == false
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                              SizedBox(
+                                width: MediaQueryData.fromWindow(
+                                            WidgetsBinding.instance.window)
+                                        .size
+                                        .width *
+                                    0.8,
+                                //color: Colors.green,
+                                child: Text(
+                                  textAlign: TextAlign.left,
+                                  "name".toString().toUpperCase(),
+                                  style: AppTextStyle.textSize13Grey,
+                                ),
                               ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Color.fromARGB(255, 15, 77, 154)),
+                              SizedBox(
+                                width: MediaQueryData.fromWindow(
+                                            WidgetsBinding.instance.window)
+                                        .size
+                                        .width *
+                                    0.8,
+                                child: TextField(
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    height: 0,
+                                    color: Color.fromARGB(255, 0, 0, 0),
+                                    fontFamily: 'Inter',
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                  controller: controllerName,
+                                  enableSuggestions: false,
+                                  autocorrect: false,
+                                  onChanged: (text) async {
+                                    if (controllerName.text.length == 7) {
+                                      //Navigator.pushReplacementNamed(context, Routes.mainPage);
+                                      //await Auth().registerWithEmailAndPassword(controllerPhone.text,controllerCode.text);
+                                      //Navigator.pushNamedAndRemoveUntil(context, Routes.mainPage,
+                                      //(Route<dynamic> route) => false);
+                                    } else {
+                                      return;
+                                    }
+                                  },
+                                  maxLines: 1,
+                                  decoration: InputDecoration(
+                                    //filled: true,
+                                    //fillColor: Colors.deepPurpleAccent,
+                                    isDense: true,
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color:
+                                              Color.fromARGB(255, 15, 77, 154)),
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color:
+                                              Color.fromARGB(255, 15, 77, 154)),
+                                    ),
+                                    border: InputBorder.none,
+                                    labelText: '',
+                                    hintText: '',
+                                    contentPadding: EdgeInsets.only(
+                                        left: 10, bottom: 10, top: 10),
+                                  ),
+                                ),
                               ),
-                              border: InputBorder.none,
-                              labelText: '',
-                              hintText: '',
-                              contentPadding: EdgeInsets.only(
-                                  left: 10, bottom: 10, top: 10),
-                            ),
-                          ),
-                        ),
-                      ]):Container(),
-                       signUp==false? Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        SizedBox(
-                          width: MediaQueryData.fromWindow(
-                                      WidgetsBinding.instance.window)
-                                  .size
-                                  .width *
-                              0.8,
-                          //color: Colors.green,
-                          child: Text(
-                            textAlign: TextAlign.left,
-                            "language".toString().toUpperCase(),
-                            style: AppTextStyle.textSize13Grey,
-                          ),
-                        ),
-                        SizedBox(
-                          width: MediaQueryData.fromWindow(
-                                      WidgetsBinding.instance.window)
-                                  .size
-                                  .width *
-                              0.8,
-                          child: TextField(
-                            style: TextStyle(
-                              fontSize: 12,
-                              height: 0,
-                              color: Color.fromARGB(255, 0, 0, 0),
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w700,
-                            ),
-                            controller: controllerCode,
-                            obscureText: true,
-                            obscuringCharacter: "*",
-                            enableSuggestions: false,
-                            autocorrect: false,
-                            onChanged: (text) async {
-                              if (controllerCode.text.length == 7) {
-                                //Navigator.pushReplacementNamed(context, Routes.mainPage);
-                                //await Auth().registerWithEmailAndPassword(controllerPhone.text,controllerCode.text);
-                                //Navigator.pushNamedAndRemoveUntil(context, Routes.mainPage,
-                                //(Route<dynamic> route) => false);
-                              } else {
-                                return;
-                              }
-                            },
-                            maxLines: 1,
-                            decoration: InputDecoration(
-                              //filled: true, 
-                              //fillColor: Colors.deepPurpleAccent,
-                              isDense: true,
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Color.fromARGB(255, 15, 77, 154)),
+                            ])
+                      : Container(),
+                  signUp == false
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                              SizedBox(
+                                width: MediaQueryData.fromWindow(
+                                            WidgetsBinding.instance.window)
+                                        .size
+                                        .width *
+                                    0.8,
+                                //color: Colors.green,
+                                child: Text(
+                                  textAlign: TextAlign.left,
+                                  "language".toString().toUpperCase(),
+                                  style: AppTextStyle.textSize13Grey,
+                                ),
                               ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Color.fromARGB(255, 15, 77, 154)),
+                              SizedBox(
+                                width: MediaQueryData.fromWindow(
+                                            WidgetsBinding.instance.window)
+                                        .size
+                                        .width *
+                                    0.8,
+                                child: DropdownButton2(
+                                  buttonWidth: 290,
+                                  isExpanded: true,
+                                  isDense: true,
+                                  underline: Container(
+                                    height: 2,
+                                    color: Color.fromARGB(255, 124, 160, 209),
+                                  ),
+                                  value: "en",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Color.fromARGB(255, 124, 160, 209),
+                                    fontFamily: 'Inter',
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                  //menuMaxHeight: 200,
+                                  items: itemsLang.map((String items) {
+                                    return DropdownMenuItem(
+                                      value: items,
+                                      child: Text(items.toUpperCase()),
+                                    );
+                                  }).toList(),
+
+                                  onChanged: (value) {
+                                    setState(() {});
+                                  },
+                                  icon: const Icon(
+                                    Icons.keyboard_arrow_down,
+                                    color: Color.fromARGB(255, 15, 77, 154),
+                                  ),
+                                  buttonPadding:
+                                      const EdgeInsets.only(left: 15),
+                                  dropdownDecoration: BoxDecoration(
+                                    //borderRadius: BorderRadius.circular(30),
+                                    color: Color.fromARGB(255, 222, 229, 239),
+                                  ),
+
+                                  itemHeight: 40,
+                                  dropdownMaxHeight: 170,
+                                ),
                               ),
-                              border: InputBorder.none,
-                              labelText: '',
-                              hintText: '',
-                              contentPadding: EdgeInsets.only(
-                                  left: 10, bottom: 10, top: 10),
-                            ),
-                          ),
-                        ),
-                      ]):Container(),
+                            ])
+                      : Container(),
                   SizedBox(
                     height: MediaQueryData.fromWindow(
                                 WidgetsBinding.instance.window)
@@ -410,44 +420,69 @@ class _Register extends State<RegistrationPage>
                         elevation: 1,
                         shadowColor: Color.fromARGB(255, 250, 250, 250),
                       ),
-                      onPressed: () {},
+                      onPressed: () async {
+                        if (signUp == false) {
+                          await Auth().registerWithEmailAndPassword(
+                              controllerEmail.text, controllerPassword.text);
+                        } else if (signUp == true) {
+                          await Auth().signInWithEmailAndPassword(
+                              controllerEmail.text, controllerPassword.text);
+                        } else {
+                          return;
+                        }
+                        await Auth()
+                            .authStateChanges()
+                            .then((value) => value?
+                              Navigator.pushNamedAndRemoveUntil(context, Routes.mainPage,
+                      (Route<dynamic> route) => false):print(value));
+                      },
                       child: Text(
-                       signUp? globals.generalContentArray['logInRegisteredText_1']
-                            .toString():"Sign up",
+                        signUp
+                            ? globals
+                                .generalContentArray['logInRegisteredText_1']
+                                .toString()
+                            : "Sign up",
                         style: AppTextStyle.textSize20Light,
                         textAlign: TextAlign.center,
                       ),
                     ),
                   ),
-                   signUp?SizedBox(
-                    height: MediaQueryData.fromWindow(
-                                WidgetsBinding.instance.window)
-                            .size
-                            .width *
-                        0.1,
-                    width: MediaQueryData.fromWindow(
-                                WidgetsBinding.instance.window)
-                            .size
-                            .width *
-                        0.6,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.middleBlueVar2,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50.0),
-                        ),
-                        elevation: 1,
-                        shadowColor: Color.fromARGB(255, 250, 250, 250),
-                      ),
-                      onPressed: () {},
-                      child: Text(
-                        globals.generalContentArray['logInRegisteredText_2']
-                            .toString(),
-                        style: AppTextStyle.textSize20Light,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ):Container(),
+                  signUp
+                      ? SizedBox(
+                          height: MediaQueryData.fromWindow(
+                                      WidgetsBinding.instance.window)
+                                  .size
+                                  .width *
+                              0.1,
+                          width: MediaQueryData.fromWindow(
+                                      WidgetsBinding.instance.window)
+                                  .size
+                                  .width *
+                              0.6,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.middleBlueVar2,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50.0),
+                              ),
+                              elevation: 1,
+                              shadowColor: Color.fromARGB(255, 250, 250, 250),
+                            ),
+                            onPressed: () async {
+                              await Auth()
+                                  .signOut()
+                                  .then((value) => print(value));
+                            },
+                            child: Text(
+                              globals
+                                  .generalContentArray['logInRegisteredText_2']
+                                  .toString(),
+                              style: AppTextStyle.textSize20Light,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        )
+                      : Container(),
                   SizedBox(
                     width: MediaQueryData.fromWindow(
                                 WidgetsBinding.instance.window)
@@ -489,15 +524,13 @@ class _Register extends State<RegistrationPage>
                       ],
                     ),
                   ),
-                
-                 Expanded(
-            flex: 0,
-            child: Container(
-            ),
-          ), 
+                  Expanded(
+                    flex: 0,
+                    child: Container(),
+                  ),
                 ],
               ))
-      ],
+        ],
       ),
     );
   }

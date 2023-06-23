@@ -140,6 +140,8 @@ flutter:
       - assets/img/app_img/UTEAM_logo.png
       - assets/img/app_img/Main_pic.PNG
       - assets/img/app_img/Main_pic_2.PNG
+      - assets/img/app_img/Main_pic_ellipse.PNG
+      - assets/img/app_img/Main_pic_elements.PNG
       - assets/img/app_img/lang/ua_flag.png
       - assets/img/app_img/lang/fr_flag.png
       - assets/img/app_img/lang/en_flag.png

@@ -5,7 +5,7 @@ import 'package:another_flushbar/flushbar.dart'; //notifys
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../BLoC/network_checker.dart';
-import '../Widgets/logo_img.dart';
+import '../Widgets/logo_img copy.dart';
 import "../Widgets/language_determiner.dart";
 import "../Widgets/translator.dart";
 import '../Widgets/welcome_txt.dart';
@@ -37,6 +37,9 @@ class _LaunchApp extends State<WelcomePage>
 
   late AnimationController controller;
   late Animation<double> animation;
+  //late Animation<double> animationElements;
+  //late AnimationController controllerElements;
+  //late Animation<double> animationElements;
 
   @override
   void initState() {
@@ -44,10 +47,16 @@ class _LaunchApp extends State<WelcomePage>
     BlocProvider.of<NetworkChecker>(context)
         .add(CheckInternetConnectionEvent());
     selectLang = false;
+        //controllerElements =
+        //AnimationController(duration: Duration(seconds: 2), vsync: this);
+    //animationElements = CurvedAnimation(parent: controller, curve: Curves.linear);
+   // controllerElements.forward();
+    //Logo animation
     controller =
         AnimationController(duration: Duration(seconds: 2), vsync: this);
     animation = CurvedAnimation(parent: controller, curve: Curves.linear);
     controller.forward();
+
     timer();
   }
 
@@ -100,7 +109,7 @@ class _LaunchApp extends State<WelcomePage>
                         ])),
                 Expanded(
                   flex: 4,
-                  child: logoImg(true),
+                  child: logoImg(true, animation,controller),
                 ),
                 Expanded(flex: 6, child: welcomeTxt(animation, controller))
               ],

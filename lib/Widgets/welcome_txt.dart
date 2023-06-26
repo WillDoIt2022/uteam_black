@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../styles/app_textstyles.dart';
 // ignore_for_file: prefer_const_constructors
 
-Widget welcomeTxt(animation, controller) {
+Widget welcomeTxt(animation) {
   return Column(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [

@@ -23,11 +23,11 @@ class WelcomePage extends StatefulWidget {
   }
 }
 
-class _LaunchApp extends State<WelcomePage>
-    with SingleTickerProviderStateMixin {
+class _LaunchApp extends State<WelcomePage> with TickerProviderStateMixin {
   final controllerPhone = TextEditingController(text: "");
   dynamic controllerCode = TextEditingController(text: "");
   dynamic selectLang;
+  bool timerCounter = false;
 
   final List<String> itemsLang = [
     'en',
@@ -37,9 +37,6 @@ class _LaunchApp extends State<WelcomePage>
 
   late AnimationController controller;
   late Animation<double> animation;
-  //late Animation<double> animationElements;
-  //late AnimationController controllerElements;
-  //late Animation<double> animationElements;
 
   @override
   void initState() {
@@ -47,10 +44,6 @@ class _LaunchApp extends State<WelcomePage>
     BlocProvider.of<NetworkChecker>(context)
         .add(CheckInternetConnectionEvent());
     selectLang = false;
-        //controllerElements =
-        //AnimationController(duration: Duration(seconds: 2), vsync: this);
-    //animationElements = CurvedAnimation(parent: controller, curve: Curves.linear);
-   // controllerElements.forward();
     //Logo animation
     controller =
         AnimationController(duration: Duration(seconds: 2), vsync: this);
@@ -60,11 +53,25 @@ class _LaunchApp extends State<WelcomePage>
     timer();
   }
 
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
   timer() async {
-    await Future.delayed(Duration(milliseconds: 5000));
+    if (timerCounter == false) {
+      await Future.delayed(Duration(milliseconds: 5000));
+    } else {
+      await Future.delayed(Duration(milliseconds: 1000));
+    }
+    timerCounter = true;
     //Reffers to Registration Form
-    Navigator.pushNamedAndRemoveUntil(
-        context, Routes.registrationPage, (Route<dynamic> route) => false);
+
+    if (selectLang == false && timerCounter == true) {
+      Navigator.pushNamedAndRemoveUntil(
+          context, Routes.registrationPage, (Route<dynamic> route) => false);
+    }
   }
 
   @override
@@ -109,9 +116,9 @@ class _LaunchApp extends State<WelcomePage>
                         ])),
                 Expanded(
                   flex: 4,
-                  child: logoImg(true, animation,controller),
+                  child: logoImg(true, animation),
                 ),
-                Expanded(flex: 6, child: welcomeTxt(animation, controller))
+                Expanded(flex: 6, child: welcomeTxt(animation))
               ],
             ),
             networkStatus == false
@@ -276,6 +283,7 @@ class _LaunchApp extends State<WelcomePage>
                                                     () {
                                                   selectLang = !selectLang;
                                                   setState(() {});
+                                                  timer();
                                                 });
                                               },
                                             ),

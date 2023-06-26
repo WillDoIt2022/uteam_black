@@ -218,7 +218,7 @@ late Animation<double> animation;
                 networkStatus == 'checking' ||
                         networkStatus == false ||
                         selectLang == true
-                    ? Expanded(flex: 6, child: welcomeTxt(animation, controller))
+                    ? Expanded(flex: 6, child: welcomeTxt(animation))
                     : Expanded(
                         flex: 6,
                         child: Container(),

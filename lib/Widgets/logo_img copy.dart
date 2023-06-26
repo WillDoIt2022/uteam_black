@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 // ignore_for_file: prefer_const_constructors
 
-Widget logoImg(signUp, animationElements,controllerElements) {
+Widget logoImg(signUp, animation) {
   return Column(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
@@ -17,18 +17,24 @@ Widget logoImg(signUp, animationElements,controllerElements) {
               ),
             ),
           ),
-          ScaleTransition(scale: animationElements,
+          RotationTransition(
+      turns: animation,
+      child:
+          ScaleTransition(scale: animation,
       child:
           Container(
-            height: MediaQueryData.fromWindow(WidgetsBinding.instance.window).size.width *(signUp?0.57:0.4),
-            width: MediaQueryData.fromWindow(WidgetsBinding.instance.window).size.width *(signUp?0.93:0.7),
+            height: MediaQueryData.fromWindow(WidgetsBinding.instance.window).size.width *(signUp?0.59:0.4),
+            width: MediaQueryData.fromWindow(WidgetsBinding.instance.window).size.width *(signUp?1:0.7),
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/img/app_img/Main_pic_elements.PNG'),
+                image: AssetImage('assets/img/app_img/Main_pic.PNG'),
                 fit: BoxFit.contain,
               ),
             ),
           ),),
+          ),
+
+
         ],
       )
     ],

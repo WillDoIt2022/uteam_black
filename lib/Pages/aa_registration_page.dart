@@ -35,6 +35,7 @@ class _Register extends State<RegistrationPage>
   dynamic controllerName = TextEditingController(text: "");
   //dynamic timer;
   dynamic signUp;
+  bool passwordVisible = false;
 
   final List<String> itemsLang = [
     'en',
@@ -73,7 +74,7 @@ class _Register extends State<RegistrationPage>
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         SizedBox(
                           width: MediaQueryData.fromWindow(
@@ -97,7 +98,7 @@ class _Register extends State<RegistrationPage>
                           child: TextField(
                             style: TextStyle(
                               fontSize: 12,
-                              height: 0,
+                              height: 1,
                               color: Color.fromARGB(255, 0, 0, 0),
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.w700,
@@ -106,6 +107,7 @@ class _Register extends State<RegistrationPage>
                             controller: controllerEmail,
                             maxLines: 1,
                             decoration: InputDecoration(
+                              isCollapsed: true,
                               //filled: true,
                               //fillColor: Colors.deepPurpleAccent,
                               isDense: true,
@@ -123,11 +125,12 @@ class _Register extends State<RegistrationPage>
                               contentPadding: EdgeInsets.only(
                                   left: 10, bottom: 10, top: 10),
                             ),
+                            textAlignVertical: TextAlignVertical.center,
                           ),
                         ),
                       ]),
                   Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         SizedBox(
                           width: MediaQueryData.fromWindow(
@@ -151,13 +154,13 @@ class _Register extends State<RegistrationPage>
                           child: TextField(
                             style: TextStyle(
                               fontSize: 12,
-                              height: 0,
+                              height: 1,
                               color: Color.fromARGB(255, 0, 0, 0),
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.w700,
                             ),
                             controller: controllerPassword,
-                            obscureText: true,
+                            obscureText: !passwordVisible,
                             obscuringCharacter: "*",
                             enableSuggestions: false,
                             autocorrect: false,
@@ -175,7 +178,8 @@ class _Register extends State<RegistrationPage>
                             decoration: InputDecoration(
                               //filled: true,
                               //fillColor: Colors.deepPurpleAccent,
-                              isDense: true,
+                              isCollapsed: true,
+                              //isDense: true,
                               enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Color.fromARGB(255, 15, 77, 154)),
@@ -189,84 +193,101 @@ class _Register extends State<RegistrationPage>
                               hintText: '',
                               contentPadding: EdgeInsets.only(
                                   left: 10, bottom: 10, top: 10),
+                              suffixIconConstraints:
+                                  BoxConstraints(maxHeight: 30),
+                              suffixIcon: IconButton(
+                                padding: EdgeInsets.all(0),
+                                //alignment: Alignment.center,
+
+                                icon: Icon(
+                                  // Based on passwordVisible state choose the icon
+                                  passwordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: Theme.of(context).primaryColorDark,
+                                ),
+                                onPressed: () {
+                                  // Update the state i.e. toogle the state of passwordVisible variable
+                                  setState(() {
+                                    passwordVisible = !passwordVisible;
+                                  });
+                                },
+                              ),
                             ),
+                            textAlignVertical: TextAlignVertical.center,
                           ),
                         ),
                       ]),
-                  signUp == false
-                      ? Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                              SizedBox(
-                                width: MediaQueryData.fromWindow(
-                                            WidgetsBinding.instance.window)
-                                        .size
-                                        .width *
-                                    0.8,
-                                //color: Colors.green,
-                                child: Text(
-                                  textAlign: TextAlign.left,
-                                  "repeat password".toString().toUpperCase(),
-                                  style: AppTextStyle.textSize13Grey,
-                                ),
+                  if (signUp == false)
+                    Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          SizedBox(
+                            width: MediaQueryData.fromWindow(
+                                        WidgetsBinding.instance.window)
+                                    .size
+                                    .width *
+                                0.8,
+                            //color: Colors.green,
+                            child: Text(
+                              textAlign: TextAlign.left,
+                              "repeat password".toString().toUpperCase(),
+                              style: AppTextStyle.textSize13Grey,
+                            ),
+                          ),
+                          SizedBox(
+                            width: MediaQueryData.fromWindow(
+                                        WidgetsBinding.instance.window)
+                                    .size
+                                    .width *
+                                0.8,
+                            child: TextField(
+                              style: TextStyle(
+                                fontSize: 12,
+                                height: 0,
+                                color: Color.fromARGB(255, 0, 0, 0),
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w700,
                               ),
-                              SizedBox(
-                                width: MediaQueryData.fromWindow(
-                                            WidgetsBinding.instance.window)
-                                        .size
-                                        .width *
-                                    0.8,
-                                child: TextField(
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    height: 0,
-                                    color: Color.fromARGB(255, 0, 0, 0),
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                  controller: controllerRepeatPassword,
-                                  obscureText: true,
-                                  obscuringCharacter: "*",
-                                  enableSuggestions: false,
-                                  autocorrect: false,
-                                  onChanged: (text) async {
-                                    if (controllerRepeatPassword.text.length ==
-                                        7) {
-                                      //Navigator.pushReplacementNamed(context, Routes.mainPage);
-                                      //await Auth().registerWithEmailAndPassword(controllerPhone.text,controllerCode.text);
-                                      //Navigator.pushNamedAndRemoveUntil(context, Routes.mainPage,
-                                      //(Route<dynamic> route) => false);
-                                    } else {
-                                      return;
-                                    }
-                                  },
-                                  maxLines: 1,
-                                  decoration: InputDecoration(
-                                    //filled: true,
-                                    //fillColor: Colors.deepPurpleAccent,
-                                    isDense: true,
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color:
-                                              Color.fromARGB(255, 15, 77, 154)),
-                                    ),
-                                    focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color:
-                                              Color.fromARGB(255, 15, 77, 154)),
-                                    ),
-                                    border: InputBorder.none,
-                                    labelText: '',
-                                    hintText: '',
-                                    contentPadding: EdgeInsets.only(
-                                        left: 10, bottom: 10, top: 10),
-                                  ),
+                              controller: controllerRepeatPassword,
+                              obscureText: true,
+                              obscuringCharacter: "*",
+                              enableSuggestions: false,
+                              autocorrect: false,
+                              onChanged: (text) async {
+                                if (controllerRepeatPassword.text.length == 7) {
+                                  //Navigator.pushReplacementNamed(context, Routes.mainPage);
+                                  //await Auth().registerWithEmailAndPassword(controllerPhone.text,controllerCode.text);
+                                  //Navigator.pushNamedAndRemoveUntil(context, Routes.mainPage,
+                                  //(Route<dynamic> route) => false);
+                                } else {
+                                  return;
+                                }
+                              },
+                              maxLines: 1,
+                              decoration: InputDecoration(
+                                //filled: true,
+                                //fillColor: Colors.deepPurpleAccent,
+                                isDense: true,
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Color.fromARGB(255, 15, 77, 154)),
                                 ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Color.fromARGB(255, 15, 77, 154)),
+                                ),
+                                border: InputBorder.none,
+                                labelText: '',
+                                hintText: '',
+                                contentPadding: EdgeInsets.only(
+                                    left: 10, bottom: 10, top: 10),
                               ),
-                            ])
-                      : Container(),
-                  signUp == false
-                      ? Column(
+                            ),
+                          ),
+                        ]),
+                    if (signUp == false)
+                   Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
                               SizedBox(
@@ -333,9 +354,8 @@ class _Register extends State<RegistrationPage>
                                 ),
                               ),
                             ])
-                      : Container(),
-                  signUp == false
-                      ? Column(
+                     ,
+                  if (signUp == false) Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
                               SizedBox(
@@ -399,7 +419,7 @@ class _Register extends State<RegistrationPage>
                                 ),
                               ),
                             ])
-                      : Container(),
+                      ,
                   SizedBox(
                     height: MediaQueryData.fromWindow(
                                 WidgetsBinding.instance.window)
@@ -430,11 +450,12 @@ class _Register extends State<RegistrationPage>
                         } else {
                           return;
                         }
-                        await Auth()
-                            .authStateChanges()
-                            .then((value) => value?
-                              Navigator.pushNamedAndRemoveUntil(context, Routes.mainPage,
-                      (Route<dynamic> route) => false):print(value));
+                        await Auth().authStateChanges().then((value) => value
+                            ? Navigator.pushNamedAndRemoveUntil(
+                                context,
+                                Routes.mainPage,
+                                (Route<dynamic> route) => false)
+                            : print(value));
                       },
                       child: Text(
                         signUp
@@ -447,8 +468,7 @@ class _Register extends State<RegistrationPage>
                       ),
                     ),
                   ),
-                  signUp
-                      ? SizedBox(
+                  if (signUp == true) SizedBox(
                           height: MediaQueryData.fromWindow(
                                       WidgetsBinding.instance.window)
                                   .size
@@ -482,7 +502,7 @@ class _Register extends State<RegistrationPage>
                             ),
                           ),
                         )
-                      : Container(),
+                      ,
                   SizedBox(
                     width: MediaQueryData.fromWindow(
                                 WidgetsBinding.instance.window)
@@ -515,9 +535,10 @@ class _Register extends State<RegistrationPage>
                             signUp ? "Sign up" : "Log in".toString(),
                             style: TextStyle(
                               fontSize: 18,
-                              color: Color.fromARGB(255, 0, 0, 0),
+                              color: Color.fromARGB(255, 15, 77, 154),
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.w400,
+                              decoration: TextDecoration.underline,
                             ),
                           ),
                         ),

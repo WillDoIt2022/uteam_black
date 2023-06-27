@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-//import 'dart:async'; //For timer working
-import 'dart:math'; //For random number code generator
-import 'package:another_flushbar/flushbar.dart'; //notifys
-import 'package:email_validator/email_validator.dart';
+//packages
 import 'package:flutter_bloc/flutter_bloc.dart';
+//logic
 import '../BLoC/network_checker.dart';
-import '../Widgets/logo_img copy.dart';
 import "../Widgets/language_determiner.dart";
 import "../Widgets/translator.dart";
+//widjets
+import '../Widgets/logo_img copy.dart';
 import '../Widgets/welcome_txt.dart';
+//settings
 import '../globals.dart' as globals;
 import '../routes.dart';
 
@@ -28,6 +28,8 @@ class _LaunchApp extends State<WelcomePage> with TickerProviderStateMixin {
   dynamic controllerCode = TextEditingController(text: "");
   dynamic selectLang;
   bool timerCounter = false;
+  bool networkCheckerStatus = false;
+
 
   final List<String> itemsLang = [
     'en',
@@ -41,6 +43,7 @@ class _LaunchApp extends State<WelcomePage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    //starting checking network connection
     BlocProvider.of<NetworkChecker>(context)
         .add(CheckInternetConnectionEvent());
     selectLang = false;
@@ -67,10 +70,13 @@ class _LaunchApp extends State<WelcomePage> with TickerProviderStateMixin {
     }
     timerCounter = true;
     //Reffers to Registration Form
-
-    if (selectLang == false && timerCounter == true) {
+    if (selectLang == false &&
+        timerCounter == true &&
+        networkCheckerStatus == true) {
+          if (!mounted) return;
       Navigator.pushNamedAndRemoveUntil(
           context, Routes.registrationPage, (Route<dynamic> route) => false);
+
     }
   }
 
@@ -78,6 +84,10 @@ class _LaunchApp extends State<WelcomePage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return BlocBuilder<NetworkChecker, dynamic>(
         builder: (context, networkStatus) {
+      if (networkStatus == true) {
+        networkCheckerStatus = true;
+        timer();
+      }
       return Scaffold(
           backgroundColor: Color.fromARGB(255, 246, 246, 246),
           body: Stack(children: [

@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 //import 'dart:async'; //For timer working
-import 'dart:math'; //For random number code generator
 import 'package:another_flushbar/flushbar.dart'; //notifys
 import 'package:email_validator/email_validator.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../BLoC/network_checker.dart';
-import '../Widgets/logo_img.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import "../Widgets/language_determiner.dart";
 import "../Widgets/translator.dart";
-import '../Widgets/welcome_txt.dart';
+import '../Widgets/logo_img.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import '../styles/app_textstyles.dart';
 import '../styles/app_colors.dart';
 import '../Widgets/auth.dart';
@@ -38,9 +34,9 @@ class _Register extends State<RegistrationPage>
   bool passwordVisible = false;
 
   final List<String> itemsLang = [
-    'en',
-    'fr',
-    'ua',
+    'english',
+    'french',
+    'ukranian',
   ];
 
   late AnimationController controller;
@@ -99,11 +95,12 @@ class _Register extends State<RegistrationPage>
                             style: TextStyle(
                               fontSize: 12,
                               height: 1,
-                              color: Color.fromARGB(255, 0, 0, 0),
+                              color: Color.fromARGB(255, 27, 82, 157),
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.w700,
                             ),
                             keyboardType: TextInputType.emailAddress,
+                            obscureText: false,
                             controller: controllerEmail,
                             maxLines: 1,
                             decoration: InputDecoration(
@@ -113,11 +110,11 @@ class _Register extends State<RegistrationPage>
                               isDense: true,
                               enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
-                                    color: Color.fromARGB(255, 15, 77, 154)),
+                                    color: Color.fromARGB(255, 182, 182, 182)),
                               ),
                               focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
-                                    color: Color.fromARGB(255, 15, 77, 154)),
+                                    color: Color.fromARGB(255, 182, 182, 182)),
                               ),
                               border: InputBorder.none,
                               labelText: '',
@@ -155,7 +152,7 @@ class _Register extends State<RegistrationPage>
                             style: TextStyle(
                               fontSize: 12,
                               height: 1,
-                              color: Color.fromARGB(255, 0, 0, 0),
+                              color: Color.fromARGB(255, 27, 82, 157),
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.w700,
                             ),
@@ -182,11 +179,11 @@ class _Register extends State<RegistrationPage>
                               //isDense: true,
                               enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
-                                    color: Color.fromARGB(255, 15, 77, 154)),
+                                    color: Color.fromARGB(255, 182, 182, 182)),
                               ),
                               focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
-                                    color: Color.fromARGB(255, 15, 77, 154)),
+                                    color: Color.fromARGB(255, 182, 182, 182)),
                               ),
                               border: InputBorder.none,
                               labelText: '',
@@ -220,7 +217,7 @@ class _Register extends State<RegistrationPage>
                       ]),
                   if (signUp == false)
                     Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           SizedBox(
                             width: MediaQueryData.fromWindow(
@@ -244,13 +241,13 @@ class _Register extends State<RegistrationPage>
                             child: TextField(
                               style: TextStyle(
                                 fontSize: 12,
-                                height: 0,
-                                color: Color.fromARGB(255, 0, 0, 0),
+                                height: 1,
+                                color: Color.fromARGB(255, 27, 82, 157),
                                 fontFamily: 'Inter',
                                 fontWeight: FontWeight.w700,
                               ),
                               controller: controllerRepeatPassword,
-                              obscureText: true,
+                              obscureText: !passwordVisible,
                               obscuringCharacter: "*",
                               enableSuggestions: false,
                               autocorrect: false,
@@ -268,14 +265,96 @@ class _Register extends State<RegistrationPage>
                               decoration: InputDecoration(
                                 //filled: true,
                                 //fillColor: Colors.deepPurpleAccent,
-                                isDense: true,
+                                isCollapsed: true,
+                                //isDense: true,
                                 enabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: Color.fromARGB(255, 15, 77, 154)),
+                                      color:
+                                          Color.fromARGB(255, 182, 182, 182)),
                                 ),
                                 focusedBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: Color.fromARGB(255, 15, 77, 154)),
+                                      color:
+                                          Color.fromARGB(255, 182, 182, 182)),
+                                ),
+                                border: InputBorder.none,
+                                labelText: '',
+                                hintText: '',
+                                contentPadding: EdgeInsets.only(
+                                    left: 10, bottom: 10, top: 10),
+                                suffixIconConstraints:
+                                    BoxConstraints(maxHeight: 30),
+                                suffixIcon: IconButton(
+                                  padding: EdgeInsets.all(0),
+                                  //alignment: Alignment.center,
+
+                                  icon: Icon(
+                                    // Based on passwordVisible state choose the icon
+                                    passwordVisible
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                    color: Theme.of(context).primaryColorDark,
+                                  ),
+                                  onPressed: () {
+                                    // Update the state i.e. toogle the state of passwordVisible variable
+                                    setState(() {
+                                      passwordVisible = !passwordVisible;
+                                    });
+                                  },
+                                ),
+                              ),
+                              textAlignVertical: TextAlignVertical.center,
+                            ),
+                          ),
+                        ]),
+                  if (signUp == false)
+                    Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          SizedBox(
+                            width: MediaQueryData.fromWindow(
+                                        WidgetsBinding.instance.window)
+                                    .size
+                                    .width *
+                                0.8,
+                            //color: Colors.green,
+                            child: Text(
+                              textAlign: TextAlign.left,
+                              "name".toString().toUpperCase(),
+                              style: AppTextStyle.textSize13Grey,
+                            ),
+                          ),
+                          SizedBox(
+                            width: MediaQueryData.fromWindow(
+                                        WidgetsBinding.instance.window)
+                                    .size
+                                    .width *
+                                0.8,
+                            child: TextField(
+                              style: TextStyle(
+                                fontSize: 12,
+                                height: 1,
+                                color: Color.fromARGB(255, 27, 82, 157),
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w700,
+                              ),
+                              keyboardType: TextInputType.emailAddress,
+                              controller: controllerName,
+                              maxLines: 1,
+                              decoration: InputDecoration(
+                                isCollapsed: true,
+                                //filled: true,
+                                //fillColor: Colors.deepPurpleAccent,
+                                isDense: true,
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color:
+                                          Color.fromARGB(255, 182, 182, 182)),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color:
+                                          Color.fromARGB(255, 182, 182, 182)),
                                 ),
                                 border: InputBorder.none,
                                 labelText: '',
@@ -283,143 +362,104 @@ class _Register extends State<RegistrationPage>
                                 contentPadding: EdgeInsets.only(
                                     left: 10, bottom: 10, top: 10),
                               ),
+                              textAlignVertical: TextAlignVertical.center,
                             ),
                           ),
                         ]),
-                    if (signUp == false)
-                   Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                              SizedBox(
-                                width: MediaQueryData.fromWindow(
-                                            WidgetsBinding.instance.window)
-                                        .size
-                                        .width *
-                                    0.8,
-                                //color: Colors.green,
-                                child: Text(
-                                  textAlign: TextAlign.left,
-                                  "name".toString().toUpperCase(),
-                                  style: AppTextStyle.textSize13Grey,
-                                ),
+                  if (signUp == false)
+                    Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          SizedBox(
+                            width: MediaQueryData.fromWindow(
+                                        WidgetsBinding.instance.window)
+                                    .size
+                                    .width *
+                                0.8,
+                            //color: Colors.green,
+                            child: Text(
+                              textAlign: TextAlign.left,
+                              globals
+                                  .generalContentArray['logInRegisteredText_3']
+                                  .toString()
+                                  .toUpperCase(),
+                              style: AppTextStyle.textSize13Grey,
+                            ),
+                          ),
+                          Container(
+                            width: MediaQueryData.fromWindow(
+                                        WidgetsBinding.instance.window)
+                                    .size
+                                    .width *
+                                0.8,
+                            height: MediaQueryData.fromWindow(
+                                        WidgetsBinding.instance.window)
+                                    .size
+                                    .width *
+                                0.07,
+                            child: DropdownButton2(
+                              buttonWidth: MediaQueryData.fromWindow(
+                                          WidgetsBinding.instance.window)
+                                      .size
+                                      .width *
+                                  0.8,
+                              isExpanded: true,
+                              isDense: true,
+                              underline: Container(
+                                height: 2,
+                                color: Color.fromARGB(255, 182, 182, 182),
                               ),
-                              SizedBox(
-                                width: MediaQueryData.fromWindow(
-                                            WidgetsBinding.instance.window)
-                                        .size
-                                        .width *
-                                    0.8,
-                                child: TextField(
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    height: 0,
-                                    color: Color.fromARGB(255, 0, 0, 0),
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                  controller: controllerName,
-                                  enableSuggestions: false,
-                                  autocorrect: false,
-                                  onChanged: (text) async {
-                                    if (controllerName.text.length == 7) {
-                                      //Navigator.pushReplacementNamed(context, Routes.mainPage);
-                                      //await Auth().registerWithEmailAndPassword(controllerPhone.text,controllerCode.text);
-                                      //Navigator.pushNamedAndRemoveUntil(context, Routes.mainPage,
-                                      //(Route<dynamic> route) => false);
-                                    } else {
-                                      return;
-                                    }
-                                  },
-                                  maxLines: 1,
-                                  decoration: InputDecoration(
-                                    //filled: true,
-                                    //fillColor: Colors.deepPurpleAccent,
-                                    isDense: true,
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color:
-                                              Color.fromARGB(255, 15, 77, 154)),
-                                    ),
-                                    focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color:
-                                              Color.fromARGB(255, 15, 77, 154)),
-                                    ),
-                                    border: InputBorder.none,
-                                    labelText: '',
-                                    hintText: '',
-                                    contentPadding: EdgeInsets.only(
-                                        left: 10, bottom: 10, top: 10),
-                                  ),
-                                ),
+                              value: globals.selectedLanguage == 'en'
+                                  ? 'english'
+                                  : globals.selectedLanguage == 'fr'
+                                      ? 'french'
+                                      : 'ukranian',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Color.fromARGB(255, 27, 82, 157),
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w700,
                               ),
-                            ])
-                     ,
-                  if (signUp == false) Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                              SizedBox(
-                                width: MediaQueryData.fromWindow(
-                                            WidgetsBinding.instance.window)
-                                        .size
-                                        .width *
-                                    0.8,
-                                //color: Colors.green,
-                                child: Text(
-                                  textAlign: TextAlign.left,
-                                  "language".toString().toUpperCase(),
-                                  style: AppTextStyle.textSize13Grey,
-                                ),
-                              ),
-                              SizedBox(
-                                width: MediaQueryData.fromWindow(
-                                            WidgetsBinding.instance.window)
-                                        .size
-                                        .width *
-                                    0.8,
-                                child: DropdownButton2(
-                                  buttonWidth: 290,
-                                  isExpanded: true,
-                                  isDense: true,
-                                  underline: Container(
-                                    height: 2,
-                                    color: Color.fromARGB(255, 124, 160, 209),
-                                  ),
-                                  value: "en",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    color: Color.fromARGB(255, 124, 160, 209),
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                  //menuMaxHeight: 200,
-                                  items: itemsLang.map((String items) {
-                                    return DropdownMenuItem(
-                                      value: items,
-                                      child: Text(items.toUpperCase()),
-                                    );
-                                  }).toList(),
+                              //menuMaxHeight: 200,
+                              items: itemsLang.map((String items) {
+                                return DropdownMenuItem(
+                                  value: items,
+                                  child: Text(items.toUpperCase()),
+                                );
+                              }).toList(),
+                              onChanged: (value) async {
+                                value.toString().toLowerCase() == "english"
+                                    ? value = 'en'
+                                    : value.toString().toLowerCase() == "french"
+                                        ? value = 'fr'
+                                        : value = 'ua';
+                                print(value.toString());
+                                globals.language = value.toString();
+                                globals.selectedLanguage = value.toString();
 
-                                  onChanged: (value) {
-                                    setState(() {});
-                                  },
-                                  icon: const Icon(
-                                    Icons.keyboard_arrow_down,
-                                    color: Color.fromARGB(255, 15, 77, 154),
-                                  ),
-                                  buttonPadding:
-                                      const EdgeInsets.only(left: 15),
-                                  dropdownDecoration: BoxDecoration(
-                                    //borderRadius: BorderRadius.circular(30),
-                                    color: Color.fromARGB(255, 222, 229, 239),
-                                  ),
+                                languageDeterminer();
+                                await translateLanguage();
+                                await Future.delayed(const Duration(seconds: 1),
+                                    () {
+                                  setState(() {});
+                                });
+                              },
 
-                                  itemHeight: 40,
-                                  dropdownMaxHeight: 170,
-                                ),
+                              icon: const Icon(
+                                Icons.keyboard_arrow_down,
+                                color: Color.fromARGB(255, 15, 77, 154),
                               ),
-                            ])
-                      ,
+                              buttonPadding: const EdgeInsets.only(left: 10),
+                              dropdownDecoration: BoxDecoration(
+                                //borderRadius: BorderRadius.circular(30),
+                                color: Color.fromARGB(255, 222, 229, 239),
+                              ),
+
+                              itemHeight: 40,
+                              dropdownMaxHeight: 170,
+                            ),
+                          ),
+                        ]),
                   SizedBox(
                     height: MediaQueryData.fromWindow(
                                 WidgetsBinding.instance.window)
@@ -442,11 +482,39 @@ class _Register extends State<RegistrationPage>
                       ),
                       onPressed: () async {
                         if (signUp == false) {
-                          await Auth().registerWithEmailAndPassword(
-                              controllerEmail.text, controllerPassword.text);
+                          //await Auth().registerWithEmailAndPassword(
+                          //controllerEmail.text, controllerPassword.text);
                         } else if (signUp == true) {
-                          await Auth().signInWithEmailAndPassword(
-                              controllerEmail.text, controllerPassword.text);
+                          if (!EmailValidator.validate(controllerEmail.text)) {
+                            Flushbar(
+                              title: 'Warning',
+                              titleColor: Colors.yellow,
+                              titleSize: 18,
+                              message: 'Email address is invalid',
+                              messageSize: 14,
+                              isDismissible: true,
+                              duration: Duration(seconds: 4),
+                              flushbarPosition: FlushbarPosition.TOP,
+                            ).show(context);
+                          }
+                          if (controllerPassword.text == null ||
+                              controllerPassword.text.isEmpty ||
+                              controllerPassword.text.length < 7) {
+                            Flushbar(
+                              title: 'Warning',
+                              titleColor: Colors.yellow,
+                              titleSize: 18,
+                              message:
+                                  'Password should contain more than 7 characters',
+                              messageSize: 14,
+                              isDismissible: true,
+                              duration: Duration(seconds: 4),
+                              flushbarPosition: FlushbarPosition.TOP,
+                            ).show(context);
+                          } else {
+                            await Auth().signInWithEmailAndPassword(
+                                controllerEmail.text, controllerPassword.text);
+                          }
                         } else {
                           return;
                         }
@@ -468,41 +536,38 @@ class _Register extends State<RegistrationPage>
                       ),
                     ),
                   ),
-                  if (signUp == true) SizedBox(
-                          height: MediaQueryData.fromWindow(
-                                      WidgetsBinding.instance.window)
-                                  .size
-                                  .width *
-                              0.1,
-                          width: MediaQueryData.fromWindow(
-                                      WidgetsBinding.instance.window)
-                                  .size
-                                  .width *
-                              0.6,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.middleBlueVar2,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50.0),
-                              ),
-                              elevation: 1,
-                              shadowColor: Color.fromARGB(255, 250, 250, 250),
-                            ),
-                            onPressed: () async {
-                              await Auth()
-                                  .signOut()
-                                  .then((value) => print(value));
-                            },
-                            child: Text(
-                              globals
-                                  .generalContentArray['logInRegisteredText_2']
-                                  .toString(),
-                              style: AppTextStyle.textSize20Light,
-                              textAlign: TextAlign.center,
-                            ),
+                  if (signUp == true)
+                    SizedBox(
+                      height: MediaQueryData.fromWindow(
+                                  WidgetsBinding.instance.window)
+                              .size
+                              .width *
+                          0.1,
+                      width: MediaQueryData.fromWindow(
+                                  WidgetsBinding.instance.window)
+                              .size
+                              .width *
+                          0.6,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.middleBlueVar2,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50.0),
                           ),
-                        )
-                      ,
+                          elevation: 1,
+                          shadowColor: Color.fromARGB(255, 250, 250, 250),
+                        ),
+                        onPressed: () async {
+                          await Auth().signOut().then((value) => print(value));
+                        },
+                        child: Text(
+                          globals.generalContentArray['logInRegisteredText_2']
+                              .toString(),
+                          style: AppTextStyle.textSize20Light,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
                   SizedBox(
                     width: MediaQueryData.fromWindow(
                                 WidgetsBinding.instance.window)
@@ -528,6 +593,10 @@ class _Register extends State<RegistrationPage>
                           onTap: () {
                             setState(() {
                               signUp = !signUp;
+                              controllerEmail.text = "";
+                              controllerPassword.text = "";
+                              controllerRepeatPassword.text = "";
+                              controllerName.text = "";
                             });
                           },
                           child: Text(

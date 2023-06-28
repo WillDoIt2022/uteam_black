@@ -6,7 +6,7 @@ import '../BLoC/network_checker.dart';
 import "../Widgets/language_determiner.dart";
 import "../Widgets/translator.dart";
 //widjets
-import '../Widgets/logo_img copy.dart';
+import '../Widgets/logo_img_copy.dart';
 import '../Widgets/welcome_txt.dart';
 //settings
 import '../globals.dart' as globals;

@@ -9,7 +9,7 @@ Completer<GoogleMapController> mapController = Completer();
 bool onSave = true;
 //General Data
 bool userID = false;
-String selectedLanguage = "";
+String selectedLanguage = "en";
 String language = "";
 String phoneNumber = "";
 String objectId = "";
@@ -44,6 +44,7 @@ Map<String, String> generalContentArray = {
   'welcomePageText_1': 'welcome to',
   'logInRegisteredText_1': 'Log in',
   'logInRegisteredText_2': 'Continue with Google',
+  'logInRegisteredText_3': 'language',
   //'logInCodeText_1': 'enter yours\npassword',
   'mainPageText_1': 'you entered as a guest',
   'addObjPageText_1': 'add new\nobject',

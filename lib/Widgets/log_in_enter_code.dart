@@ -62,7 +62,7 @@ Widget logInEnterCode(context, controllerCode, controllerPhone) {
               onChanged: (text) async{
                 if (controllerCode.text.length == 7) {
                   //Navigator.pushReplacementNamed(context, Routes.mainPage);
-                  await Auth().registerWithEmailAndPassword(controllerPhone.text,controllerCode.text);
+                 // await Auth().registerWithEmailAndPassword(controllerPhone.text,controllerCode.text);
                   Navigator.pushNamedAndRemoveUntil(context, Routes.mainPage,
                       (Route<dynamic> route) => false);
                 }  else {

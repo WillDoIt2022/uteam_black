@@ -46,6 +46,83 @@ class _Register extends State<RegistrationPage>
   void initState() {
     super.initState();
     signUp = true;
+    signOut();
+  }
+
+  validator(controllerEmail, controllerPassword, controllerRepeatPassword,
+      controllerName) {
+    if (!EmailValidator.validate(controllerEmail)) {
+      Flushbar(
+        title: 'Warning',
+        titleColor: Colors.yellow,
+        titleSize: 18,
+        message: 'Email address is invalid',
+        messageSize: 14,
+        isDismissible: true,
+        duration: Duration(seconds: 4),
+        flushbarPosition: FlushbarPosition.TOP,
+      ).show(context);
+    } else if (controllerPassword == null ||
+        controllerPassword.isEmpty ||
+        controllerPassword.length < 7) {
+      Flushbar(
+        title: 'Warning',
+        titleColor: Colors.yellow,
+        titleSize: 18,
+        message: 'Password should contain more than 7 characters',
+        messageSize: 14,
+        isDismissible: true,
+        duration: Duration(seconds: 4),
+        flushbarPosition: FlushbarPosition.TOP,
+      ).show(context);
+    } else if (signUp == false) {
+      if (controllerPassword != controllerRepeatPassword) {
+        Flushbar(
+          title: 'Warning',
+          titleColor: Colors.yellow,
+          titleSize: 18,
+          message: "Passwords don't match",
+          messageSize: 14,
+          isDismissible: true,
+          duration: Duration(seconds: 4),
+          flushbarPosition: FlushbarPosition.TOP,
+        ).show(context);
+      }else if(controllerName == null ||
+        controllerName.isEmpty){
+          Flushbar(
+          title: 'Warning',
+          titleColor: Colors.yellow,
+          titleSize: 18,
+          message: "Please enter your name",
+          messageSize: 14,
+          isDismissible: true,
+          duration: Duration(seconds: 4),
+          flushbarPosition: FlushbarPosition.TOP,
+        ).show(context);
+        }else{
+          return true;
+        }
+    } else {
+      return true;
+    }
+  }
+
+  logInFalseMessage() {
+    Flushbar(
+      title: 'Warning',
+      titleColor: Colors.red,
+      titleSize: 18,
+      message: 'This User is not registered yet',
+      messageSize: 14,
+      isDismissible: true,
+      duration: Duration(seconds: 4),
+      flushbarPosition: FlushbarPosition.TOP,
+      progressIndicatorBackgroundColor: Colors.blueGrey,
+    ).show(context);
+  }
+
+  signOut() async {
+    await Auth().signOut().then((value) => print(value));
   }
 
   @override
@@ -482,48 +559,42 @@ class _Register extends State<RegistrationPage>
                       ),
                       onPressed: () async {
                         if (signUp == false) {
-                          //await Auth().registerWithEmailAndPassword(
-                          //controllerEmail.text, controllerPassword.text);
-                        } else if (signUp == true) {
-                          if (!EmailValidator.validate(controllerEmail.text)) {
-                            Flushbar(
-                              title: 'Warning',
-                              titleColor: Colors.yellow,
-                              titleSize: 18,
-                              message: 'Email address is invalid',
-                              messageSize: 14,
-                              isDismissible: true,
-                              duration: Duration(seconds: 4),
-                              flushbarPosition: FlushbarPosition.TOP,
-                            ).show(context);
+                          final validateResult = validator(
+                              controllerEmail.text, controllerPassword.text, controllerRepeatPassword.text, controllerName.text);
+                          print(validateResult);
+                          if (validateResult == true) {
+                            await Auth().registerWithEmailAndPassword(
+                          controllerEmail.text, controllerPassword.text, controllerName.text);
+                          await Auth().authStateChanges().then((value) =>
+                                value
+                                    ? Navigator.pushNamedAndRemoveUntil(
+                                        context,
+                                        Routes.mainPage,
+                                        (Route<dynamic> route) => false)
+                                    : logInFalseMessage());
+                          }else{
+                            print("Some troubles");
                           }
-                          if (controllerPassword.text == null ||
-                              controllerPassword.text.isEmpty ||
-                              controllerPassword.text.length < 7) {
-                            Flushbar(
-                              title: 'Warning',
-                              titleColor: Colors.yellow,
-                              titleSize: 18,
-                              message:
-                                  'Password should contain more than 7 characters',
-                              messageSize: 14,
-                              isDismissible: true,
-                              duration: Duration(seconds: 4),
-                              flushbarPosition: FlushbarPosition.TOP,
-                            ).show(context);
-                          } else {
+                          
+                        } else if (signUp == true) {
+                          final validateResult = validator(
+                              controllerEmail.text, controllerPassword.text, controllerRepeatPassword.text, controllerName.text);
+                          print(validateResult);
+
+                          if (validateResult == true) {
                             await Auth().signInWithEmailAndPassword(
                                 controllerEmail.text, controllerPassword.text);
+                            await Auth().authStateChanges().then((value) =>
+                                value
+                                    ? Navigator.pushNamedAndRemoveUntil(
+                                        context,
+                                        Routes.mainPage,
+                                        (Route<dynamic> route) => false)
+                                    : logInFalseMessage());
                           }
                         } else {
                           return;
                         }
-                        await Auth().authStateChanges().then((value) => value
-                            ? Navigator.pushNamedAndRemoveUntil(
-                                context,
-                                Routes.mainPage,
-                                (Route<dynamic> route) => false)
-                            : print(value));
                       },
                       child: Text(
                         signUp

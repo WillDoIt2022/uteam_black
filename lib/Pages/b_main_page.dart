@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../globals.dart' as globals;
 import '../Widgets/logo_img.dart';
 import '../Widgets/footer_menu.dart';
+import '../routes.dart';
 // ignore_for_file: prefer_const_constructors
 
 class MainPage extends StatefulWidget {
@@ -17,13 +18,18 @@ class MainPage extends StatefulWidget {
 
 class _LaunchApp extends State<MainPage> {
   final docObjects = FirebaseFirestore.instance.collection('objects');
-
   final translator = GoogleTranslator();
-  dynamic timer;
+
+  final List<String> itemsObjects = [
+    'grand optical',
+    'axe energy',
+    'everest',
+    'odesa city',
+  ];
+
   @override
   void initState() {
     super.initState();
-    timer = true;
   }
 
   void translateLanguage(textt) {
@@ -73,39 +79,119 @@ class _LaunchApp extends State<MainPage> {
               child: Container(),
             ),
             Expanded(
-              flex: 7,
-              child: logoImg(true),
-            ),
-            Expanded(
-              flex: 7,
+              flex: 3,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-            height: MediaQueryData.fromWindow(WidgetsBinding.instance.window).size.width *0.1,
-            width: MediaQueryData.fromWindow(WidgetsBinding.instance.window).size.width *0.1,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/img/app_img/UTEAM_logo.png'),
-                fit: BoxFit.contain,
-              ),
-            ),
-          ),
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: Text(
-                      globals.generalContentArray['mainPageText_1']
-                          .toString()
-                          .toUpperCase(),
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Color.fromARGB(255, 124, 160, 209),
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w700,
-                      ),
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: MediaQueryData.fromWindow(
+                                WidgetsBinding.instance.window)
+                            .size
+                            .width *
+                        0.9,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        CircleAvatar(
+                          radius: 38,
+                          backgroundColor: Colors.transparent, // Image radius
+                          backgroundImage: AssetImage(
+                              "assets/img/app_img/user/Unnamed_user.png"),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: 20, right: 10, bottom: 0, top: 0),
+                          child: Text(
+                            globals.userName != ""
+                                ? "Hi, ${globals.userName}".toUpperCase()
+                                : "Hi, User!".toString().toUpperCase(),
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Color.fromARGB(255, 15, 77, 154),
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                        CircleAvatar(
+                          radius: 10,
+                          backgroundColor: Colors.transparent, // Image radius
+                          backgroundImage: AssetImage(
+                              "assets/img/app_img/user/Pencil_circle.png"),
+                        ),
+                      ],
                     ),
                   ),
+                  Text(
+                    "Please, select account:".toString(),
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Color.fromARGB(255, 15, 77, 154),
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w700,
+                    ),
+                  )
                 ],
+              ),
+            ),
+            Expanded(
+              flex: 10,
+              child: ListView.builder(
+                padding: const EdgeInsets.only(top: 25),
+                // the number of items in the list
+                itemCount: itemsObjects.length,
+                // display each item of the product list
+                itemBuilder: (context, index) {
+                  return ListView(
+                      physics: ClampingScrollPhysics(),
+                      shrinkWrap: true,
+                      padding: EdgeInsets.only(
+                          left: 40, right: 40, bottom: 10, top: 10),
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                          child: GestureDetector(
+                            onTap: () {
+                              globals.objectName =
+                                  itemsObjects[index].toString().toLowerCase();
+                                  Navigator.pushNamed(context, Routes.addObjPage);
+                            },
+                            child: Container(
+                              height: MediaQueryData.fromWindow(
+                                          WidgetsBinding.instance.window)
+                                      .size
+                                      .width *
+                                  0.15,
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(255, 213, 224, 237),
+                                borderRadius: BorderRadius.circular(30.0),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 40),
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    itemsObjects[index]
+                                        .toString()
+                                        .toUpperCase(),
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Color.fromARGB(255, 96, 146, 204),
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ]);
+                },
               ),
             ),
             Expanded(

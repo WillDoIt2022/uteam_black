@@ -15,7 +15,7 @@ class Auth {
       );
       //After creating a user in Firebase, we then are able to change name/pictue
       await userCredential.user?.updateDisplayName(name);
-      
+       
     } catch (e) {
       print(e);
     }
@@ -43,7 +43,10 @@ class Auth {
           print('User is currently signed out!');
         } else {
           successfully = true;
+          globals.phoneNumber=user.uid;
+          globals.userName=user.displayName.toString();
           print(user);
+          print(user.uid);
           // !!!!! Here you know the user is signed-in !!!!!
           print('User is signed in!');
         }

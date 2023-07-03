@@ -89,24 +89,7 @@ class _AddObj extends State<AddObjPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Container(
-                    height: MediaQueryData.fromWindow(
-                                WidgetsBinding.instance.window)
-                            .size
-                            .width *
-                        0.12,
-                    width: MediaQueryData.fromWindow(
-                                WidgetsBinding.instance.window)
-                            .size
-                            .width *
-                        0.1,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/img/app_img/UTEAM_logo.png'),
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
+                  
                   Align(
                     alignment: Alignment.center,
                     child: SizedBox(

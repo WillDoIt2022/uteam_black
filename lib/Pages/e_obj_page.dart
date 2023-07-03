@@ -83,6 +83,7 @@ class _ObjSummary extends State<ObjectPage> {
         "imgUrl": globals.imgUrl == "" ? urlDownloadLink : globals.imgUrl,
         "phoneNumber": globals.phoneNumber,
         "uulid": globals.uulid.toLowerCase(),
+        "objectName":globals.objectName,
         "latitude": globals.flag ? globals.latitude : globals.newLatitude,
         "longitude": globals.flag ? globals.longitude : globals.newLongitude,
         "countryIso": globals.flag

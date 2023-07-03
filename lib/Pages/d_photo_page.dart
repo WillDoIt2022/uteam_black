@@ -72,7 +72,7 @@ class _LaunchCamera extends State<PhotoPage> {
 
   @override
   void dispose() {
-    cameraController.dispose();
+   cameraController.dispose();
     super.dispose();
   }
 

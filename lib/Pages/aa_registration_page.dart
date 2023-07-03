@@ -518,8 +518,9 @@ class _Register extends State<RegistrationPage>
                                 await translateLanguage();
                                 await Future.delayed(const Duration(seconds: 1),
                                     () {
-                                  setState(() {});
+                                  
                                 });
+                                setState(() {});
                               },
 
                               icon: const Icon(

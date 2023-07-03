@@ -69,6 +69,7 @@ class FooterMenuWidget extends State<FooterMenu> {
             onPressed: () {
               //Navigator.pushNamedAndRemoveUntil(context, Routes.addObjPage, (Route<dynamic> route) => false);
               globals.objectId == "";
+              globals.objectName="";
               Navigator.pushNamed(context, Routes.addObjPage);
             },
           ),

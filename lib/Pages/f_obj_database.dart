@@ -24,6 +24,7 @@ class _DataBase extends State<DataBasePage> {
   final controllerSearch = TextEditingController(text: "");
   final List<String> itemsToFilter = [
     'All',
+    'object name',
     'UULID',
     'location',
   ];
@@ -58,6 +59,7 @@ class _DataBase extends State<DataBasePage> {
     globals.newLatitude = data['latitude'];
     globals.newLongitude = data['longitude'];
     globals.uulid = data['uulid'];
+    globals.objectName = data['objectName'];
     globals.newCountry = data['country'];
     globals.newCountryIso = data['countryIso'];
     globals.newPostalCode = data['postalCode'];
@@ -77,6 +79,8 @@ class _DataBase extends State<DataBasePage> {
                 e["street"]
                     .contains(controllerSearch.text.toString().toLowerCase()) ||
                 e["building"]
+                    .contains(controllerSearch.text.toString().toLowerCase()) ||
+                e["objectName"]
                     .contains(controllerSearch.text.toString().toLowerCase())))
             .toList();
       });
@@ -87,6 +91,14 @@ class _DataBase extends State<DataBasePage> {
                     .contains(controllerSearch.text.toString().toLowerCase()) ||
                 e["building"]
                     .contains(controllerSearch.text.toString().toLowerCase())))
+            .toList();
+      });
+    } else if (selectedFilteredValue.toString().toLowerCase() ==
+        "object name") {
+      setState(() {
+        filteredDb = filteredDb
+            .where((e) => (e["objectName"]
+                .contains(controllerSearch.text.toString().toLowerCase())))
             .toList();
       });
     } else {
@@ -181,7 +193,7 @@ class _DataBase extends State<DataBasePage> {
                               onChanged: (String? newValue) {
                                 setState(() {
                                   selectedFilteredValue = newValue;
-                                  controllerSearch.text="";
+                                  controllerSearch.text = "";
                                   filteredDb = sourceDb;
                                 });
                               },
@@ -343,10 +355,11 @@ class _DataBase extends State<DataBasePage> {
                                                               left: 15,
                                                             ),
                                                             child: Text(
-                                                              TextTools
-                                                                  .toUppercaseFirstLetter(
-                                                                      text:
-                                                                          'some name'),
+                                                              TextTools.toUppercaseFirstLetter(
+                                                                  text: filteredDb[
+                                                                          index]
+                                                                      [
+                                                                      "objectName"]),
                                                               overflow:
                                                                   TextOverflow
                                                                       .ellipsis,

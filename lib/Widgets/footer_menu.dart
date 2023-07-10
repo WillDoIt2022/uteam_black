@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../routes.dart';
-import'../globals.dart'as globals;
+import '../globals.dart' as globals;
 // ignore_for_file: prefer_const_constructors
 
 //Widget footerMenu(context) {
@@ -21,7 +21,6 @@ class FooterMenuWidget extends State<FooterMenu> {
   }
 
   currentUrlDeterminer(path) {
-
     if (ModalRoute.of(context)?.settings.name.toString().contains(path) ==
         true) {
       return 50.0;
@@ -29,6 +28,7 @@ class FooterMenuWidget extends State<FooterMenu> {
       return 36.0;
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -44,11 +44,14 @@ class FooterMenuWidget extends State<FooterMenu> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           IconButton(
-            icon: SvgPicture.asset('assets/svg/Profile.svg'),
+            icon: SvgPicture.asset('assets/svg/Profile.svg',
+                height: currentUrlDeterminer(Routes.profilePage)),
             iconSize: 50,
             color: Color.fromARGB(255, 255, 255, 255).withOpacity(0.8),
             tooltip: 'Profile',
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, Routes.profilePage);
+            },
           ),
           IconButton(
             icon: SvgPicture.asset('assets/svg/Edit.svg',
@@ -67,9 +70,17 @@ class FooterMenuWidget extends State<FooterMenu> {
             tooltip: 'Add Object',
             iconSize: 50,
             onPressed: () {
+              //if (ModalRoute.of(context)?.settings.name =="/main_page") {
+              // notification();
+              // return;
+              // } else {
+              // globals.objectId == "";
+              // globals.objectName = "";
+              // Navigator.pushNamed(context, Routes.addObjPage);
+              // }
               //Navigator.pushNamedAndRemoveUntil(context, Routes.addObjPage, (Route<dynamic> route) => false);
               globals.objectId == "";
-              globals.objectName="";
+              globals.objectName = "";
               Navigator.pushNamed(context, Routes.addObjPage);
             },
           ),

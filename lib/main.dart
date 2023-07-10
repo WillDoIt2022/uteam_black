@@ -8,12 +8,13 @@ import 'BLoC/network_checker.dart';
 import 'Pages/a_welcome_page.dart';
 import 'Pages/aa_registration_page.dart';
 import 'Pages/b_main_page.dart';
-import 'Pages/c1_add_obj.dart';
-import 'Pages/c2_obj_details.dart';
-import 'Pages/d_photo_page.dart';
-import 'Pages/c2_obj_location.dart';
-import 'Pages/e_obj_page.dart';
-import './Pages/f_obj_database.dart';
+import 'Pages/e1_add_obj.dart';
+import 'Pages/e2_obj_details.dart';
+import 'Pages/e4_photo_page.dart';
+import 'Pages/e3_obj_location.dart';
+import 'Pages/e5_obj_page.dart';
+import 'Pages/d_obj_database.dart';
+import "./Pages/c_profile_page.dart";
 import "routes.dart";
 import 'globals.dart' as globals;
 // ignore_for_file: prefer_const_constructors
@@ -44,7 +45,7 @@ class _Launch extends State<MyApp> {
 
   @override
   void initState() {
-    globals.selectedLanguage="en";
+    globals.selectedLanguage = "en";
     //determinePosition();
     super.initState();
   }
@@ -71,6 +72,7 @@ class _Launch extends State<MyApp> {
           Routes.welcomePage: (BuildContext context) => WelcomePage(),
           Routes.registrationPage: (BuildContext context) => RegistrationPage(),
           Routes.mainPage: (BuildContext context) => MainPage(),
+          Routes.profilePage: (BuildContext context) => ProfilePage(),
           Routes.addObjPage: (BuildContext context) => AddObjPage(),
           Routes.objDetailsPage: (BuildContext context) => ObjDetailsPage(),
           Routes.objLocation: (BuildContext context) => ObjLocation(

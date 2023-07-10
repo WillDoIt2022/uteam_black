@@ -5,7 +5,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart'; //Spinn
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'dart:io';
-import './e_obj_page.dart';
+import 'e5_obj_page.dart';
 import '../globals.dart' as globals;
 
 // ignore_for_file: prefer_const_constructors

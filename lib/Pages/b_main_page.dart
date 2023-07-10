@@ -79,7 +79,7 @@ class _LaunchApp extends State<MainPage> {
               child: Container(),
             ),
             Expanded(
-              flex: 3,
+              flex: 4,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -138,8 +138,10 @@ class _LaunchApp extends State<MainPage> {
               ),
             ),
             Expanded(
-              flex: 10,
-              child: ListView.builder(
+              flex: 9,
+              child: Center(
+                
+                child:ListView.builder(
                 padding: const EdgeInsets.only(top: 25),
                 // the number of items in the list
                 itemCount: itemsObjects.length,
@@ -157,7 +159,7 @@ class _LaunchApp extends State<MainPage> {
                             onTap: () {
                               globals.objectName =
                                   itemsObjects[index].toString().toLowerCase();
-                                  Navigator.pushNamed(context, Routes.addObjPage);
+                              Navigator.pushNamed(context, Routes.addObjPage);
                             },
                             child: Container(
                               height: MediaQueryData.fromWindow(
@@ -192,11 +194,11 @@ class _LaunchApp extends State<MainPage> {
                         ),
                       ]);
                 },
-              ),
+              ),)
             ),
             Expanded(
               flex: 2,
-              child: FooterMenu(),
+              child: Container(),
             ),
           ],
         ),

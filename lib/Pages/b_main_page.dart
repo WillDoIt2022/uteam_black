@@ -159,6 +159,8 @@ class _LaunchApp extends State<MainPage> {
                             onTap: () {
                               globals.objectName =
                                   itemsObjects[index].toString().toLowerCase();
+                                  globals.accountName =
+                                  itemsObjects[index].toString().toLowerCase();
                               Navigator.pushNamed(context, Routes.addObjPage);
                             },
                             child: Container(

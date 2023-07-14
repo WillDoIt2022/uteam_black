@@ -25,7 +25,7 @@ class RegistrationPage extends StatefulWidget {
 
 class _Register extends State<RegistrationPage>
     with SingleTickerProviderStateMixin {
-  final controllerEmail = TextEditingController(text: "");
+  dynamic controllerEmail = TextEditingController(text: "");
   dynamic controllerPassword = TextEditingController(text: "");
   dynamic controllerRepeatPassword = TextEditingController(text: "");
   dynamic controllerName = TextEditingController(text: "");
@@ -515,11 +515,11 @@ class _Register extends State<RegistrationPage>
                                 globals.selectedLanguage = value.toString();
 
                                 languageDeterminer();
-                                await translateLanguage();
-                                await Future.delayed(const Duration(seconds: 1),
-                                    () {
+                               await translateLanguage();
+                                await Future.delayed(const Duration(seconds: 2),
+                                   () {
                                   
-                                });
+                               });
                                 setState(() {});
                               },
 
@@ -568,7 +568,8 @@ class _Register extends State<RegistrationPage>
                           controllerEmail.text, controllerPassword.text, controllerName.text);
                           await Auth().authStateChanges().then((value) =>
                                 value
-                                    ? Navigator.pushNamedAndRemoveUntil(
+                                    ? 
+                                    Navigator.pushNamedAndRemoveUntil(
                                         context,
                                         Routes.mainPage,
                                         (Route<dynamic> route) => false)
@@ -630,7 +631,7 @@ class _Register extends State<RegistrationPage>
                           shadowColor: Color.fromARGB(255, 250, 250, 250),
                         ),
                         onPressed: () async {
-                          await Auth().signOut().then((value) => print(value));
+                          
                         },
                         child: Text(
                           globals.generalContentArray['logInRegisteredText_2']

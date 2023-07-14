@@ -42,9 +42,10 @@ class _DataBase extends State<DataBasePage> {
 
   Future getUserObjects() async {
     await docObjects
-        .where("phoneNumber", isEqualTo: globals.phoneNumber.toString())
+        .where("phoneNumber", isEqualTo: globals.phoneNumber.toString()).where("accountName", isEqualTo: globals.accountName.toString()) 
         .get()
         .then((QuerySnapshot snapshot) {
+
       filteredDb = snapshot.docs.toList();
       sourceDb = snapshot.docs;
       setState(() {

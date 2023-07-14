@@ -43,6 +43,7 @@ class Auth {
           print('User is currently signed out!');
         } else {
           successfully = true;
+          globals.userEmail=user.email.toString();
           globals.phoneNumber=user.uid;
           globals.userName=user.displayName.toString();
           print(user);
@@ -61,6 +62,7 @@ class Auth {
   Future signOut() async {
     try {
       final user = await _auth.signOut();
+      return true;
     } catch (e) {
       print(e);
     }

@@ -2,7 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:another_flushbar/flushbar.dart'; //notifys
 import '../routes.dart';
+import "../Widgets/translator.dart";
+import 'package:dropdown_button2/dropdown_button2.dart';
 import"../Widgets/footer_menu.dart";
+import '../styles/app_textstyles.dart';
+import "../Widgets/language_determiner.dart";
+import '../styles/app_colors.dart';
+import "../Widgets/auth.dart";
 import '../globals.dart' as globals;
 // ignore_for_file: prefer_const_constructors
 
@@ -16,6 +22,14 @@ class ProfilePage extends StatefulWidget {
 }
 
 class ProfileSettings extends State<ProfilePage> {
+  dynamic controllerEmail = TextEditingController(text: globals.userEmail);
+dynamic controllerName = TextEditingController(text: globals.userName);
+  final List<String> itemsLang = [
+    'english',
+    'french',
+    'ukranian',
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -34,12 +48,342 @@ class ProfileSettings extends State<ProfilePage> {
             child: Container(),
           ),
           Expanded(
-            flex: 6,
-            child: Container(),
+            flex: 4,
+            child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        CircleAvatar(
+                          radius: 70,
+                          backgroundColor: Colors.transparent, // Image radius
+                          backgroundImage: AssetImage(
+                              "assets/img/app_img/user/Unnamed_user.png"),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: 20, right: 10, bottom: 0, top: 0),
+                          child: Text(
+                            "Change photo",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: Color.fromARGB(255, 182, 182, 182),
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),]
+          ),),
+          Expanded(
+            flex: 4,
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        SizedBox(
+                          width: MediaQueryData.fromWindow(
+                                      WidgetsBinding.instance.window)
+                                  .size
+                                  .width *
+                              0.8,
+                          //color: Colors.green,
+                          child: Text(
+                            textAlign: TextAlign.left,
+                            "email".toString().toUpperCase(),
+                            style: AppTextStyle.textSize13Grey,
+                          ),
+                        ),
+                        SizedBox(
+                          width: MediaQueryData.fromWindow(
+                                      WidgetsBinding.instance.window)
+                                  .size
+                                  .width *
+                              0.8,
+                          child: TextField(
+                            style: TextStyle(
+                              fontSize: 12,
+                              height: 1,
+                              color: Color.fromARGB(255, 27, 82, 157),
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w700,
+                            ),
+                            keyboardType: TextInputType.emailAddress,
+                            obscureText: false,
+                            controller: controllerEmail,
+                            maxLines: 1,
+                            decoration: InputDecoration(
+                              isCollapsed: true,
+                              //filled: true,
+                              //fillColor: Colors.deepPurpleAccent,
+                              isDense: true,
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color.fromARGB(255, 182, 182, 182)),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color.fromARGB(255, 182, 182, 182)),
+                              ),
+                              border: InputBorder.none,
+                              labelText: '',
+                              hintText: '',
+                              contentPadding: EdgeInsets.only(
+                                  left: 10, bottom: 10, top: 10),
+                            ),
+                            textAlignVertical: TextAlignVertical.center,
+                          ),
+                        ),
+                      ]),
+                                  
+                          
+                
+                    Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          SizedBox(
+                            width: MediaQueryData.fromWindow(
+                                        WidgetsBinding.instance.window)
+                                    .size
+                                    .width *
+                                0.8,
+                            //color: Colors.green,
+                            child: Text(
+                              textAlign: TextAlign.left,
+                              "name".toString().toUpperCase(),
+                              style: AppTextStyle.textSize13Grey,
+                            ),
+                          ),
+                          SizedBox(
+                            width: MediaQueryData.fromWindow(
+                                        WidgetsBinding.instance.window)
+                                    .size
+                                    .width *
+                                0.8,
+                            child: TextField(
+                              style: TextStyle(
+                                fontSize: 12,
+                                height: 1,
+                                color: Color.fromARGB(255, 27, 82, 157),
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w700,
+                              ),
+                              keyboardType: TextInputType.emailAddress,
+                              controller: controllerName,
+                              maxLines: 1,
+                              decoration: InputDecoration(
+                                isCollapsed: true,
+                                //filled: true,
+                                //fillColor: Colors.deepPurpleAccent,
+                                isDense: true,
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color:
+                                          Color.fromARGB(255, 182, 182, 182)),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color:
+                                          Color.fromARGB(255, 182, 182, 182)),
+                                ),
+                                border: InputBorder.none,
+                                labelText: '',
+                                hintText: '',
+                                contentPadding: EdgeInsets.only(
+                                    left: 10, bottom: 10, top: 10),
+                              ),
+                              textAlignVertical: TextAlignVertical.center,
+                            ),
+                          ),
+                        ]),
+                 
+                    Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          SizedBox(
+                            width: MediaQueryData.fromWindow(
+                                        WidgetsBinding.instance.window)
+                                    .size
+                                    .width *
+                                0.8,
+                            //color: Colors.green,
+                            child: Text(
+                              textAlign: TextAlign.left,
+                              globals
+                                  .generalContentArray['logInRegisteredText_3']
+                                  .toString()
+                                  .toUpperCase(),
+                              style: AppTextStyle.textSize13Grey,
+                            ),
+                          ),
+                          Container(
+                            width: MediaQueryData.fromWindow(
+                                        WidgetsBinding.instance.window)
+                                    .size
+                                    .width *
+                                0.8,
+                            height: MediaQueryData.fromWindow(
+                                        WidgetsBinding.instance.window)
+                                    .size
+                                    .width *
+                                0.07,
+                            child: DropdownButton2(
+                              buttonWidth: MediaQueryData.fromWindow(
+                                          WidgetsBinding.instance.window)
+                                      .size
+                                      .width *
+                                  0.8,
+                              isExpanded: true,
+                              isDense: true,
+                              underline: Container(
+                                height: 2,
+                                color: Color.fromARGB(255, 182, 182, 182),
+                              ),
+                              value: globals.selectedLanguage == 'en'
+                                  ? 'english'
+                                  : globals.selectedLanguage == 'fr'
+                                      ? 'french'
+                                      : 'ukranian',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Color.fromARGB(255, 27, 82, 157),
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w700,
+                              ),
+                              //menuMaxHeight: 200,
+                              items: itemsLang.map((String items) {
+                                return DropdownMenuItem(
+                                  value: items,
+                                  child: Text(items.toUpperCase()),
+                                );
+                              }).toList(),
+                              onChanged: (value) async {
+                                value.toString().toLowerCase() == "english"
+                                    ? value = 'en'
+                                    : value.toString().toLowerCase() == "french"
+                                        ? value = 'fr'
+                                        : value = 'ua';
+                                print(value.toString());
+                                globals.language = value.toString();
+                                globals.selectedLanguage = value.toString();
+
+                                languageDeterminer();
+                                await translateLanguage();
+                                await Future.delayed(const Duration(seconds: 2),
+                                   () {
+                                  
+                               });
+                                setState(() {});
+                              },
+
+                              icon: const Icon(
+                                Icons.keyboard_arrow_down,
+                                color: Color.fromARGB(255, 15, 77, 154),
+                              ),
+                              buttonPadding: const EdgeInsets.only(left: 10),
+                              dropdownDecoration: BoxDecoration(
+                                //borderRadius: BorderRadius.circular(30),
+                                color: Color.fromARGB(255, 222, 229, 239),
+                              ),
+
+                              itemHeight: 40,
+                              dropdownMaxHeight: 170,
+                            ),
+                          ),
+                        ]),
+                  
+                 
+                  
+
+                ],
+              )
           ),
           Expanded(
-            flex: 6,
-            child: Container(),
+            flex: 1,
+            child: Container(),),
+           Expanded(
+            flex: 3,
+            child:  
+             Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+            
+            SizedBox(
+                      height: MediaQueryData.fromWindow(
+                                  WidgetsBinding.instance.window)
+                              .size
+                              .width *
+                          0.1,
+                      width: MediaQueryData.fromWindow(
+                                  WidgetsBinding.instance.window)
+                              .size
+                              .width *
+                          0.6,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.middleBlueVar2,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50.0),
+                          ),
+                          elevation: 1,
+                          shadowColor: Color.fromARGB(255, 250, 250, 250),
+                        ),
+                        onPressed: () async {
+                          await Auth().signOut();
+                          await Auth().authStateChanges().then((value) =>
+                                !value
+                                    ? Navigator.pushNamedAndRemoveUntil(
+                                        context,
+                                        Routes.registrationPage,
+                                        (Route<dynamic> route) => false)
+                                    : print("u are not signOut"));
+                          },
+                        
+                        child: Text(
+                          "Log Out",
+                          style: AppTextStyle.textSize20Light,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+         
+         SizedBox(
+                      height: MediaQueryData.fromWindow(
+                                  WidgetsBinding.instance.window)
+                              .size
+                              .width *
+                          0.1,
+                      width: MediaQueryData.fromWindow(
+                                  WidgetsBinding.instance.window)
+                              .size
+                              .width *
+                          0.6,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.middleBlueVar2,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50.0),
+                          ),
+                          elevation: 1,
+                          shadowColor: Color.fromARGB(255, 250, 250, 250),
+                        ),
+                        onPressed: () async {
+                          Navigator.pushNamedAndRemoveUntil(
+                                        context,
+                                        Routes.mainPage,
+                                        (Route<dynamic> route) => false);
+                        },
+                        child: Text(
+                          "Change account",
+                          style: AppTextStyle.textSize20Light,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+         
+         
+                        ])
           ),
           Expanded(
             flex: 2,

@@ -83,6 +83,7 @@ class _ObjSummary extends State<ObjectPage> {
         "imgUrl": globals.imgUrl == "" ? urlDownloadLink : globals.imgUrl,
         "phoneNumber": globals.phoneNumber,
         "uulid": globals.uulid.toLowerCase(),
+        "accountName":globals.accountName,
         "objectName":globals.objectName,
         "latitude": globals.flag ? globals.latitude : globals.newLatitude,
         "longitude": globals.flag ? globals.longitude : globals.newLongitude,
@@ -227,7 +228,7 @@ class _ObjSummary extends State<ObjectPage> {
                                   onPressed: () {
                                     Navigator.pushNamedAndRemoveUntil(
                                         context,
-                                        Routes.mainPage,
+                                        Routes.addObjPage,
                                         (Route<dynamic> route) => false);
                                   },
                                   child: Text(

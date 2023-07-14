@@ -26,59 +26,35 @@ class _AddObj extends State<AddObjPage> {
       return false;
     }, child: BlocBuilder<CounterNav, int>(builder: (context, counter) {
       return Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: Color.fromARGB(255, 246, 246, 246),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(
-                flex: 1,
-                child: Align(
-                  alignment: Alignment.bottomLeft,
-                  child: SizedBox(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.only(top: 25, left: 30),
-                        elevation: 0.0,
-                        backgroundColor: Colors.white.withOpacity(0.05),
-                      ),
-                      onPressed: () {
-                        Navigator.popUntil(
-                            context, ModalRoute.withName('/main_page'));
-                        //Navigator.pop(context);
-                      },
-                      child: Text(
-                        globals.generalContentArray['back']
-                            .toString()
-                            .toUpperCase(),
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 0, 0, 0),
-                          fontSize: 24,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
-                  ),
-                )),
-            Expanded(
-              flex: 6,
+              flex: 1,
               child: Align(
-                alignment: Alignment.center,
-                child: Container(
-                  height:
-                      MediaQueryData.fromWindow(WidgetsBinding.instance.window)
-                              .size
-                              .width *
-                          0.5,
-                  width:
-                      MediaQueryData.fromWindow(WidgetsBinding.instance.window)
-                              .size
-                              .width *
-                          1,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('assets/img/app_img/Main_pic_2.PNG'),
-                      fit: BoxFit.contain,
+                alignment: Alignment.bottomLeft,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.only(top: 25, left: 30),
+                    elevation: 0.0,
+                    backgroundColor: Colors.white.withOpacity(0.05),
+                  ),
+                  onPressed: () {
+                    Navigator.popUntil(
+                        context, ModalRoute.withName('/main_page'));
+                    //Navigator.pop(context);
+                  },
+                  child: Text(
+                    globals.generalContentArray['back']
+                        .toString()
+                        .toUpperCase(),
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 0, 0, 0),
+                      fontSize: 24,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                 ),
@@ -86,10 +62,48 @@ class _AddObj extends State<AddObjPage> {
             ),
             Expanded(
               flex: 6,
+              child: Stack(children: [
+                Container(
+                  alignment: Alignment.topCenter,
+                  child: Text(
+                    "${globals.accountName} account".toString().toUpperCase(),
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 15, 77, 154),
+                      fontSize: 13,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w700,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Container(
+                    height: MediaQueryData.fromWindow(
+                                WidgetsBinding.instance.window)
+                            .size
+                            .width *
+                        0.5,
+                    width: MediaQueryData.fromWindow(
+                                WidgetsBinding.instance.window)
+                            .size
+                            .width *
+                        1,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/img/app_img/Main_pic_2.PNG'),
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                ),
+              ]),
+            ),
+            Expanded(
+              flex: 6,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  
                   Align(
                     alignment: Alignment.center,
                     child: SizedBox(

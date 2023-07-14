@@ -11,9 +11,11 @@ bool onSave = true;
 bool userID = false;
 String selectedLanguage = "en";
 String language = "";
+String userEmail="";
 String userName = "";
 String phoneNumber = "";
 String objectId = "";
+String accountName ="";
 String objectName = "";
 String uulid = "";
 String level = "";
@@ -61,3 +63,9 @@ Map<String, String> generalContentArray = {
   'objectPageText_3': '+ object',
   'objectPageText_4': '+ access',
 };
+
+List<dynamic> generalContentArray1 = [
+  {'back': '<back'},
+  {'next': 'next>'},
+
+];

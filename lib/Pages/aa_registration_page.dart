@@ -271,14 +271,14 @@ class _Register extends State<RegistrationPage>
                                   BoxConstraints(maxHeight: 30),
                               suffixIcon: IconButton(
                                 padding: EdgeInsets.all(0),
-                                //alignment: Alignment.center,
+                                alignment: Alignment.centerRight,
 
                                 icon: Icon(
                                   // Based on passwordVisible state choose the icon
                                   passwordVisible
                                       ? Icons.visibility
                                       : Icons.visibility_off,
-                                  color: Theme.of(context).primaryColorDark,
+                                  color: Colors.grey,
                                 ),
                                 onPressed: () {
                                   // Update the state i.e. toogle the state of passwordVisible variable
@@ -363,14 +363,14 @@ class _Register extends State<RegistrationPage>
                                     BoxConstraints(maxHeight: 30),
                                 suffixIcon: IconButton(
                                   padding: EdgeInsets.all(0),
-                                  //alignment: Alignment.center,
+                                  alignment: Alignment.centerRight,
 
                                   icon: Icon(
                                     // Based on passwordVisible state choose the icon
                                     passwordVisible
                                         ? Icons.visibility
                                         : Icons.visibility_off,
-                                    color: Theme.of(context).primaryColorDark,
+                                    color: Colors.grey,
                                   ),
                                   onPressed: () {
                                     // Update the state i.e. toogle the state of passwordVisible variable

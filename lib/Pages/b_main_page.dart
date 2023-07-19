@@ -115,11 +115,16 @@ class _LaunchApp extends State<MainPage> {
                             ),
                           ),
                         ),
-                        CircleAvatar(
-                          radius: 10,
-                          backgroundColor: Colors.transparent, // Image radius
-                          backgroundImage: AssetImage(
-                              "assets/img/app_img/user/Pencil_circle.png"),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, Routes.profilePage);
+                          },
+                          child: CircleAvatar(
+                            radius: 10,
+                            backgroundColor: Colors.transparent, // Image radius
+                            backgroundImage: AssetImage(
+                                "assets/img/app_img/user/Pencil_circle.png"),
+                          ),
                         ),
                       ],
                     ),
@@ -138,66 +143,69 @@ class _LaunchApp extends State<MainPage> {
               ),
             ),
             Expanded(
-              flex: 9,
-              child: Center(
-                
-                child:ListView.builder(
-                padding: const EdgeInsets.only(top: 25),
-                // the number of items in the list
-                itemCount: itemsObjects.length,
-                // display each item of the product list
-                itemBuilder: (context, index) {
-                  return ListView(
-                      physics: ClampingScrollPhysics(),
-                      shrinkWrap: true,
-                      padding: EdgeInsets.only(
-                          left: 40, right: 40, bottom: 10, top: 10),
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                          child: GestureDetector(
-                            onTap: () {
-                              globals.objectName =
-                                  itemsObjects[index].toString().toLowerCase();
-                                  globals.accountName =
-                                  itemsObjects[index].toString().toLowerCase();
-                              Navigator.pushNamed(context, Routes.addObjPage);
-                            },
-                            child: Container(
-                              height: MediaQueryData.fromWindow(
-                                          WidgetsBinding.instance.window)
-                                      .size
-                                      .width *
-                                  0.15,
-                              decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 213, 224, 237),
-                                borderRadius: BorderRadius.circular(30.0),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 40),
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    itemsObjects[index]
-                                        .toString()
-                                        .toUpperCase(),
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Color.fromARGB(255, 96, 146, 204),
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w700,
+                flex: 9,
+                child: Center(
+                  child: ListView.builder(
+                    padding: const EdgeInsets.only(top: 25),
+                    // the number of items in the list
+                    itemCount: itemsObjects.length,
+                    // display each item of the product list
+                    itemBuilder: (context, index) {
+                      return ListView(
+                          physics: ClampingScrollPhysics(),
+                          shrinkWrap: true,
+                          padding: EdgeInsets.only(
+                              left: 40, right: 40, bottom: 10, top: 10),
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  globals.objectName = itemsObjects[index]
+                                      .toString()
+                                      .toLowerCase();
+                                  globals.accountName = itemsObjects[index]
+                                      .toString()
+                                      .toLowerCase();
+                                  Navigator.pushNamed(
+                                      context, Routes.addObjPage);
+                                },
+                                child: Container(
+                                  height: MediaQueryData.fromWindow(
+                                              WidgetsBinding.instance.window)
+                                          .size
+                                          .width *
+                                      0.15,
+                                  decoration: BoxDecoration(
+                                    color: Color.fromARGB(255, 213, 224, 237),
+                                    borderRadius: BorderRadius.circular(30.0),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 40),
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        itemsObjects[index]
+                                            .toString()
+                                            .toUpperCase(),
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color:
+                                              Color.fromARGB(255, 96, 146, 204),
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ),
-                      ]);
-                },
-              ),)
-            ),
+                          ]);
+                    },
+                  ),
+                )),
             Expanded(
               flex: 2,
               child: Container(),

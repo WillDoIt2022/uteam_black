@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+//packages
 import 'package:translator/translator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+//settings
 import '../globals.dart' as globals;
-import '../Widgets/logo_img.dart';
-import '../Widgets/footer_menu.dart';
 import '../routes.dart';
 // ignore_for_file: prefer_const_constructors
 

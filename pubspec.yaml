@@ -34,6 +34,8 @@ dependencies:
 #camera controller
   camera: ^0.9.4+19
 
+
+
   flutter_svg: ^0.22.0
 #to use svg img
   flutter_svg_provider: ^0.1.9

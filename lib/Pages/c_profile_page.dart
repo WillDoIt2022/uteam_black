@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:another_flushbar/flushbar.dart'; //notifys
+//import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 import '../routes.dart';
 import "../Widgets/translator.dart";
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -25,6 +27,7 @@ class ProfileSettings extends State<ProfilePage> {
   dynamic controllerEmail = TextEditingController(text: globals.userEmail);
   dynamic controllerName = TextEditingController(text: globals.userName);
   bool onEdit = false;
+  File? imageFile;
   final List<String> itemsLang = [
     'english',
     'french',
@@ -35,6 +38,12 @@ class ProfileSettings extends State<ProfilePage> {
   void initState() {
     super.initState();
   }
+
+  /// Get from gallery
+ // getFromGallery() async {
+    //final ImagePicker picker = ImagePicker();
+    //final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+  //}
 
   @override
   Widget build(BuildContext context) {
@@ -77,10 +86,21 @@ class ProfileSettings extends State<ProfilePage> {
                           elevation: 0.0,
                           backgroundColor: Colors.white.withOpacity(0.05),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          if (globals.userName != controllerName.text) {
+                            Auth()
+                                .updateName(controllerName.text)
+                                .then((value) => value
+                                    ? setState(() {
+                                        onEdit = !onEdit;
+                                      })
+                                    : print(value));
+                          } else {
+                            return;
+                          }
+                        },
                         child: Text(
-                          "done"
-                              .toUpperCase(),
+                          "done".toUpperCase(),
                           style: TextStyle(
                             color: Color.fromARGB(255, 0, 0, 0),
                             fontSize: 24,
@@ -99,11 +119,14 @@ class ProfileSettings extends State<ProfilePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  CircleAvatar(
-                    radius: 70,
-                    backgroundColor: Colors.transparent, // Image radius
-                    backgroundImage:
-                        AssetImage("assets/img/app_img/user/Unnamed_user.png"),
+                  InkWell(
+                    onTap: () => print("change img"),
+                    child: CircleAvatar(
+                      radius: 70,
+                      backgroundColor: Colors.transparent, // Image radius
+                      backgroundImage: AssetImage(
+                          "assets/img/app_img/user/Unnamed_user.png"),
+                    ),
                   ),
                   Padding(
                     padding:
@@ -157,6 +180,9 @@ class ProfileSettings extends State<ProfilePage> {
                               fontWeight: FontWeight.w700,
                             ),
                             keyboardType: TextInputType.emailAddress,
+                            enableInteractiveSelection:
+                                onEdit, // will disable paste operation
+                            readOnly: !onEdit,
                             obscureText: false,
                             controller: controllerEmail,
                             maxLines: 1,
@@ -182,7 +208,7 @@ class ProfileSettings extends State<ProfilePage> {
                               suffixIconConstraints:
                                   BoxConstraints(maxHeight: 32),
                               suffixIcon: IconButton(
-                                padding: EdgeInsets.only(right:3),
+                                padding: EdgeInsets.only(right: 3),
                                 alignment: Alignment.centerRight,
                                 icon: ImageIcon(
                                   AssetImage(
@@ -231,6 +257,9 @@ class ProfileSettings extends State<ProfilePage> {
                               fontWeight: FontWeight.w700,
                             ),
                             keyboardType: TextInputType.emailAddress,
+                            enableInteractiveSelection:
+                                onEdit, // will disable paste operation
+                            readOnly: !onEdit,
                             controller: controllerName,
                             maxLines: 1,
                             decoration: InputDecoration(
@@ -255,7 +284,7 @@ class ProfileSettings extends State<ProfilePage> {
                               suffixIconConstraints:
                                   BoxConstraints(maxHeight: 32),
                               suffixIcon: IconButton(
-                                padding: EdgeInsets.only(right:3),
+                                padding: EdgeInsets.only(right: 3),
                                 alignment: Alignment.centerRight,
                                 icon: ImageIcon(
                                   AssetImage(
@@ -291,77 +320,77 @@ class ProfileSettings extends State<ProfilePage> {
                             style: AppTextStyle.textSize13Grey,
                           ),
                         ),
-                       Container(
-                            width: MediaQueryData.fromWindow(
+                        Container(
+                          width: MediaQueryData.fromWindow(
+                                      WidgetsBinding.instance.window)
+                                  .size
+                                  .width *
+                              0.8,
+                          height: MediaQueryData.fromWindow(
+                                      WidgetsBinding.instance.window)
+                                  .size
+                                  .width *
+                              0.07,
+                          child: DropdownButton2(
+                            buttonWidth: MediaQueryData.fromWindow(
                                         WidgetsBinding.instance.window)
                                     .size
                                     .width *
                                 0.8,
-                            height: MediaQueryData.fromWindow(
-                                        WidgetsBinding.instance.window)
-                                    .size
-                                    .width *
-                                0.07,
-                            child: DropdownButton2(
-                              buttonWidth: MediaQueryData.fromWindow(
-                                          WidgetsBinding.instance.window)
-                                      .size
-                                      .width *
-                                  0.8,
-                              isExpanded: true,
-                              isDense: true,
-                              underline: Container(
-                                height: 2,
-                                color: Color.fromARGB(255, 182, 182, 182),
-                              ),
-                              value: globals.selectedLanguage == 'en'
-                                  ? 'english'
-                                  : globals.selectedLanguage == 'fr'
-                                      ? 'french'
-                                      : 'ukranian',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Color.fromARGB(255, 27, 82, 157),
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w700,
-                              ),
-                              //menuMaxHeight: 200,
-                              items: itemsLang.map((String items) {
-                                return DropdownMenuItem(
-                                  value: items,
-                                  child: Text(items.toUpperCase()),
-                                );
-                              }).toList(),
-                              onChanged: (value) async {
-                                value.toString().toLowerCase() == "english"
-                                    ? value = 'en'
-                                    : value.toString().toLowerCase() == "french"
-                                        ? value = 'fr'
-                                        : value = 'ua';
-                                print(value.toString());
-                                globals.language = value.toString();
-                                globals.selectedLanguage = value.toString();
-
-                                languageDeterminer();
-                               await translateLanguage();
-                                await Future.delayed(const Duration(seconds: 2),
-                                   () {
-                                  
-                               });
-                                setState(() {});
-                              },
-
-                              icon: ImageIcon(AssetImage("assets/img/app_img/user/Pencil.png"),),
-                              buttonPadding: const EdgeInsets.only(left: 10),
-                              dropdownDecoration: BoxDecoration(
-                                //borderRadius: BorderRadius.circular(30),
-                                color: Color.fromARGB(255, 222, 229, 239),
-                              ),
-
-                              itemHeight: 40,
-                              dropdownMaxHeight: 170,
+                            isExpanded: true,
+                            isDense: true,
+                            underline: Container(
+                              height: 2,
+                              color: Color.fromARGB(255, 182, 182, 182),
                             ),
+                            value: globals.selectedLanguage == 'en'
+                                ? 'english'
+                                : globals.selectedLanguage == 'fr'
+                                    ? 'french'
+                                    : 'ukranian',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Color.fromARGB(255, 27, 82, 157),
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w700,
+                            ),
+                            //menuMaxHeight: 200,
+                            items: itemsLang.map((String items) {
+                              return DropdownMenuItem(
+                                value: items,
+                                child: Text(items.toUpperCase()),
+                              );
+                            }).toList(),
+                            onChanged: (value) async {
+                              value.toString().toLowerCase() == "english"
+                                  ? value = 'en'
+                                  : value.toString().toLowerCase() == "french"
+                                      ? value = 'fr'
+                                      : value = 'ua';
+                              print(value.toString());
+                              globals.language = value.toString();
+                              globals.selectedLanguage = value.toString();
+
+                              languageDeterminer();
+                              await translateLanguage();
+                              await Future.delayed(
+                                  const Duration(seconds: 2), () {});
+                              setState(() {});
+                            },
+
+                            icon: ImageIcon(
+                              AssetImage("assets/img/app_img/user/Pencil.png"),
+                            ),
+                            buttonPadding: const EdgeInsets.only(left: 10),
+                            dropdownDecoration: BoxDecoration(
+                              //borderRadius: BorderRadius.circular(30),
+                              color: Color.fromARGB(255, 222, 229, 239),
+                            ),
+
+                            itemHeight: 40,
+                            dropdownMaxHeight: 170,
                           ),
+                        ),
                       ]),
                 ],
               )),

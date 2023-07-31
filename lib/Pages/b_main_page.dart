@@ -117,7 +117,13 @@ class _LaunchApp extends State<MainPage> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.pushNamed(context, Routes.profilePage);
+                            Navigator.pushNamed(context, Routes.profilePage)
+                                .then((_) {
+                              // This block runs when you have returned back to the 1st Page from 2nd.
+                              setState(() {
+                                // Call setState to refresh the page.
+                              });
+                            });
                           },
                           child: CircleAvatar(
                             radius: 10,

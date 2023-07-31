@@ -26,7 +26,7 @@ class Auth {
         email: email,
         password: password,
       );
-    }on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException catch (e) {
       if (e.code == 'Your Email is not correct') {
         print('No user found for that email.');
       } else if (e.code == 'wrong-password') {
@@ -64,6 +64,20 @@ class Auth {
     } catch (e) {
       print(e);
     }
+  }
+
+  Future updateName(newName) async {
+    bool successfully = false;
+    final user = _auth.currentUser;
+
+    try {
+      await user?.updateDisplayName(newName);
+      globals.userName = newName;
+      successfully = true;
+    } catch (e) {
+      print(e);
+    }
+    return successfully;
   }
 
   Future signOut() async {

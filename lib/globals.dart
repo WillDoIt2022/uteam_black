@@ -69,3 +69,7 @@ List<dynamic> generalContentArray1 = [
   {'next': 'next>'},
 
 ];
+
+//ULID DB
+//Map<dynamic, dynamic> uulidDB ={};
+List<String> uulidDB = [];

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart'; //for switch case usage
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +12,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'e3_obj_location.dart';
 import '../routes.dart';
 import '../globals.dart' as globals;
+import '../Widgets/uulid_api.dart'; //fetch uulid DB
 // ignore_for_file: prefer_const_constructors
 
 class ObjDetailsPage extends StatefulWidget {
@@ -28,14 +31,15 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
   // Initial Selected Value
   String dropdownLevelValue =
       globals.level == "" ? 'ground floor' : globals.level;
-  String dropdownUULIDValue = globals.uulid == "" ? 'lorem' : globals.uulid;
+  String dropdownUULIDValue =
+      globals.uulid == "" ? globals.uulidDB[0] : globals.uulid;
 
   @override
   void initState() {
-    super.initState();
     WidgetsBinding.instance.addObserver(this);
     currentPositionOnMap = false;
     checkCameraPermissions();
+    super.initState();
   }
 
   @override
@@ -95,13 +99,8 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
   ];
 
   // List of items in our UULID dropdown menu
-  var itemsuulid = [
-    'lorem',
-    'quisquam est',
-    'dolorem',
-    'neque porro',
-    'qui',
-  ];
+  //globals.uulidDB[0]["Label_FR"],
+  var itemsuulid = globals.uulidDB;
 
   _goToGooleMapPage(toShowAddress, onEditAdress) {
     Navigator.push(
@@ -433,66 +432,58 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                                           },
                                         ),
                                       ),
-                                       SizedBox(
+                                      SizedBox(
                                         height: 40,
                                       ),
-                                         Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              SizedBox(
-                                                height:
-                                                    MediaQueryData.fromWindow(
-                                                                WidgetsBinding
-                                                                    .instance
-                                                                    .window)
-                                                            .size
-                                                            .width *
-                                                        0.1,
-                                                width:
-                                                    MediaQueryData.fromWindow(
-                                                                WidgetsBinding
-                                                                    .instance
-                                                                    .window)
-                                                            .size
-                                                            .width *
-                                                        0.7,
-                                                child: ElevatedButton(
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    backgroundColor:
-                                                        Color.fromARGB(
-                                                            255, 250, 184, 108),
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              50.0),
-                                                    ),
-                                                    elevation: 1,
-                                                    shadowColor: Color.fromARGB(
-                                                        255, 250, 250, 250),
+                                      Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              height: MediaQueryData.fromWindow(
+                                                          WidgetsBinding
+                                                              .instance.window)
+                                                      .size
+                                                      .width *
+                                                  0.1,
+                                              width: MediaQueryData.fromWindow(
+                                                          WidgetsBinding
+                                                              .instance.window)
+                                                      .size
+                                                      .width *
+                                                  0.7,
+                                              child: ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      Color.fromARGB(
+                                                          255, 250, 184, 108),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            50.0),
                                                   ),
-                                                  onPressed: () {},
-                                                  child: Text(
-                                                    globals.generalContentArray[
-                                                            'objDetailsPageText_3']
-                                                        .toString()
-                                                        .toUpperCase(),
-                                                    style: TextStyle(
-                                                      color: Color.fromARGB(
-                                                          255, 255, 255, 255),
-                                                      fontSize: 16,
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                    ),
-                                                    textAlign: TextAlign.center,
+                                                  elevation: 1,
+                                                  shadowColor: Color.fromARGB(
+                                                      255, 250, 250, 250),
+                                                ),
+                                                onPressed: () {},
+                                                child: Text(
+                                                  globals.generalContentArray[
+                                                          'objDetailsPageText_3']
+                                                      .toString()
+                                                      .toUpperCase(),
+                                                  style: TextStyle(
+                                                    color: Color.fromARGB(
+                                                        255, 255, 255, 255),
+                                                    fontSize: 16,
+                                                    fontFamily: 'Inter',
+                                                    fontWeight: FontWeight.w700,
                                                   ),
+                                                  textAlign: TextAlign.center,
                                                 ),
                                               ),
-                                            ]),
-                                      
+                                            ),
+                                          ]),
                                     ],
                                   )),
                             ],
@@ -539,64 +530,167 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                               ),
                               Expanded(
                                 flex: 3,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    
                                   children: [
-                                    SizedBox(
-                                      width: 290,
-                                      height: 30,
-                                      child: DropdownButton2(
-                                        buttonWidth: 290,
-                                        isExpanded: true,
-                                        isDense: true,
-                                        underline: Container(
-                                          height: 2,
-                                          color: Color.fromARGB(
-                                              255, 124, 160, 209),
-                                        ),
-                                        value: dropdownUULIDValue,
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          color: Color.fromARGB(
-                                              255, 124, 160, 209),
-                                          fontFamily: 'Inter',
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                        //menuMaxHeight: 200,
-                                        items: itemsuulid.map((String items) {
-                                          return DropdownMenuItem(
-                                            value: items,
-                                            child: Text(items.toUpperCase()),
-                                          );
-                                        }).toList(),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      globals.uulidDB.isEmpty
+                                          ? ElevatedButton.icon(
+                                              onPressed: () async {
+                                                await getUULID(1,1).then(
+                                                    (value) => value
+                                                        ? setState(() {})
+                                                        : print(
+                                                            "no data fetched"));
+                                              },
+                                              icon: Icon(
+                                                Icons.refresh,
+                                                size: 24.0,
+                                              ),
+                                              label:
+                                                  Text('GET UULID'), // <-- Text
+                                            )
+                                          : SizedBox(
+                                              width: 290,
+                                              height: 30,
+                                              child: DropdownButton2(
+                                                buttonWidth: 290,
+                                                isExpanded: true,
+                                                isDense: true,
+                                                underline: Container(
+                                                  height: 2,
+                                                  color: Color.fromARGB(
+                                                      255, 124, 160, 209),
+                                                ),
+                                                value: dropdownUULIDValue,
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  color: Color.fromARGB(
+                                                      255, 124, 160, 209),
+                                                  fontFamily: 'Inter',
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                                //menuMaxHeight: 200,
+                                                items: itemsuulid
+                                                    .map((String items) {
+                                                  return DropdownMenuItem(
+                                                    value: items,
+                                                    child: Text(
+                                                        items.toUpperCase()),
+                                                  );
+                                                }).toList(),
 
-                                        onChanged: (value) {
-                                          setState(() {
-                                            dropdownUULIDValue =
-                                                value as String;
-                                            globals.uulid = value;
-                                          });
-                                        },
-                                        icon: const Icon(
-                                          Icons.keyboard_arrow_down,
-                                          color:
-                                              Color.fromARGB(255, 15, 77, 154),
-                                        ),
-                                        buttonPadding:
-                                            const EdgeInsets.only(left: 15),
-                                        dropdownDecoration: BoxDecoration(
-                                          //borderRadius: BorderRadius.circular(30),
-                                          color: Color.fromARGB(
-                                              255, 222, 229, 239),
-                                        ),
+                                                onChanged: (value) {
+                                                  print(itemsuulid.indexOf(
+                                                          value ?? 'default') +
+                                                      1);
+                                                      final userChoice=itemsuulid.indexOf(
+                                                          value ?? 'default') +
+                                                      1;
+                                                      getUULID(userChoice, 1);
+                                                  setState(() {
+                                                    dropdownUULIDValue =
+                                                        value as String;
+                                                    globals.uulid = value;
+                                                  });
+                                                },
+                                                icon: const Icon(
+                                                  Icons.keyboard_arrow_down,
+                                                  color: Color.fromARGB(
+                                                      255, 15, 77, 154),
+                                                ),
+                                                buttonPadding:
+                                                    const EdgeInsets.only(
+                                                        left: 15),
+                                                dropdownDecoration:
+                                                    BoxDecoration(
+                                                  //borderRadius: BorderRadius.circular(30),
+                                                  color: Color.fromARGB(
+                                                      255, 222, 229, 239),
+                                                ),
 
-                                        itemHeight: 40,
-                                        dropdownMaxHeight: 170,
-                                      ),
-                                    )
-                                  ],
-                                ),
+                                                itemHeight: 40,
+                                                dropdownMaxHeight: 170,
+                                              ),
+                                            )
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                     if (globals.uulidDB.isNotEmpty) 
+                                          SizedBox(
+                                              width: 290,
+                                              height: 30,
+                                              child: DropdownButton2(
+                                                buttonWidth: 290,
+                                                isExpanded: true,
+                                                isDense: true,
+                                                underline: Container(
+                                                  height: 2,
+                                                  color: Color.fromARGB(
+                                                      255, 124, 160, 209),
+                                                ),
+                                                value: dropdownUULIDValue,
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  color: Color.fromARGB(
+                                                      255, 124, 160, 209),
+                                                  fontFamily: 'Inter',
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                                //menuMaxHeight: 200,
+                                                items: itemsuulid
+                                                    .map((String items) {
+                                                  return DropdownMenuItem(
+                                                    value: items,
+                                                    child: Text(
+                                                        items.toUpperCase()),
+                                                  );
+                                                }).toList(),
+
+                                                onChanged: (value) {
+                                                  print(itemsuulid.indexOf(
+                                                          value ?? 'default') +
+                                                      1);
+                                                      final userChoice=itemsuulid.indexOf(value ?? 'default') +
+                                                      1;
+                                                      getUULID(userChoice, 2);
+                                                  setState(() {
+                                                    dropdownUULIDValue =
+                                                        value as String;
+                                                    globals.uulid = value;
+                                                  });
+                                                },
+                                                icon: const Icon(
+                                                  Icons.keyboard_arrow_down,
+                                                  color: Color.fromARGB(
+                                                      255, 15, 77, 154),
+                                                ),
+                                                buttonPadding:
+                                                    const EdgeInsets.only(
+                                                        left: 15),
+                                                dropdownDecoration:
+                                                    BoxDecoration(
+                                                  //borderRadius: BorderRadius.circular(30),
+                                                  color: Color.fromARGB(
+                                                      255, 222, 229, 239),
+                                                ),
+
+                                                itemHeight: 40,
+                                                dropdownMaxHeight: 170,
+                                              ),
+                                            )
+                                    ],
+                                  ),
+                                ]),
                               ),
                             ],
                         2: (BuildContext context) => <Widget>[
@@ -630,8 +724,10 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                                 child: Align(
                                   alignment: Alignment.center,
                                   child: ElevatedButton(
+                                    
                                     style: ElevatedButton.styleFrom(
-                                      minimumSize: Size(300, 200),
+                                      
+                                      //minimumSize: Size(300, 200),????????????????????????
                                       backgroundColor:
                                           Color.fromARGB(255, 212, 223, 236),
                                       shape: RoundedRectangleBorder(

@@ -5,7 +5,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 //settings
 import '../globals.dart' as globals;
 import '../routes.dart';
+//widgets
+import '../Widgets/uulid_api.dart';//fetch uulid DB
 // ignore_for_file: prefer_const_constructors
+
+
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key})
@@ -29,6 +33,7 @@ class _LaunchApp extends State<MainPage> {
 
   @override
   void initState() {
+    getUULID(1,1);
     super.initState();
   }
 

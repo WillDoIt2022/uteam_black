@@ -95,7 +95,7 @@ class FooterMenuWidget extends State<FooterMenu> {
             iconSize: 50,
             color: Color.fromARGB(255, 255, 255, 255).withOpacity(0.8),
             tooltip: 'Settings',
-            onPressed: () {},
+            onPressed: () { },
           ),
         ],
       ),

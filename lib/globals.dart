@@ -72,4 +72,17 @@ List<dynamic> generalContentArray1 = [
 
 //ULID DB
 //Map<dynamic, dynamic> uulidDB ={};
-List<String> uulidDB = [];
+List<dynamic>uulidDB = [];
+String? dropdownUULIDValueLevel0;
+String? dropdownUULIDValueLevel1;
+  String? dropdownUULIDValueLevel2;
+  String? dropdownUULIDValueLevel3;
+  String? dropdownUULIDValueLevel4;
+  String? dropdownUULIDValueLevel5;
+  String? dropdownUULIDValueLevel6;
+  String? dropdownUULIDValueLevel7;
+  String? dropdownUULIDValueLevel8;
+  String? dropdownUULIDValueLevel9;
+
+
+String fullPath="";

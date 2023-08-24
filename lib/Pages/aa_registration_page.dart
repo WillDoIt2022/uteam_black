@@ -607,6 +607,7 @@ class _Register extends State<RegistrationPage>
                         ),
                       ),
                     ),
+                    //Continue with Google Button
                     if (signUp == true)
                       SizedBox(
                         height: MediaQueryData.fromWindow(

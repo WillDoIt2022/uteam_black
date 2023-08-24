@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+//Packages
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../BLoC/obj_details_counter.dart';
+//widgets
+import '../Widgets/uulid_api.dart';//fetch uulid DB
 import '../Widgets/footer_menu.dart';
+//Settings
 import '../globals.dart' as globals;
+import '../BLoC/obj_details_counter.dart';
 
 // ignore_for_file: prefer_const_constructors
 
@@ -15,10 +19,13 @@ class AddObjPage extends StatefulWidget {
   }
 }
 
+
 class _AddObj extends State<AddObjPage> {
   @override
   Widget build(BuildContext context) {
     //debugShowCheckedModeBanner: false, //remove the debug banner "Demo"
+
+
 
     return WillPopScope(onWillPop: () async {
       Navigator.pushNamedAndRemoveUntil(
@@ -123,6 +130,11 @@ class _AddObj extends State<AddObjPage> {
                           globals.objectId = "";
                           globals.level = "";
                           globals.uulid = "";
+                          globals.uulid = "";
+                          globals.fullPath = "";
+                          globals.uulidDB = [];
+                          
+                          getUULID(0,0);
                           BlocProvider.of<CounterNav>(context)
                               .add(CounterResetEvent());
                           Navigator.pushNamed(

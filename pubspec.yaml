@@ -32,7 +32,7 @@ dependencies:
   flutter:
     sdk: flutter
 #camera controller
-  camera: ^0.10.5+2
+  camera: 0.10.3+2
 
 
 

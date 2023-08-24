@@ -55,11 +55,14 @@ class _DataBase extends State<DataBasePage> {
   }
 
   objectDetailsSet(data) {
+    print(data["uulidList"]);
     globals.flag = false;
     globals.objectId = data['id'];
     globals.newLatitude = data['latitude'];
     globals.newLongitude = data['longitude'];
     globals.uulid = data['uulid'];
+    globals.fullPath = data['uulidPath'];
+    globals.uulidDB=data["uulidList"];
     globals.objectName = data['objectName'];
     globals.newCountry = data['country'];
     globals.newCountryIso = data['countryIso'];
@@ -76,6 +79,8 @@ class _DataBase extends State<DataBasePage> {
       setState(() {
         filteredDb = filteredDb
             .where((e) => (e["uulid"]
+                    .contains(controllerSearch.text.toString().toLowerCase()) ||
+                e["uulidPath"]
                     .contains(controllerSearch.text.toString().toLowerCase()) ||
                 e["street"]
                     .contains(controllerSearch.text.toString().toLowerCase()) ||
@@ -106,7 +111,10 @@ class _DataBase extends State<DataBasePage> {
       setState(() {
         filteredDb = filteredDb
             .where((e) => (e[selectedFilteredValue.toString().toLowerCase()]
-                .contains(controllerSearch.text.toString().toLowerCase())))
+                .contains(controllerSearch.text.toString().toLowerCase())||
+                e["uulidPath"]
+                    .contains(controllerSearch.text.toString().toLowerCase()
+                )))
             .toList();
       });
     }
@@ -397,10 +405,8 @@ class _DataBase extends State<DataBasePage> {
                                                             ),
                                                             child: Text(
                                                               TextTools.toUppercaseFirstLetter(
-                                                                  text: filteredDb[
-                                                                          index]
-                                                                      [
-                                                                      "uulid"]),
+                                                                  text: 
+                                                                      "${filteredDb[index]['uulidPath']}: ${filteredDb[index]['uulid']}"),
                                                               overflow:
                                                                   TextOverflow
                                                                       .ellipsis,

@@ -28,6 +28,7 @@ class _LaunchCamera extends State<PhotoPage> {
 
   @override
   void initState() {
+
     isCameraReady = false;
     isPictureDone = false;
     startCamera();
@@ -35,19 +36,28 @@ class _LaunchCamera extends State<PhotoPage> {
   }
 
   Future<void> startCamera() async {
+    
     cameras = await availableCameras();
-    cameraController = CameraController(cameras[0], ResolutionPreset.high);
+    cameraController = CameraController(cameras[0], ResolutionPreset.high,imageFormatGroup: ImageFormatGroup.jpeg,);
+    
+    print(cameras[0]);
     await cameraController.initialize().then((value) {
       if (!mounted) {
         return;
+        
       }
+      print(cameraController);
       setState(() {
         isCameraReady = true;
       });
+        
     }).catchError((e) {
+      print("На ОШИБКЕ В КАМЕРЕ!!!!");
       print(e);
     });
   }
+
+
 
   Future takePicture() async {
     if (!cameraController.value.isInitialized) {
@@ -58,7 +68,6 @@ class _LaunchCamera extends State<PhotoPage> {
     }
     try {
       await cameraController.setFlashMode(FlashMode.off);
-
       XFile picture = await cameraController.takePicture();
       setState(() {
         isPictureDone = true;
@@ -72,6 +81,7 @@ class _LaunchCamera extends State<PhotoPage> {
 
   @override
   void dispose() {
+    
    cameraController.dispose();
     super.dispose();
   }

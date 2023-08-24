@@ -1,19 +1,21 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
+//packages
 import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart'; //for switch case usage
 import 'package:flutter_bloc/flutter_bloc.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:text_tools/text_tools.dart';
 import 'package:another_flushbar/flushbar.dart'; //notifys
+import 'package:loading_animation_widget/loading_animation_widget.dart'; //Spinner
 import 'package:permission_handler/permission_handler.dart';
-import '../BLoC/obj_details_counter.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+//widgets
 import 'e3_obj_location.dart';
+import '../Widgets/uulid_api.dart'; //fetch uulid DB
+//settings
 import '../routes.dart';
 import '../globals.dart' as globals;
-import '../Widgets/uulid_api.dart'; //fetch uulid DB
+import '../BLoC/obj_details_counter.dart';
 // ignore_for_file: prefer_const_constructors
+// ignore: import_of_legacy_library_into_null_safe
 
 class ObjDetailsPage extends StatefulWidget {
   const ObjDetailsPage({Key? key})
@@ -27,18 +29,23 @@ class ObjDetailsPage extends StatefulWidget {
 class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
   bool currentPositionOnMap = false;
   bool cameraPermissionStatus = false;
+  bool uulidSelected = false;
+  bool uulidAPIRequestFlag = false;
 
   // Initial Selected Value
   String dropdownLevelValue =
       globals.level == "" ? 'ground floor' : globals.level;
-  String dropdownUULIDValue =
-      globals.uulid == "" ? globals.uulidDB[0] : globals.uulid;
 
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
     currentPositionOnMap = false;
     checkCameraPermissions();
+    print(globals.uulidDB);
+    globals.dropdownUULIDValueLevel0 = null;
+
+    uulidLabelsExistChecker();
+
     super.initState();
   }
 
@@ -77,6 +84,44 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
     }
   }
 
+  uulidLabelsExistChecker() {
+    if (globals.fullPath.isNotEmpty) {
+      List<String> strarray = globals.fullPath.split(".");
+      print("For test Im here??");
+      globals.dropdownUULIDValueLevel0 = strarray.length >= 1
+          ? globals.uulidDB[0][(0).toString()][int.parse(strarray[0]) - 1]
+          : null;
+      globals.dropdownUULIDValueLevel1 = strarray.length >= 2
+          ? globals.uulidDB[1][(1).toString()][int.parse(strarray[1]) - 1]
+          : null;
+      globals.dropdownUULIDValueLevel2 = strarray.length >= 3
+          ? globals.uulidDB[2][(2).toString()][int.parse(strarray[2]) - 1]
+          : null;
+      globals.dropdownUULIDValueLevel3 = strarray.length >= 4
+          ? globals.uulidDB[3][(3).toString()][int.parse(strarray[3]) - 1]
+          : null;
+      globals.dropdownUULIDValueLevel4 = strarray.length >= 5
+          ? globals.uulidDB[4][(4).toString()][int.parse(strarray[4]) - 1]
+          : null;
+      globals.dropdownUULIDValueLevel5 = strarray.length >= 6
+          ? globals.uulidDB[5][(5).toString()][int.parse(strarray[5]) - 1]
+          : null;
+      globals.dropdownUULIDValueLevel6 = strarray.length >= 7
+          ? globals.uulidDB[6][(6).toString()][int.parse(strarray[6]) - 1]
+          : null;
+      globals.dropdownUULIDValueLevel7 = strarray.length >= 8
+          ? globals.uulidDB[7][(7).toString()][int.parse(strarray[7]) - 1]
+          : null;
+      globals.dropdownUULIDValueLevel8 = strarray.length >= 9
+          ? globals.uulidDB[8][(8).toString()][int.parse(strarray[8]) - 1]
+          : null;
+      globals.dropdownUULIDValueLevel9 = strarray.length >= 10
+          ? globals.uulidDB[9][(9).toString()][int.parse(strarray[9]) - 1]
+          : null;
+      //globals.dropdownUULIDValueLevel1 = globals.uulidDB[0][(0).toString()][i];
+    }
+  }
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
@@ -97,10 +142,6 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
     '9th floor',
     '10th floor',
   ];
-
-  // List of items in our UULID dropdown menu
-  //globals.uulidDB[0]["Label_FR"],
-  var itemsuulid = globals.uulidDB;
 
   _goToGooleMapPage(toShowAddress, onEditAdress) {
     Navigator.push(
@@ -125,6 +166,44 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
       titleColor: Colors.red,
       titleSize: 18,
       message: 'Building number should be set',
+      messageSize: 14,
+      duration: Duration(seconds: 3),
+      flushbarPosition: FlushbarPosition.TOP,
+    ).show(context);
+  }
+
+  lastUULIDLevelReached() {
+    uulidSelected = true;
+    Flushbar(
+      title: 'object uulid'.toUpperCase(),
+      titleColor: Colors.green,
+      titleSize: 18,
+      message: 'You have reached last UULID level',
+      messageSize: 14,
+      duration: Duration(seconds: 3),
+      flushbarPosition: FlushbarPosition.TOP,
+    ).show(context);
+  }
+
+  selectNextUULIDLevel() {
+    uulidSelected = false;
+    Flushbar(
+      title: 'object uulid'.toUpperCase(),
+      titleColor: Colors.yellow,
+      titleSize: 18,
+      message: 'Please, select next UULID',
+      messageSize: 14,
+      duration: Duration(seconds: 3),
+      flushbarPosition: FlushbarPosition.TOP,
+    ).show(context);
+  }
+
+  noAPIResponse() {
+    Flushbar(
+      title: 'object uulid'.toUpperCase(),
+      titleColor: Colors.yellow,
+      titleSize: 18,
+      message: 'Please, try again later',
       messageSize: 14,
       duration: Duration(seconds: 3),
       flushbarPosition: FlushbarPosition.TOP,
@@ -157,16 +236,20 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                             () {
                               if (globals.objectId == "") {
                                 if (counter == 0) {
-                                  Navigator.pop(context);
-                                } else {
+                                 Navigator.pop(context);
+                                }  else {
                                   BlocProvider.of<CounterNav>(context)
                                       .add(CounterDecrementEvent());
                                 }
                               } else {
+                                print(uulidSelected);
+                                if (counter == 1&&uulidSelected==false) {
+                                selectNextUULIDLevel();
+                              }else{
                                 Navigator.pop(context);
                               }
-                            },
-                          );
+                            }}
+                        );
                         },
                         child: Text(
                           globals.generalContentArray['back']
@@ -195,13 +278,16 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                                       currentPositionOnMap = true;
                                       globals.level = dropdownLevelValue;
                                     }
-                                    if (counter == 1) {
-                                      //if adding a new object
-                                      globals.uulid = dropdownUULIDValue;
-                                    }
+                                    if (counter == 1) {}
                                     if (counter < 2) {
-                                      BlocProvider.of<CounterNav>(context)
-                                          .add(CounterIncrementEvent());
+                                      if (uulidSelected == false &&
+                                          counter == 1) {
+                                        print("Im making a request on click");
+                                        selectNextUULIDLevel();
+                                      } else {
+                                        BlocProvider.of<CounterNav>(context)
+                                            .add(CounterIncrementEvent());
+                                      }
                                     } else {
                                       return;
                                     }
@@ -530,167 +616,322 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                               ),
                               Expanded(
                                 flex: 3,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                    
-                                  children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      globals.uulidDB.isEmpty
-                                          ? ElevatedButton.icon(
-                                              onPressed: () async {
-                                                await getUULID(1,1).then(
-                                                    (value) => value
-                                                        ? setState(() {})
-                                                        : print(
-                                                            "no data fetched"));
-                                              },
-                                              icon: Icon(
-                                                Icons.refresh,
-                                                size: 24.0,
-                                              ),
-                                              label:
-                                                  Text('GET UULID'), // <-- Text
-                                            )
-                                          : SizedBox(
-                                              width: 290,
-                                              height: 30,
-                                              child: DropdownButton2(
-                                                buttonWidth: 290,
-                                                isExpanded: true,
-                                                isDense: true,
-                                                underline: Container(
-                                                  height: 2,
-                                                  color: Color.fromARGB(
-                                                      255, 124, 160, 209),
-                                                ),
-                                                value: dropdownUULIDValue,
-                                                style: TextStyle(
-                                                  fontSize: 20,
-                                                  color: Color.fromARGB(
-                                                      255, 124, 160, 209),
-                                                  fontFamily: 'Inter',
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                                //menuMaxHeight: 200,
-                                                items: itemsuulid
-                                                    .map((String items) {
-                                                  return DropdownMenuItem(
-                                                    value: items,
-                                                    child: Text(
-                                                        items.toUpperCase()),
-                                                  );
-                                                }).toList(),
+                                child: SizedBox(
+                                    width: 350,
+                                    child: globals.uulidDB.isEmpty
+                                        ? Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                                ElevatedButton.icon(
+                                                  onPressed: () async {
+                                                    uulidAPIRequestFlag = true;
+                                                    globals.uulidDB.isEmpty
+                                                        ? await getUULID(0, 0)
+                                                            .then((value) =>
+                                                                value.isNotEmpty
+                                                                    ? setState(
+                                                                        () {
+                                                                        print(
+                                                                            "Was making a new report");
+                                                                        selectNextUULIDLevel();
+                                                                        uulidAPIRequestFlag =
+                                                                            false;
+                                                                      })
+                                                                    : setState(
+                                                                        () {
+                                                                        noAPIResponse();
+                                                                        uulidAPIRequestFlag =
+                                                                            false;
+                                                                      }))
+                                                        : setState(() {
+                                                            selectNextUULIDLevel();
+                                                            print(
+                                                                "Updating current UI");
+                                                            uulidAPIRequestFlag =
+                                                                false;
+                                                          });
+                                                  },
+                                                  icon: Icon(
+                                                    Icons.refresh,
+                                                    size: 24.0,
+                                                  ),
+                                                  label: Text(
+                                                      'GET UULID'), // <-- Text
+                                                )
+                                              ])
+                                        : ListView.builder(
+                                            itemCount: globals.uulidDB.length,
+                                            itemBuilder:
+                                                (BuildContext context, index) {
+                                              return ListView(
+                                                  physics:
+                                                      ClampingScrollPhysics(),
+                                                  shrinkWrap: true,
+                                                  padding: EdgeInsets.all(20),
+                                                  children: <Widget>[
+                                                    SizedBox(
+                                                      width: 290,
+                                                      height: 30,
+                                                      child: DropdownButton2(
+                                                        buttonWidth: 290,
+                                                        isExpanded: true,
+                                                        isDense: true,
+                                                        underline: Container(
+                                                          height: 2,
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              124,
+                                                              160,
+                                                              209),
+                                                        ),
+                                                        value: index == 0
+                                                            ? globals
+                                                                .dropdownUULIDValueLevel0
+                                                            : index == 1
+                                                                ? globals
+                                                                    .dropdownUULIDValueLevel1
+                                                                : index == 2
+                                                                    ? globals
+                                                                        .dropdownUULIDValueLevel2
+                                                                    : index == 3
+                                                                        ? globals
+                                                                            .dropdownUULIDValueLevel3
+                                                                        : index ==
+                                                                                4
+                                                                            ? globals.dropdownUULIDValueLevel4
+                                                                            : index == 5
+                                                                                ? globals.dropdownUULIDValueLevel5
+                                                                                : index == 6
+                                                                                    ? globals.dropdownUULIDValueLevel6
+                                                                                    : index == 7
+                                                                                        ? globals.dropdownUULIDValueLevel7
+                                                                                        : index == 8
+                                                                                            ? globals.dropdownUULIDValueLevel8
+                                                                                            : globals.dropdownUULIDValueLevel9,
+                                                        hint: Text(
+                                                          'Select Item'
+                                                              .toUpperCase(),
+                                                          style: TextStyle(
+                                                            fontSize: 18,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    145,
+                                                                    1,
+                                                                    1),
+                                                            fontFamily: 'Inter',
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                          ),
+                                                        ),
+                                                        style: TextStyle(
+                                                          fontSize: 20,
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              124,
+                                                              160,
+                                                              209),
+                                                          fontFamily: 'Inter',
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                        ),
+                                                        items: (globals.uulidDB[
+                                                                        index][
+                                                                        (index)
+                                                                            .toString()]
+                                                                    .cast<
+                                                                        String>()
+                                                                as List<String>)
+                                                            .map(
+                                                                (String items) {
+                                                          return DropdownMenuItem(
+                                                            value: items,
+                                                            child: Text(items
+                                                                .toUpperCase()),
+                                                          );
+                                                        }).toList(),
+                                                        onChanged:
+                                                            (value) async {
+                                                          uulidAPIRequestFlag =
+                                                              true;
+                                                          print(value);
+                                                          print(
+                                                              "This IS INDEX");
+                                                          print(index);
+                                                          print(globals.uulidDB[
+                                                                      index][
+                                                                      (index)
+                                                                          .toString()]
+                                                                  .indexOf(value ??
+                                                                      'default') +
+                                                              1);
+                                                          final userChoice = globals
+                                                                  .uulidDB[
+                                                                      index][
+                                                                      (index)
+                                                                          .toString()]
+                                                                  .indexOf(value ??
+                                                                      'default') +
+                                                              1;
+                                                          index == 0
+                                                              ? globals
+                                                                      .dropdownUULIDValueLevel1 =
+                                                                  null
+                                                              : null;
+                                                          index == 1
+                                                              ? globals
+                                                                      .dropdownUULIDValueLevel2 =
+                                                                  null
+                                                              : null;
+                                                          index == 2
+                                                              ? globals
+                                                                      .dropdownUULIDValueLevel3 =
+                                                                  null
+                                                              : null;
+                                                          index == 3
+                                                              ? globals
+                                                                      .dropdownUULIDValueLevel4 =
+                                                                  null
+                                                              : null;
+                                                          index == 4
+                                                              ? globals
+                                                                      .dropdownUULIDValueLevel5 =
+                                                                  null
+                                                              : null;
+                                                          index == 5
+                                                              ? globals
+                                                                      .dropdownUULIDValueLevel6 =
+                                                                  null
+                                                              : null;
+                                                          index == 6
+                                                              ? globals
+                                                                      .dropdownUULIDValueLevel7 =
+                                                                  null
+                                                              : null;
+                                                          index == 7
+                                                              ? globals
+                                                                      .dropdownUULIDValueLevel8 =
+                                                                  null
+                                                              : null;
+                                                          index == 8
+                                                              ? globals
+                                                                      .dropdownUULIDValueLevel9 =
+                                                                  null
+                                                              : null;
+                                                          setState(() {
+                                                            index == 0
+                                                                ? globals
+                                                                        .dropdownUULIDValueLevel0 =
+                                                                    value
+                                                                        .toString()
+                                                                : null;
+                                                            index == 1
+                                                                ? globals
+                                                                        .dropdownUULIDValueLevel1 =
+                                                                    value
+                                                                        .toString()
+                                                                : null;
+                                                            index == 2
+                                                                ? globals
+                                                                        .dropdownUULIDValueLevel2 =
+                                                                    value
+                                                                        .toString()
+                                                                : null;
+                                                            index == 3
+                                                                ? globals
+                                                                        .dropdownUULIDValueLevel3 =
+                                                                    value
+                                                                        .toString()
+                                                                : null;
+                                                            index == 4
+                                                                ? globals
+                                                                        .dropdownUULIDValueLevel4 =
+                                                                    value
+                                                                        .toString()
+                                                                : null;
+                                                            index == 5
+                                                                ? globals
+                                                                        .dropdownUULIDValueLevel5 =
+                                                                    value
+                                                                        .toString()
+                                                                : null;
+                                                            index == 6
+                                                                ? globals
+                                                                        .dropdownUULIDValueLevel6 =
+                                                                    value
+                                                                        .toString()
+                                                                : null;
+                                                            index == 7
+                                                                ? globals
+                                                                        .dropdownUULIDValueLevel7 =
+                                                                    value
+                                                                        .toString()
+                                                                : null;
+                                                            index == 8
+                                                                ? globals
+                                                                        .dropdownUULIDValueLevel8 =
+                                                                    value
+                                                                        .toString()
+                                                                : null;
+                                                            index == 9
+                                                                ? globals
+                                                                        .dropdownUULIDValueLevel9 =
+                                                                    value
+                                                                        .toString()
+                                                                : null;
+                                                            globals.uulid =
+                                                                value
+                                                                    .toString();
+                                                          });
+                                                          print(
+                                                              "This is globals.dropdownUULIDValueLevel0");
+                                                          print(globals
+                                                              .dropdownUULIDValueLevel0);
+                                                          print(globals.uulid);
 
-                                                onChanged: (value) {
-                                                  print(itemsuulid.indexOf(
-                                                          value ?? 'default') +
-                                                      1);
-                                                      final userChoice=itemsuulid.indexOf(
-                                                          value ?? 'default') +
-                                                      1;
-                                                      getUULID(userChoice, 1);
-                                                  setState(() {
-                                                    dropdownUULIDValue =
-                                                        value as String;
-                                                    globals.uulid = value;
-                                                  });
-                                                },
-                                                icon: const Icon(
-                                                  Icons.keyboard_arrow_down,
-                                                  color: Color.fromARGB(
-                                                      255, 15, 77, 154),
-                                                ),
-                                                buttonPadding:
-                                                    const EdgeInsets.only(
-                                                        left: 15),
-                                                dropdownDecoration:
-                                                    BoxDecoration(
-                                                  //borderRadius: BorderRadius.circular(30),
-                                                  color: Color.fromARGB(
-                                                      255, 222, 229, 239),
-                                                ),
-
-                                                itemHeight: 40,
-                                                dropdownMaxHeight: 170,
-                                              ),
-                                            )
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                     if (globals.uulidDB.isNotEmpty) 
-                                          SizedBox(
-                                              width: 290,
-                                              height: 30,
-                                              child: DropdownButton2(
-                                                buttonWidth: 290,
-                                                isExpanded: true,
-                                                isDense: true,
-                                                underline: Container(
-                                                  height: 2,
-                                                  color: Color.fromARGB(
-                                                      255, 124, 160, 209),
-                                                ),
-                                                value: dropdownUULIDValue,
-                                                style: TextStyle(
-                                                  fontSize: 20,
-                                                  color: Color.fromARGB(
-                                                      255, 124, 160, 209),
-                                                  fontFamily: 'Inter',
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                                //menuMaxHeight: 200,
-                                                items: itemsuulid
-                                                    .map((String items) {
-                                                  return DropdownMenuItem(
-                                                    value: items,
-                                                    child: Text(
-                                                        items.toUpperCase()),
-                                                  );
-                                                }).toList(),
-
-                                                onChanged: (value) {
-                                                  print(itemsuulid.indexOf(
-                                                          value ?? 'default') +
-                                                      1);
-                                                      final userChoice=itemsuulid.indexOf(value ?? 'default') +
-                                                      1;
-                                                      getUULID(userChoice, 2);
-                                                  setState(() {
-                                                    dropdownUULIDValue =
-                                                        value as String;
-                                                    globals.uulid = value;
-                                                  });
-                                                },
-                                                icon: const Icon(
-                                                  Icons.keyboard_arrow_down,
-                                                  color: Color.fromARGB(
-                                                      255, 15, 77, 154),
-                                                ),
-                                                buttonPadding:
-                                                    const EdgeInsets.only(
-                                                        left: 15),
-                                                dropdownDecoration:
-                                                    BoxDecoration(
-                                                  //borderRadius: BorderRadius.circular(30),
-                                                  color: Color.fromARGB(
-                                                      255, 222, 229, 239),
-                                                ),
-
-                                                itemHeight: 40,
-                                                dropdownMaxHeight: 170,
-                                              ),
-                                            )
-                                    ],
-                                  ),
-                                ]),
+                                                          await getUULID(
+                                                                  userChoice,
+                                                                  1 + index)
+                                                              .then((value) => value
+                                                                      .isNotEmpty
+                                                                  ? setState(
+                                                                      () {
+                                                                      selectNextUULIDLevel();
+                                                                      uulidAPIRequestFlag =
+                                                                          false;
+                                                                    })
+                                                                  : setState(
+                                                                      () {
+                                                                      lastUULIDLevelReached();
+                                                                      uulidAPIRequestFlag =
+                                                                          false;
+                                                                    }));
+                                                        },
+                                                        icon: const Icon(
+                                                          Icons
+                                                              .keyboard_arrow_down,
+                                                          color: Color.fromARGB(
+                                                              255, 15, 77, 154),
+                                                        ),
+                                                        buttonPadding:
+                                                            const EdgeInsets
+                                                                .only(left: 15),
+                                                        dropdownDecoration:
+                                                            BoxDecoration(
+                                                          //borderRadius: BorderRadius.circular(30),
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              222,
+                                                              229,
+                                                              239),
+                                                        ),
+                                                        itemHeight: 40,
+                                                        dropdownMaxHeight: 170,
+                                                      ),
+                                                    )
+                                                  ]);
+                                            })),
                               ),
                             ],
                         2: (BuildContext context) => <Widget>[
@@ -724,10 +965,8 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                                 child: Align(
                                   alignment: Alignment.center,
                                   child: ElevatedButton(
-                                    
                                     style: ElevatedButton.styleFrom(
-                                      
-                                      //minimumSize: Size(300, 200),????????????????????????
+                                      minimumSize: Size(300, 200),
                                       backgroundColor:
                                           Color.fromARGB(255, 212, 223, 236),
                                       shape: RoundedRectangleBorder(
@@ -739,6 +978,7 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                                           Color.fromARGB(255, 250, 250, 250),
                                     ),
                                     onPressed: () {
+
                                       Navigator.pushNamed(
                                           context, Routes.photoPage);
                                     },
@@ -889,7 +1129,22 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                         )
                       ])
                     : Container()
-                : Container()
+                : uulidAPIRequestFlag
+                    ? Container(
+                        width: MediaQueryData.fromWindow(
+                                    WidgetsBinding.instance.window)
+                                .size
+                                .width *
+                            1,
+                        color: Colors.grey.withOpacity(0.3),
+                        child: Center(
+                          child: LoadingAnimationWidget.twoRotatingArc(
+                            color: Color.fromARGB(255, 15, 77, 154),
+                            size: 50,
+                          ),
+                        ),
+                      )
+                    : Container()
           ]));
     });
   }

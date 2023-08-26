@@ -11,11 +11,11 @@ bool onSave = true;
 bool userID = false;
 String selectedLanguage = "en";
 String language = "";
-String userEmail="";
+String userEmail = "";
 String userName = "";
 String phoneNumber = "";
 String objectId = "";
-String accountName ="";
+String accountName = "";
 String objectName = "";
 String uulid = "";
 String level = "";
@@ -67,22 +67,28 @@ Map<String, String> generalContentArray = {
 List<dynamic> generalContentArray1 = [
   {'back': '<back'},
   {'next': 'next>'},
-
 ];
+
+List usersAccounts = [];
 
 //ULID DB
 //Map<dynamic, dynamic> uulidDB ={};
-List<dynamic>uulidDB = [];
+List<dynamic> uulidDB = [];
 String? dropdownUULIDValueLevel0;
 String? dropdownUULIDValueLevel1;
-  String? dropdownUULIDValueLevel2;
-  String? dropdownUULIDValueLevel3;
-  String? dropdownUULIDValueLevel4;
-  String? dropdownUULIDValueLevel5;
-  String? dropdownUULIDValueLevel6;
-  String? dropdownUULIDValueLevel7;
-  String? dropdownUULIDValueLevel8;
-  String? dropdownUULIDValueLevel9;
+String? dropdownUULIDValueLevel2;
+String? dropdownUULIDValueLevel3;
+String? dropdownUULIDValueLevel4;
+String? dropdownUULIDValueLevel5;
+String? dropdownUULIDValueLevel6;
+String? dropdownUULIDValueLevel7;
+String? dropdownUULIDValueLevel8;
+String? dropdownUULIDValueLevel9;
+
+String fullPath = "";
 
 
-String fullPath="";
+
+
+
+

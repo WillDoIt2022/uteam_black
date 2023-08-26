@@ -1,9 +1,12 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 //packages
 import 'package:another_flushbar/flushbar.dart'; //notifys
 import 'package:email_validator/email_validator.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart'; //Spinner
+import 'package:cloud_firestore/cloud_firestore.dart'; //Firestore
 //widgets
 import "../Widgets/language_determiner.dart";
 import "../Widgets/translator.dart";
@@ -26,15 +29,26 @@ class RegistrationPage extends StatefulWidget {
   }
 }
 
+class AppAccounts {
+  dynamic id;
+  String? name;
+  bool? access;
+
+  AppAccounts({this.id, this.name, this.access});
+
+  // method to convert AppAccounts to a Map
+  Map<String, dynamic> toMap() => {'id': id, 'name': name, 'access': access};
+}
+
 class _Register extends State<RegistrationPage>
     with SingleTickerProviderStateMixin {
   dynamic controllerEmail = TextEditingController(text: "");
   dynamic controllerPassword = TextEditingController(text: "");
   dynamic controllerRepeatPassword = TextEditingController(text: "");
   dynamic controllerName = TextEditingController(text: "");
-  bool filteredDbflag = false;//Spinner controller while connectiong to DB 
-  dynamic signUp;//SignIn or SignUp mode controller 
-  bool passwordVisible = false;//Password visibilty on UI controller
+  bool filteredDbflag = false; //Spinner controller while connectiong to DB
+  dynamic signUp; //SignIn or SignUp mode controller
+  bool passwordVisible = false; //Password visibilty on UI controller
 
   final List<String> itemsLang = [
     'english',
@@ -42,12 +56,13 @@ class _Register extends State<RegistrationPage>
     'ukranian',
   ];
 
+  final accountsAccess = FirebaseFirestore.instance.collection('users');
 
   @override
   void initState() {
     super.initState();
-    signUp = true;//First user UI mode set as signUp
-    signOut();//if user was not log out before (somehow), signOut him before loading this Page
+    signUp = true; //First user UI mode set as signUp
+    signOut(); //if user was not log out before (somehow), signOut him before loading this Page
   }
 
   validator(controllerEmail, controllerPassword, controllerRepeatPassword,
@@ -126,6 +141,35 @@ class _Register extends State<RegistrationPage>
 
   signOut() async {
     await Auth().signOut().then((value) => print(value));
+  }
+
+  accountsGenerator() {
+    Map <String, dynamic> finalAccountsAccess={};
+    var workingList=[];
+    List<AppAccounts> usersAccounts = [
+      AppAccounts(id: DateTime.now().microsecondsSinceEpoch, name: "grand optical", access: true),
+      AppAccounts(id: DateTime.now().microsecondsSinceEpoch, name: "axe energy", access: false),
+      AppAccounts(id: DateTime.now().microsecondsSinceEpoch, name: "everest", access: false),
+      AppAccounts(id: DateTime.now().microsecondsSinceEpoch, name: "odesa city", access: false),
+    ];
+
+for(var i = 0; i < usersAccounts.length; i++){
+        workingList.add(usersAccounts[i].toMap());
+        finalAccountsAccess={"accountsAccess":workingList};
+    }
+
+   addNewUsersAccounts(finalAccountsAccess);
+  }
+
+  Future addNewUsersAccounts(finalAccountsAccess) async {
+    accountsAccess
+        .doc(globals.phoneNumber)
+        .set(finalAccountsAccess)
+        .then((value) => Navigator.pushNamedAndRemoveUntil(
+                                          context,
+                                          Routes.mainPage,
+                                          (Route<dynamic> route) => false))
+        .onError((e, _) => print("Error writing document: $e"));
   }
 
   @override
@@ -561,10 +605,7 @@ class _Register extends State<RegistrationPage>
                                   controllerName.text);
                               await Auth().authStateChanges().then((value) =>
                                   value
-                                      ? Navigator.pushNamedAndRemoveUntil(
-                                          context,
-                                          Routes.mainPage,
-                                          (Route<dynamic> route) => false)
+                                      ? accountsGenerator()
                                       : logInFalseMessage());
                             } else {
                               print("Some troubles");
@@ -607,37 +648,7 @@ class _Register extends State<RegistrationPage>
                         ),
                       ),
                     ),
-                    //Continue with Google Button
-                    if (signUp == true)
-                      SizedBox(
-                        height: MediaQueryData.fromWindow(
-                                    WidgetsBinding.instance.window)
-                                .size
-                                .width *
-                            0.1,
-                        width: MediaQueryData.fromWindow(
-                                    WidgetsBinding.instance.window)
-                                .size
-                                .width *
-                            0.6,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.middleBlueVar2,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50.0),
-                            ),
-                            elevation: 1,
-                            shadowColor: Color.fromARGB(255, 250, 250, 250),
-                          ),
-                          onPressed: () async {},
-                          child: Text(
-                            globals.generalContentArray['logInRegisteredText_2']
-                                .toString(),
-                            style: AppTextStyle.textSize20Light,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
+                    
                     SizedBox(
                       width: MediaQueryData.fromWindow(
                                   WidgetsBinding.instance.window)

@@ -265,7 +265,7 @@ class _ObjSummary extends State<ObjectPage> {
                                 ),
                                 child: isPictureDone == "true"
                                     ? Image.file(File(widget.picture.path),
-                                        fit: BoxFit.cover, width: 200)
+                                        fit: BoxFit.cover, height: 200,width: 200)
                                     : SizedBox(
                                         width: 200,
                                         height: 200,

@@ -12,7 +12,7 @@ Widget logoImg(signUp) {
             width: MediaQueryData.fromWindow(WidgetsBinding.instance.window).size.width *(signUp?1:0.7),
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/img/app_img/Main_pic.PNG'),
+                image: AssetImage('assets/img/app_img/Main_pic.png'),
                 fit: BoxFit.contain,
               ),
             ),

@@ -592,7 +592,7 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                                     decoration: BoxDecoration(
                                       image: DecorationImage(
                                         image: AssetImage(
-                                            'assets/img/app_img/Main_pic_2.PNG'),
+                                            'assets/img/app_img/Main_pic_2.png'),
                                         fit: BoxFit.contain,
                                       ),
                                     ),
@@ -953,7 +953,7 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                                     decoration: BoxDecoration(
                                       image: DecorationImage(
                                         image: AssetImage(
-                                            'assets/img/app_img/Main_pic_2.PNG'),
+                                            'assets/img/app_img/Main_pic_2.png'),
                                         fit: BoxFit.contain,
                                       ),
                                     ),

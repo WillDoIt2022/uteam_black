@@ -98,7 +98,7 @@ class _AddObj extends State<AddObjPage> {
                         1,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage('assets/img/app_img/Main_pic_2.PNG'),
+                        image: AssetImage('assets/img/app_img/Main_pic_2.png'),
                         fit: BoxFit.contain,
                       ),
                     ),

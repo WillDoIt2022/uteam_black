@@ -482,10 +482,16 @@ class _DataBase extends State<DataBasePage> {
                                                     data = filteredDb[index];
                                                     objectDetailsSet(data);
                                                     globals.onSave = false;
-                                                    Navigator.pushNamed(
+                                                    print("event before reffering to main page");
+                                                    //Navigator.pushNamed(
+                                                      //context,
+                                                      //Routes.objectPage,
+                                                    //);
+Navigator.pushNamed(
                                                       context,
-                                                      Routes.objectPage,
+                                                      Routes.mainPage,
                                                     );
+                                                    print("event after reffering to main page");
                                                   },
                                                   child: Text(
                                                     'view more'.toUpperCase(),

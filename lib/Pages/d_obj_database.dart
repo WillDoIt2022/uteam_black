@@ -483,14 +483,14 @@ class _DataBase extends State<DataBasePage> {
                                                     objectDetailsSet(data);
                                                     globals.onSave = false;
                                                     print("event before reffering to main page");
-                                                    //Navigator.pushNamed(
-                                                      //context,
-                                                      //Routes.objectPage,
-                                                    //);
-Navigator.pushNamed(
+                                                    Navigator.pushNamed(
                                                       context,
-                                                      Routes.mainPage,
+                                                      Routes.objectPage,
                                                     );
+//Navigator.pushNamed(
+                                                      //context,
+                                                      //Routes.mainPage,
+                                                   //);
                                                     print("event after reffering to main page");
                                                   },
                                                   child: Text(

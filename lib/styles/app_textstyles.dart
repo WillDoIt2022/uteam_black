@@ -51,5 +51,11 @@ class AppTextStyle {
     fontFamily: 'Inter',
     fontWeight: FontWeight.w400,
   );
+  static TextStyle textSize16DarkNormal = TextStyle(
+    fontSize: 16,
+    color: AppColors.deepBlue,
+    fontFamily: 'Inter',
+    fontWeight: FontWeight.normal,
+  );
 }
 

@@ -11,6 +11,7 @@ import '../BLoC/obj_details_counter.dart';
 import '../globals.dart' as globals;
 import '../Widgets/footer_menu.dart';
 import '../routes.dart';
+import '../styles/app_textstyles.dart';
 
 class ObjectPage extends StatefulWidget {
   const ObjectPage({Key? key, required this.picture}) : super(key: key);
@@ -32,6 +33,7 @@ class _ObjSummary extends State<ObjectPage> {
   UploadTask? uploadTask;
   String? isPictureDone;
   bool onLoading = false;
+  bool onAddingInfo=false;
 
   @override
   void initState() {
@@ -83,10 +85,10 @@ class _ObjSummary extends State<ObjectPage> {
         "imgUrl": globals.imgUrl == "" ? urlDownloadLink : globals.imgUrl,
         "phoneNumber": globals.phoneNumber,
         "uulid": globals.uulid.toLowerCase(),
-        "uulidPath":globals.fullPath,
-        "uulidList":globals.uulidDB,
-        "accountName":globals.accountName,
-        "objectName":globals.objectName,
+        "uulidPath": globals.fullPath,
+        "uulidList": globals.uulidDB,
+        "accountName": globals.accountName,
+        "objectName": globals.objectName,
         "latitude": globals.flag ? globals.latitude : globals.newLatitude,
         "longitude": globals.flag ? globals.longitude : globals.newLongitude,
         "countryIso": globals.flag
@@ -265,7 +267,9 @@ class _ObjSummary extends State<ObjectPage> {
                                 ),
                                 child: isPictureDone == "true"
                                     ? Image.file(File(widget.picture.path),
-                                        fit: BoxFit.cover, height: 200,width: 200)
+                                        fit: BoxFit.cover,
+                                        height: 200,
+                                        width: 200)
                                     : SizedBox(
                                         width: 200,
                                         height: 200,
@@ -430,105 +434,115 @@ class _ObjSummary extends State<ObjectPage> {
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-
                               onSave
                                   ? SizedBox(
-                                    width: MediaQueryData.fromWindow(
-                                                      WidgetsBinding
-                                                          .instance.window)
-                                                  .size
-                                                  .width *
-                                              0.62,
-                                    child:Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        SizedBox(
-                                          height: MediaQueryData.fromWindow(
-                                                      WidgetsBinding
-                                                          .instance.window)
-                                                  .size
-                                                  .width *
-                                              0.08,
-                                          width: MediaQueryData.fromWindow(
-                                                      WidgetsBinding
-                                                          .instance.window)
-                                                  .size
-                                                  .width *
-                                              0.28,
-                                          child: ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor: Color.fromARGB(
-                                                  255, 222, 229, 239),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(50.0),
+                                      width: MediaQueryData.fromWindow(
+                                                  WidgetsBinding
+                                                      .instance.window)
+                                              .size
+                                              .width *
+                                          0.62,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          SizedBox(
+                                            height: MediaQueryData.fromWindow(
+                                                        WidgetsBinding
+                                                            .instance.window)
+                                                    .size
+                                                    .width *
+                                                0.08,
+                                            width: MediaQueryData.fromWindow(
+                                                        WidgetsBinding
+                                                            .instance.window)
+                                                    .size
+                                                    .width *
+                                                0.28,
+                                            child: ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: Color.fromARGB(
+                                                    255, 222, 229, 239),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          50.0),
+                                                ),
+                                                elevation: 1,
+                                                shadowColor: Color.fromARGB(
+                                                    255, 250, 250, 250),
                                               ),
-                                              elevation: 1,
-                                              shadowColor: Color.fromARGB(
-                                                  255, 250, 250, 250),
-                                            ),
-                                            onPressed: () {},
-                                            child: Text(
-                                              globals.generalContentArray[
-                                                      'objectPageText_3']
-                                                  .toString()
-                                                  .toUpperCase(),
-                                              style: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 79, 135, 199),
-                                                fontSize: 16,
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w700,
+                                              onPressed: () {
+                                                setState(() {
+                                                  onAddingInfo = true;
+                                                });
+                                              },
+                                              child: Text(
+                                                globals.generalContentArray[
+                                                        'objectPageText_3']
+                                                    .toString()
+                                                    .toUpperCase(),
+                                                style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 79, 135, 199),
+                                                  fontSize: 16,
+                                                  fontFamily: 'Inter',
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                                textAlign: TextAlign.center,
                                               ),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: MediaQueryData.fromWindow(
-                                                      WidgetsBinding
-                                                          .instance.window)
-                                                  .size
-                                                  .width *
-                                              0.08,
-                                          width: MediaQueryData.fromWindow(
-                                                      WidgetsBinding
-                                                          .instance.window)
-                                                  .size
-                                                  .width *
-                                              0.28,
-                                          child: ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor: Color.fromARGB(
-                                                  255, 222, 229, 239),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(50.0),
-                                              ),
-                                              elevation: 1,
-                                              shadowColor: Color.fromARGB(
-                                                  255, 250, 250, 250),
-                                            ),
-                                            onPressed: () {},
-                                            child: Text(
-                                              globals.generalContentArray[
-                                                      'objectPageText_4']
-                                                  .toString()
-                                                  .toUpperCase(),
-                                              style: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 79, 135, 199),
-                                                fontSize: 16,
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                              textAlign: TextAlign.center,
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),)
+                                          SizedBox(
+                                            height: MediaQueryData.fromWindow(
+                                                        WidgetsBinding
+                                                            .instance.window)
+                                                    .size
+                                                    .width *
+                                                0.08,
+                                            width: MediaQueryData.fromWindow(
+                                                        WidgetsBinding
+                                                            .instance.window)
+                                                    .size
+                                                    .width *
+                                                0.28,
+                                            child: ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: Color.fromARGB(
+                                                    255, 222, 229, 239),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          50.0),
+                                                ),
+                                                elevation: 1,
+                                                shadowColor: Color.fromARGB(
+                                                    255, 250, 250, 250),
+                                              ),
+                                              onPressed: () {
+                                                setState(() {
+                                                  onAddingInfo = true;
+                                                });
+                                              },
+                                              child: Text(
+                                                globals.generalContentArray[
+                                                        'objectPageText_4']
+                                                    .toString()
+                                                    .toUpperCase(),
+                                                style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 79, 135, 199),
+                                                  fontSize: 16,
+                                                  fontFamily: 'Inter',
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
                                   : Container(),
                               Center(
                                 child: ElevatedButton(
@@ -576,7 +590,7 @@ class _ObjSummary extends State<ObjectPage> {
                                   ),
                                 ),
                               ),
-                  ])),
+                            ])),
                     Expanded(flex: 2, child: FooterMenu()),
                   ],
                 ),
@@ -602,6 +616,183 @@ class _ObjSummary extends State<ObjectPage> {
                           ),
                         ],
                       )
+                    : Container(),
+                onAddingInfo
+                    ?  
+                    Container(
+                        color: Colors.grey.withOpacity(0.8),
+                        child:
+                    Column(
+                        children: [
+                          Expanded(
+                            flex: 7,
+                            child: SizedBox(
+                              width: MediaQueryData.fromWindow(
+                                          WidgetsBinding.instance.window)
+                                      .size
+                                      .width *
+                                  1,
+                             child: Center(
+                              child: Container(
+                                 padding: const EdgeInsets.all(10.0),
+                                  width: MediaQueryData.fromWindow(
+                                              WidgetsBinding.instance.window)
+                                          .size
+                                          .width *
+                                      0.8,
+                                  height: MediaQueryData.fromWindow(
+                                              WidgetsBinding.instance.window)
+                                          .size
+                                          .width *
+                                      0.9,
+                                  color: Colors.white,
+                                  child: TextField(
+                                      style: AppTextStyle.textSize16DarkNormal,
+                                      decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        label: 
+                                        SizedBox(
+                                           width: MediaQueryData.fromWindow(
+                                                        WidgetsBinding
+                                                            .instance.window)
+                                                   .size
+                                                    .width *
+                                                0.8,
+                                           child:
+                                             Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                      'Additional object information'
+                                                          .toUpperCase())
+                                                ])),
+                                        labelStyle: TextStyle(
+                                            fontSize: 16, color: Colors.grey),
+                                        alignLabelWithHint: true,
+                                        focusedBorder: InputBorder.none,
+                                        floatingLabelAlignment:
+                                            FloatingLabelAlignment.center,
+                                        isDense: true,
+                                      ),
+                                      keyboardType: TextInputType.multiline,
+                                      maxLines: null,
+                                      expands: true,
+                                    ),
+                                  
+                                  
+                                  
+                                  )
+                             ),
+                              
+                              ),
+                            ),
+                          Expanded(
+                              flex: 3,
+                              child:SizedBox(
+                                width: MediaQueryData.fromWindow(
+                                            WidgetsBinding.instance.window)
+                                        .size
+                                        .width *
+                                    0.8,
+                                    child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      height: MediaQueryData.fromWindow(
+                                                  WidgetsBinding
+                                                      .instance.window)
+                                              .size
+                                              .width *
+                                          0.08,
+                                      width: MediaQueryData.fromWindow(
+                                                  WidgetsBinding
+                                                      .instance.window)
+                                              .size
+                                              .width *
+                                          0.28,
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Color.fromARGB(
+                                              255, 222, 229, 239),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(50.0),
+                                          ),
+                                          elevation: 1,
+                                          shadowColor: Color.fromARGB(
+                                              255, 250, 250, 250),
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            onAddingInfo = false;
+                                          });
+                                        },
+                                        child: Text(
+                                          "back".toUpperCase(),
+                                          style: TextStyle(
+                                            color: Color.fromARGB(
+                                                255, 79, 135, 199),
+                                            fontSize: 16,
+                                            fontFamily: 'Inter',
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: MediaQueryData.fromWindow(
+                                                  WidgetsBinding
+                                                      .instance.window)
+                                              .size
+                                              .width *
+                                          0.08,
+                                      width: MediaQueryData.fromWindow(
+                                                  WidgetsBinding
+                                                      .instance.window)
+                                              .size
+                                              .width *
+                                          0.28,
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              Color.fromARGB(255, 79, 135, 199),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(50.0),
+                                          ),
+                                          elevation: 1,
+                                          shadowColor: Color.fromARGB(
+                                              255, 250, 250, 250),
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            onAddingInfo = false;
+                                          });
+                                        },
+                                        child: Text(
+                                          "save".toUpperCase(),
+                                          style: TextStyle(
+                                            color: Color.fromARGB(
+                                                255, 222, 229, 239),
+                                            fontSize: 16,
+                                            fontFamily: 'Inter',
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ))
+                        ],
+                      ))
                     : Container(),
               ],
             ),

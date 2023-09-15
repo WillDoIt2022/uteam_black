@@ -33,7 +33,12 @@ class _ObjSummary extends State<ObjectPage> {
   UploadTask? uploadTask;
   String? isPictureDone;
   bool onLoading = false;
-  bool onAddingInfo=false;
+  bool onAddingInfo = false;
+  String additinalInfoCat = "";
+  dynamic controllerObjectInfoNotes = TextEditingController(
+      text: globals.objectInfo == "" ? "" : globals.objectInfo);
+  dynamic controllerObjectAccessNotes = TextEditingController(
+      text: globals.objectAccess == "" ? "" : globals.objectAccess);
 
   @override
   void initState() {
@@ -107,6 +112,8 @@ class _ObjSummary extends State<ObjectPage> {
             ? globals.building.toLowerCase()
             : globals.newBuilding.toLowerCase(),
         "level": globals.level.toLowerCase(),
+        "objectInfo": globals.objectInfo.toLowerCase(),
+        "objectAccess": globals.objectAccess.toLowerCase(),
       };
     });
   }
@@ -174,6 +181,53 @@ class _ObjSummary extends State<ObjectPage> {
         setState(() {});
       });
     }
+  }
+
+  showAlertDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: Text("Cancel"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = TextButton(
+      child: Text("Continue"),
+      onPressed: () {
+        Navigator.of(context).pop();
+        saveObjectPicture();
+        globals.onSave = true;
+        setState(() {
+          onSave = !onSave;
+        });
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(
+        "Warning Dialog",
+        style: TextStyle(
+          color: Color.fromARGB(255, 207, 135, 1),
+        ),textAlign: TextAlign.center,
+      ),
+      content: Text(globals.objectInfo == "" && globals.objectAccess == ""
+          ? "Object detailed information and how to access it is empty. Are you sure you want to save object in any case?"
+          : globals.objectAccess == ""
+              ? "How to access object information is empty. Are you sure you want to save object in any case?"
+              : "Object detailed information is empty. Are you sure you want to save object in any case?",style: AppTextStyle.textSize16DarkNormal,textAlign: TextAlign.center,),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   @override
@@ -475,6 +529,7 @@ class _ObjSummary extends State<ObjectPage> {
                                               onPressed: () {
                                                 setState(() {
                                                   onAddingInfo = true;
+                                                  additinalInfoCat = "object";
                                                 });
                                               },
                                               child: Text(
@@ -522,6 +577,7 @@ class _ObjSummary extends State<ObjectPage> {
                                               onPressed: () {
                                                 setState(() {
                                                   onAddingInfo = true;
+                                                  additinalInfoCat = "access";
                                                 });
                                               },
                                               child: Text(
@@ -560,13 +616,33 @@ class _ObjSummary extends State<ObjectPage> {
                                   ),
                                   onPressed: () {
                                     if (onSave == true) {
-                                      saveObjectPicture();
+                                      if (controllerObjectAccessNotes.text ==
+                                              "" ||
+                                          controllerObjectInfoNotes.text ==
+                                              "") {
+                                        showAlertDialog(context);
+                                      } else {
+                                        saveObjectPicture();
+                                        globals.onSave = true;
+                                        setState(() {
+                                          onSave = !onSave;
+                                        });
+                                      }
+                                    } else {
+                                      globals.onSave = true;
+                                      setState(() {
+                                        onSave = !onSave;
+                                      });
                                     }
 
-                                    globals.onSave = true;
-                                    setState(() {
-                                      onSave = !onSave;
-                                    });
+                                    //if (onSave == true) {
+                                    // saveObjectPicture();
+                                    // }
+
+                                    //globals.onSave = true;
+                                    //setState(() {
+                                    // onSave = !onSave;
+                                    //});
                                   },
                                   child: Text(
                                     onSave
@@ -618,23 +694,21 @@ class _ObjSummary extends State<ObjectPage> {
                       )
                     : Container(),
                 onAddingInfo
-                    ?  
-                    Container(
+                    ? Container(
                         color: Colors.grey.withOpacity(0.8),
-                        child:
-                    Column(
-                        children: [
-                          Expanded(
-                            flex: 7,
-                            child: SizedBox(
-                              width: MediaQueryData.fromWindow(
-                                          WidgetsBinding.instance.window)
-                                      .size
-                                      .width *
-                                  1,
-                             child: Center(
-                              child: Container(
-                                 padding: const EdgeInsets.all(10.0),
+                        child: Column(
+                          children: [
+                            Expanded(
+                              flex: 7,
+                              child: SizedBox(
+                                width: MediaQueryData.fromWindow(
+                                            WidgetsBinding.instance.window)
+                                        .size
+                                        .width *
+                                    1,
+                                child: Center(
+                                    child: Container(
+                                  padding: const EdgeInsets.all(10.0),
                                   width: MediaQueryData.fromWindow(
                                               WidgetsBinding.instance.window)
                                           .size
@@ -647,152 +721,175 @@ class _ObjSummary extends State<ObjectPage> {
                                       0.9,
                                   color: Colors.white,
                                   child: TextField(
-                                      style: AppTextStyle.textSize16DarkNormal,
-                                      decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        label: 
-                                        SizedBox(
-                                           width: MediaQueryData.fromWindow(
-                                                        WidgetsBinding
-                                                            .instance.window)
-                                                   .size
-                                                    .width *
-                                                0.8,
-                                           child:
-                                             Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                      'Additional object information'
-                                                          .toUpperCase())
-                                                ])),
-                                        labelStyle: TextStyle(
-                                            fontSize: 16, color: Colors.grey),
-                                        alignLabelWithHint: true,
-                                        focusedBorder: InputBorder.none,
-                                        floatingLabelAlignment:
-                                            FloatingLabelAlignment.center,
-                                        isDense: true,
-                                      ),
-                                      keyboardType: TextInputType.multiline,
-                                      maxLines: null,
-                                      expands: true,
+                                    style: AppTextStyle.textSize16DarkNormal,
+                                    controller: additinalInfoCat == "object"
+                                        ? controllerObjectInfoNotes
+                                        : controllerObjectAccessNotes,
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      label: SizedBox(
+                                          width: MediaQueryData.fromWindow(
+                                                      WidgetsBinding
+                                                          .instance.window)
+                                                  .size
+                                                  .width *
+                                              0.8,
+                                          child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Text(additinalInfoCat ==
+                                                        "object"
+                                                    ? 'Additional object information'
+                                                    : 'How to access an object'
+                                                        .toUpperCase())
+                                              ])),
+                                      labelStyle: TextStyle(
+                                          fontSize: 16, color: Colors.grey),
+                                      alignLabelWithHint: true,
+                                      focusedBorder: InputBorder.none,
+                                      floatingLabelAlignment:
+                                          FloatingLabelAlignment.center,
+                                      isDense: true,
                                     ),
-                                  
-                                  
-                                  
-                                  )
-                             ),
-                              
+                                    keyboardType: TextInputType.multiline,
+                                    maxLines: null,
+                                    expands: true,
+                                  ),
+                                )),
                               ),
                             ),
-                          Expanded(
-                              flex: 3,
-                              child:SizedBox(
-                                width: MediaQueryData.fromWindow(
-                                            WidgetsBinding.instance.window)
-                                        .size
-                                        .width *
-                                    0.8,
-                                    child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      height: MediaQueryData.fromWindow(
-                                                  WidgetsBinding
-                                                      .instance.window)
-                                              .size
-                                              .width *
-                                          0.08,
-                                      width: MediaQueryData.fromWindow(
-                                                  WidgetsBinding
-                                                      .instance.window)
-                                              .size
-                                              .width *
-                                          0.28,
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Color.fromARGB(
-                                              255, 222, 229, 239),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(50.0),
-                                          ),
-                                          elevation: 1,
-                                          shadowColor: Color.fromARGB(
-                                              255, 250, 250, 250),
-                                        ),
-                                        onPressed: () {
-                                          setState(() {
-                                            onAddingInfo = false;
-                                          });
-                                        },
-                                        child: Text(
-                                          "back".toUpperCase(),
-                                          style: TextStyle(
-                                            color: Color.fromARGB(
-                                                255, 79, 135, 199),
-                                            fontSize: 16,
-                                            fontFamily: 'Inter',
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: MediaQueryData.fromWindow(
-                                                  WidgetsBinding
-                                                      .instance.window)
-                                              .size
-                                              .width *
-                                          0.08,
-                                      width: MediaQueryData.fromWindow(
-                                                  WidgetsBinding
-                                                      .instance.window)
-                                              .size
-                                              .width *
-                                          0.28,
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor:
-                                              Color.fromARGB(255, 79, 135, 199),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(50.0),
-                                          ),
-                                          elevation: 1,
-                                          shadowColor: Color.fromARGB(
-                                              255, 250, 250, 250),
-                                        ),
-                                        onPressed: () {
-                                          setState(() {
-                                            onAddingInfo = false;
-                                          });
-                                        },
-                                        child: Text(
-                                          "save".toUpperCase(),
-                                          style: TextStyle(
-                                            color: Color.fromARGB(
+                            Expanded(
+                                flex: 3,
+                                child: SizedBox(
+                                  width: MediaQueryData.fromWindow(
+                                              WidgetsBinding.instance.window)
+                                          .size
+                                          .width *
+                                      0.8,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        height: MediaQueryData.fromWindow(
+                                                    WidgetsBinding
+                                                        .instance.window)
+                                                .size
+                                                .width *
+                                            0.08,
+                                        width: MediaQueryData.fromWindow(
+                                                    WidgetsBinding
+                                                        .instance.window)
+                                                .size
+                                                .width *
+                                            0.28,
+                                        child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Color.fromARGB(
                                                 255, 222, 229, 239),
-                                            fontSize: 16,
-                                            fontFamily: 'Inter',
-                                            fontWeight: FontWeight.w700,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(50.0),
+                                            ),
+                                            elevation: 1,
+                                            shadowColor: Color.fromARGB(
+                                                255, 250, 250, 250),
                                           ),
-                                          textAlign: TextAlign.center,
+                                          onPressed: () {
+                                            if (additinalInfoCat == "object") {
+                                              globals.objectInfo != ""
+                                                  ? controllerObjectInfoNotes
+                                                      .text = globals.objectInfo
+                                                  : controllerObjectInfoNotes
+                                                      .text = "";
+                                            } else {
+                                              globals.objectAccess != ""
+                                                  ? controllerObjectAccessNotes
+                                                          .text =
+                                                      globals.objectAccess
+                                                  : controllerObjectAccessNotes
+                                                      .text = "";
+                                            }
+
+                                            setState(() {
+                                              onAddingInfo = false;
+                                            });
+                                          },
+                                          child: Text(
+                                            "back".toUpperCase(),
+                                            style: TextStyle(
+                                              color: Color.fromARGB(
+                                                  255, 79, 135, 199),
+                                              fontSize: 16,
+                                              fontFamily: 'Inter',
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ))
-                        ],
-                      ))
+                                      SizedBox(
+                                        height: MediaQueryData.fromWindow(
+                                                    WidgetsBinding
+                                                        .instance.window)
+                                                .size
+                                                .width *
+                                            0.08,
+                                        width: MediaQueryData.fromWindow(
+                                                    WidgetsBinding
+                                                        .instance.window)
+                                                .size
+                                                .width *
+                                            0.28,
+                                        child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Color.fromARGB(
+                                                255, 79, 135, 199),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(50.0),
+                                            ),
+                                            elevation: 1,
+                                            shadowColor: Color.fromARGB(
+                                                255, 250, 250, 250),
+                                          ),
+                                          onPressed: () {
+                                            additinalInfoCat == "object"
+                                                ? globals.objectInfo =
+                                                    controllerObjectInfoNotes
+                                                        .text
+                                                : globals.objectAccess =
+                                                    controllerObjectAccessNotes
+                                                        .text;
+                                            setState(() {
+                                              onAddingInfo = false;
+                                            });
+                                            print(globals.objectInfo);
+                                            print(globals.objectAccess);
+                                          },
+                                          child: Text(
+                                            "save".toUpperCase(),
+                                            style: TextStyle(
+                                              color: Color.fromARGB(
+                                                  255, 222, 229, 239),
+                                              fontSize: 16,
+                                              fontFamily: 'Inter',
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ))
+                          ],
+                        ))
                     : Container(),
               ],
             ),

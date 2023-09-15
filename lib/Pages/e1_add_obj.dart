@@ -133,6 +133,8 @@ class _AddObj extends State<AddObjPage> {
                           globals.uulid = "";
                           globals.fullPath = "";
                           globals.uulidDB = [];
+                          globals.objectInfo= "";
+                          globals.objectAccess= "";
                           
                           getUULID(0,0);
                           BlocProvider.of<CounterNav>(context)

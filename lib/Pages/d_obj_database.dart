@@ -71,6 +71,8 @@ class _DataBase extends State<DataBasePage> {
     globals.newBuilding = data['building'];
     globals.level = data['level'];
     globals.imgUrl = data['imgUrl'];
+    globals.objectInfo = data['objectInfo'];
+    globals.objectAccess = data['objectAccess'];
   }
 
   filterDbFunctionFunction() {

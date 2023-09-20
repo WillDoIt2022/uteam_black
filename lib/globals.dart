@@ -62,7 +62,7 @@ Map<String, String> generalContentArray = {
   'photoPageText_2': 'use this\n photo',
   'objectPageText_1': 'save',
   'objectPageText_2': 'edit',
-  'objectPageText_3': '+ object',
+  'objectPageText_3': '+ info',
   'objectPageText_4': '+ access',
 };
 

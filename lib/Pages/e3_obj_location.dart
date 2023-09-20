@@ -30,7 +30,7 @@ class ObjLocation extends StatefulWidget {
 class ObjLocationState extends State<ObjLocation> {
   //to show Container with choosen address or now
   bool toShowAddress = false;
-  //if User wants to search object by address or no 
+  //if User wants to search object by address or no
   bool onEditAdress = false;
   //What street to show
   dynamic street = globals.flag ? globals.street : globals.newStreet;
@@ -49,6 +49,8 @@ class ObjLocationState extends State<ObjLocation> {
   //here we keep dropdown list of address suggestions
   String searchLocation = "Search Location";
 
+  List<Marker> markers = [];
+
   @override
   void initState() {
     super.initState();
@@ -60,12 +62,12 @@ class ObjLocationState extends State<ObjLocation> {
     });
     toShowAddress = widget.toShowAddress;
     onEditAdress = widget.onEditAdress;
-    //To build searchBar box for searching object by address, after widhet built 
+    //To build searchBar box for searching object by address, after widhet built
     onEditAdress
         ? WidgetsBinding.instance
             .addPostFrameCallback((_) => openSearchBarByAddress())
         : null;
-
+    showAllObjects();
     setState(() {});
     //Do not rerender the map with current position if already done
     if (widget.currentPositionOnMap == false) {
@@ -133,6 +135,38 @@ class ObjLocationState extends State<ObjLocation> {
     controller.animateCamera(CameraUpdate.newCameraPosition(newCameraPosition));
   }
 
+  showAllObjects() {
+    Marker firstMarker = Marker(
+        markerId: MarkerId('123'),
+        position: LatLng(48.85826391329744, 2.364298179745674),
+        infoWindow: InfoWindow(title: 'first object'),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+        onTap:(){print("first object");},
+        draggable: true,
+        
+    );
+    Marker secondMarker = Marker(
+        markerId: MarkerId('1234'),
+        position: LatLng(48.8599, 2.3622983),
+        infoWindow: InfoWindow(title: 'first object'),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+       onTap:(){print("second object");}
+    );
+    Marker thirdMarker = Marker(
+      markerId: MarkerId('12345'),
+      position: LatLng(48.84677240000001, 2.330428200000001),
+      infoWindow: InfoWindow(title: 'first object'),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+       onTap:(){print("third object");},
+      
+    );
+
+    markers.add(firstMarker);
+    markers.add(secondMarker);
+    markers.add(thirdMarker);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CounterNav, int>(builder: (context, counter) {
@@ -197,26 +231,29 @@ class ObjLocationState extends State<ObjLocation> {
                               setState(() {});
                             });
                           },
-                          markers: {
-                            Marker(
-                              markerId: const MarkerId("marker1"),
-                              position:
-                                  globals.flag ? currentLocation : newLocation,
-                              draggable: true,
-                              onDragEnd: (value) {
-                                currentLocation = value;
-                                // value is the new position
-                                globals.newLatitude = value.latitude;
-                                globals.newLongitude = value.longitude;
-                                globals.flag = false;
-                                convertToAddress().then((value) {
-                                  street = globals.newStreet;
-                                  building = globals.newBuilding;
-                                  setState(() {});
-                                });
-                              },
-                            ),
-                          },
+                          markers: markers.map((e) => e).toSet(),
+
+                          //{
+
+                          // Marker(
+                          // markerId: const MarkerId("marker1"),
+                          // position:
+                          //     globals.flag ? currentLocation : newLocation,
+                          //  draggable: true,
+                          //  onDragEnd: (value) {
+                          //    currentLocation = value;
+                          // value is the new position
+                          //    globals.newLatitude = value.latitude;
+                          //    globals.newLongitude = value.longitude;
+                          //    globals.flag = false;
+                          //    convertToAddress().then((value) {
+                          //      street = globals.newStreet;
+                          //      building = globals.newBuilding;
+                          //      setState(() {});
+                          //    });
+                          //   },
+                          //  ),
+                          //},
                           onMapCreated: (GoogleMapController controller) {
                             if (!globals.mapController.isCompleted) {
                               controller.setMapStyle(_mapStyle);

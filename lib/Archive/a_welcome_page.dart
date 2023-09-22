@@ -5,7 +5,6 @@ import 'package:another_flushbar/flushbar.dart'; //notifys
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../BLoC/network_checker.dart';
-import '../Widgets/logo_img.dart';
 //import '../Widgets/log_in.dart';
 import "../Widgets/language_determiner.dart";
 import "../Widgets/translator.dart";

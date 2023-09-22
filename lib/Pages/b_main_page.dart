@@ -23,13 +23,15 @@ class MainPage extends StatefulWidget {
 class _LaunchApp extends State<MainPage> {
   final docAccounts =
       FirebaseFirestore.instance.collection('users').doc(globals.phoneNumber);
+  final docObjects = FirebaseFirestore.instance.collection('objects');
   final translator = GoogleTranslator();
-   
+
   bool filteredDbflag = globals.usersAccounts.isEmpty ? false : true;
 
   @override
   void initState() {
     globals.usersAccounts.isEmpty ? getUserObjects() : null;
+    //getUserObjects();
     super.initState();
   }
 
@@ -41,6 +43,31 @@ class _LaunchApp extends State<MainPage> {
         setState(() {
           filteredDbflag = true;
         });
+      }
+    });
+  }
+//Getting unique address for current AccountName to display them on the map
+  getObjectsLatLang() async {
+    await docObjects
+        .where("phoneNumber", isEqualTo: globals.phoneNumber.toString())
+        .where("accountName", isEqualTo: globals.accountName.toString())
+        .get()
+        .then((QuerySnapshot snapshot) {
+      var filteredDb = snapshot.docs.toList();
+
+      var seen = Set<String>();
+      var uniquelist = filteredDb
+          .where((x) =>
+              seen.add(x["latitude"].toString() + x["longitude"].toString()))
+          .toList();
+
+      print(filteredDb.length);
+      print(uniquelist.length);
+
+      for (var i = 0; i < uniquelist.length; i++) {
+        print(uniquelist[i]["latitude"]);
+        print(uniquelist[i]["longitude"]);
+        print(uniquelist[i]["id"]);
       }
     });
   }
@@ -204,6 +231,7 @@ class _LaunchApp extends State<MainPage> {
                                         .usersAccounts[index]["name"]
                                         .toString()
                                         .toLowerCase();
+                                    getObjectsLatLang();
                                     Navigator.pushNamed(
                                         context, Routes.addObjPage);
                                   } else {

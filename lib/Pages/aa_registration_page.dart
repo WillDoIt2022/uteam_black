@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 //packages
@@ -14,7 +13,6 @@ import '../Widgets/logo_img.dart';
 import '../Widgets/auth.dart';
 //settings
 import '../styles/app_textstyles.dart';
-import '../styles/app_colors.dart';
 import "../routes.dart";
 import '../globals.dart' as globals;
 

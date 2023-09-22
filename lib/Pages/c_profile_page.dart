@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:another_flushbar/flushbar.dart'; //notifys
 //import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import '../routes.dart';

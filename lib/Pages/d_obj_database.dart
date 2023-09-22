@@ -48,6 +48,7 @@ class _DataBase extends State<DataBasePage> {
 
       filteredDb = snapshot.docs.toList();
       sourceDb = snapshot.docs;
+
       setState(() {
         filteredDbflag = true;
       });

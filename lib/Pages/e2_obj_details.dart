@@ -27,6 +27,7 @@ class ObjDetailsPage extends StatefulWidget {
 }
 
 class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
+  bool immovable = false;
   bool currentPositionOnMap = false;
   bool cameraPermissionStatus = false;
   bool uulidSelected = false;
@@ -143,6 +144,8 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
     '10th floor',
   ];
 
+
+
   _goToGooleMapPage(toShowAddress, onEditAdress) {
     Navigator.push(
             context,
@@ -150,7 +153,8 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                 builder: (context) => ObjLocation(
                     currentPositionOnMap: currentPositionOnMap,
                     toShowAddress: toShowAddress,
-                    onEditAdress: onEditAdress)))
+                    onEditAdress: onEditAdress,
+                    immovable: immovable)))
         .then((val) => val ? _toUpdateWidget() : null);
   }
 
@@ -232,24 +236,23 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                           backgroundColor: Colors.white.withOpacity(0.05),
                         ),
                         onPressed: () {
-                          setState(
-                            () {
-                              if (globals.objectId == "") {
-                                if (counter == 0) {
-                                 Navigator.pop(context);
-                                }  else {
-                                  BlocProvider.of<CounterNav>(context)
-                                      .add(CounterDecrementEvent());
-                                }
+                          setState(() {
+                            if (globals.objectId == "") {
+                              if (counter == 0) {
+                                Navigator.pop(context);
                               } else {
-                                print(uulidSelected);
-                                if (counter == 1&&uulidSelected==false) {
+                                BlocProvider.of<CounterNav>(context)
+                                    .add(CounterDecrementEvent());
+                              }
+                            } else {
+                              print(uulidSelected);
+                              if (counter == 1 && uulidSelected == false) {
                                 selectNextUULIDLevel();
-                              }else{
+                              } else {
                                 Navigator.pop(context);
                               }
-                            }}
-                        );
+                            }
+                          });
                         },
                         child: Text(
                           globals.generalContentArray['back']
@@ -339,11 +342,14 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                                           child: Align(
                                             heightFactor: 1,
                                             widthFactor: 1,
-                                            child: ObjLocation(
+                                            child: 
+                                            
+                                             ObjLocation(
                                                 currentPositionOnMap:
-                                                    currentPositionOnMap,
+                                                   currentPositionOnMap,
                                                 toShowAddress: false,
-                                                onEditAdress: false),
+                                                onEditAdress: false,
+                                               immovable: immovable),
                                           ),
                                         ),
                                         InkWell(
@@ -405,9 +411,14 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                                         ),
                                         child: InkWell(
                                           onTap: () {
-                                            BlocProvider.of<CounterNav>(context)
-                                                .add(CounterDecrementEvent());
-                                            _goToGooleMapPage(false, true);
+                                            if (immovable == true) {
+                                              BlocProvider.of<CounterNav>(
+                                                      context)
+                                                  .add(CounterDecrementEvent());
+                                              _goToGooleMapPage(false, true);
+                                            } else {
+                                              return;
+                                            }
                                           },
                                           child: SizedBox(
                                             child: Padding(
@@ -552,11 +563,17 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                                                   shadowColor: Color.fromARGB(
                                                       255, 250, 250, 250),
                                                 ),
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                  immovable = !immovable;
+                                                  globals.flag = !globals.flag;
+                                             
+                                                  setState(() {});
+                                                },
                                                 child: Text(
-                                                  globals.generalContentArray[
+                                                  globals.flag?globals.generalContentArray[
                                                           'objDetailsPageText_3']
                                                       .toString()
+                                                      .toUpperCase():"movable, select from exist".toString()
                                                       .toUpperCase(),
                                                   style: TextStyle(
                                                     color: Color.fromARGB(
@@ -978,7 +995,6 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                                           Color.fromARGB(255, 250, 250, 250),
                                     ),
                                     onPressed: () {
-
                                       Navigator.pushNamed(
                                           context, Routes.photoPage);
                                     },

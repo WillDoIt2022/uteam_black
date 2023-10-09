@@ -126,7 +126,8 @@ class _AddObj extends State<AddObjPage> {
                           shadowColor: Color.fromARGB(255, 250, 250, 250),
                         ),
                         onPressed: () {
-                          globals.flag = true;
+                          //globals.flag = true;
+                          globals.lastSelectedAddress = null;
                           globals.objectId = "";
                           globals.level = "";
                           globals.uulid = "";

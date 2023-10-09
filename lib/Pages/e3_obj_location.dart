@@ -11,6 +11,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../BLoC/obj_details_counter.dart';
 import '../globals.dart' as globals;
 import '../Widgets/geocoding.dart';
+import 'dart:math';
 //import "../routes.dart";
 
 class ObjLocation extends StatefulWidget {
@@ -18,11 +19,13 @@ class ObjLocation extends StatefulWidget {
       {Key? key,
       required this.currentPositionOnMap,
       required this.toShowAddress,
-      required this.onEditAdress})
+      required this.onEditAdress,
+      required this.immovable})
       : super(key: key);
   final bool currentPositionOnMap;
   final bool toShowAddress;
   final bool onEditAdress;
+  final bool immovable;
   @override
   ObjLocationState createState() => ObjLocationState();
 }
@@ -36,6 +39,12 @@ class ObjLocationState extends State<ObjLocation> {
   dynamic street = globals.flag ? globals.street : globals.newStreet;
   //What building to show to show
   dynamic building = globals.flag ? globals.building : globals.newBuilding;
+//holds calculatef distance of iterable List of exist object
+  num? distance;
+  //holds nearest object Lat & Long
+  double nearestObjectLatitude = 0.0;
+  double nearestObjectLongitude = 0.0;
+  dynamic prevNearestObjectDistance = 0;
 
   //LatLng location = LatLng(48.8583701, 2.2944813);
   //auto detected user location
@@ -136,35 +145,97 @@ class ObjLocationState extends State<ObjLocation> {
   }
 
   showAllObjects() {
-    Marker firstMarker = Marker(
-        markerId: MarkerId('123'),
-        position: LatLng(48.85826391329744, 2.364298179745674),
-        infoWindow: InfoWindow(title: 'first object'),
+    for (var i = 0; i < globals.existAddressesInAccount.length; i++) {
+      Marker existAddress = Marker(
+        markerId: MarkerId(globals.existAddressesInAccount[i]["id"]),
+        position: LatLng(globals.existAddressesInAccount[i]["latitude"],
+            globals.existAddressesInAccount[i]["longitude"]),
+        infoWindow: InfoWindow(
+            title: globals.existAddressesInAccount[i]["country"],
+            snippet: globals.existAddressesInAccount[i]["street"] +
+                globals.existAddressesInAccount[i]["building"]),
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-        onTap:(){print("first object");},
-        draggable: true,
-        
-    );
-    Marker secondMarker = Marker(
-        markerId: MarkerId('1234'),
-        position: LatLng(48.8599, 2.3622983),
-        infoWindow: InfoWindow(title: 'first object'),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-       onTap:(){print("second object");}
-    );
-    Marker thirdMarker = Marker(
-      markerId: MarkerId('12345'),
-      position: LatLng(48.84677240000001, 2.330428200000001),
-      infoWindow: InfoWindow(title: 'first object'),
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-       onTap:(){print("third object");},
-      
-    );
+        onTap: () {
+          newLocation = LatLng(globals.existAddressesInAccount[i]["latitude"],
+              globals.existAddressesInAccount[i]["longitude"]);
+          globals.flag = false;
+          globals.newLatitude = globals.existAddressesInAccount[i]["latitude"];
+          globals.newLongitude =
+              globals.existAddressesInAccount[i]["longitude"];
+          convertToAddress().then((value) {
+            street = globals.newStreet;
+            building = globals.newBuilding;
+            setState(() {});
+          });
+        },
+      );
+      markers.add(existAddress);
+    }
+    print("markers length start");
+    print(markers.length);
 
-    markers.add(firstMarker);
-    markers.add(secondMarker);
-    markers.add(thirdMarker);
+    if (globals.lastSelectedAddress == null) {
+      if (widget.immovable == false) {
+        Marker existAddress = Marker(
+          markerId: MarkerId("123"),
+          position: LatLng(nearestObjectLatitude, nearestObjectLongitude),
+          infoWindow: InfoWindow(title: "nearest object", snippet: ""),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+          onTap: () {
+            newLocation = LatLng(nearestObjectLatitude, nearestObjectLongitude);
+            globals.flag = false;
+          },
+        );
+
+        markers.add(existAddress);
+      }
+      if (widget.immovable == true) {
+        Marker currentAddress = Marker(
+          markerId: MarkerId("123"),
+          position: LatLng(globals.latitude, globals.longitude),
+          infoWindow: InfoWindow(title: "current position", snippet: ""),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+          onTap: () {
+
+
+          },
+        );
+        markers.add(currentAddress);
+      }
+    }else {
+      markers.add(globals.lastSelectedAddress!);
+      
+    }
+    print("markers length end");
+    print(markers.length);
+
     setState(() {});
+    print("nearestObjectID");
+    print(nearestObjectLatitude);
+    print(nearestObjectLongitude);
+  }
+
+  updateDB() {
+    Marker newAddress = Marker(
+      markerId: MarkerId("123"),
+      position: LatLng(globals.latitude, globals.longitude),
+      infoWindow: InfoWindow(
+          title: globals.country,
+          snippet: globals.street + globals.building),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+      onTap: () {
+        newLocation = LatLng(globals.latitude, globals.longitude);
+        globals.flag = true;
+
+      },
+    );
+    globals.lastSelectedAddress=newAddress;
+    markers.remove(markers.last);
+    markers.add(newAddress);
+
+    setState(() {});
+    print(markers.length);
+    print(markers);
   }
 
   @override
@@ -221,38 +292,43 @@ class ObjLocationState extends State<ObjLocation> {
                           compassEnabled: true,
                           // in the below line, specifying controller on map complete.
                           onTap: (LatLng latLng) {
-                            newLocation = latLng;
-                            globals.flag = false;
-                            globals.newLatitude = latLng.latitude;
-                            globals.newLongitude = latLng.longitude;
-                            convertToAddress().then((value) {
-                              street = globals.newStreet;
-                              building = globals.newBuilding;
-                              setState(() {});
-                            });
+                            if (widget.immovable == true) {
+                              newLocation = latLng;
+                              //globals.flag = false;
+                              globals.latitude = latLng.latitude;
+                              globals.longitude = latLng.longitude;
+                              convertToAddress().then((value) {
+                                street = globals.street;
+                               building = globals.building;
+                                updateDB();
+                                setState(() {});
+                              });
+                            } else {
+                              return;
+                            }
                           },
                           markers: markers.map((e) => e).toSet(),
 
                           //{
 
-                          // Marker(
-                          // markerId: const MarkerId("marker1"),
-                          // position:
-                          //     globals.flag ? currentLocation : newLocation,
-                          //  draggable: true,
-                          //  onDragEnd: (value) {
-                          //    currentLocation = value;
-                          // value is the new position
-                          //    globals.newLatitude = value.latitude;
-                          //    globals.newLongitude = value.longitude;
-                          //    globals.flag = false;
-                          //    convertToAddress().then((value) {
-                          //      street = globals.newStreet;
-                          //      building = globals.newBuilding;
-                          //      setState(() {});
-                          //    });
-                          //   },
-                          //  ),
+                          //Marker(
+                          //markerId: const MarkerId("marker1"),
+                          //position:currentLocation,
+                          //globals.flag ? currentLocation : newLocation,
+                          // draggable: true,
+                          //onDragEnd: (value) {
+                          //  currentLocation = value;
+                          //value is the new position
+                          //  globals.newLatitude = value.latitude;
+                          //  globals.newLongitude = value.longitude;
+                          //  globals.flag = false;
+                          //  convertToAddress().then((value) {
+                          //  street = globals.newStreet;
+                          //   building = globals.newBuilding;
+                          //   setState(() {});
+                          //  });
+                          // }
+                          //),
                           //},
                           onMapCreated: (GoogleMapController controller) {
                             if (!globals.mapController.isCompleted) {
@@ -320,11 +396,15 @@ class ObjLocationState extends State<ObjLocation> {
                                 ),
                                 child: InkWell(
                                   onTap: () {
-                                    setState(() {
-                                      toShowAddress = false;
-                                      onEditAdress = true;
-                                    });
-                                    openSearchBarByAddress();
+                                    if (widget.immovable == true) {
+                                      setState(() {
+                                        toShowAddress = false;
+                                        onEditAdress = true;
+                                      });
+                                      openSearchBarByAddress();
+                                    } else {
+                                      return;
+                                    }
                                   },
                                   child: Row(
                                     crossAxisAlignment:

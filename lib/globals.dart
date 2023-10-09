@@ -44,6 +44,9 @@ String newCity = "";
 String newStreet = "";
 String newBuilding = "";
 
+//Last selected address
+Marker? lastSelectedAddress;
+
 Map<String, String> generalContentArray = {
   'back': '<back',
   'next': 'next>',
@@ -72,6 +75,7 @@ List<dynamic> generalContentArray1 = [
 ];
 
 List usersAccounts = [];
+List existAddressesInAccount=[];
 
 //ULID DB
 //Map<dynamic, dynamic> uulidDB ={};

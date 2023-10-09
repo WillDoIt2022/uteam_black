@@ -42,6 +42,7 @@ class _Launch extends State<MyApp> {
   dynamic currentPositionOnMap;
   dynamic toShowAddress;
   dynamic onEditAdress;
+  dynamic immovable;
 
   @override
   void initState() {
@@ -78,7 +79,8 @@ class _Launch extends State<MyApp> {
           Routes.objLocation: (BuildContext context) => ObjLocation(
               currentPositionOnMap: currentPositionOnMap,
               toShowAddress: toShowAddress,
-              onEditAdress: onEditAdress),
+              onEditAdress: onEditAdress,
+              immovable:immovable,),
           Routes.photoPage: (BuildContext context) => PhotoPage(),
           Routes.objectPage: (BuildContext context) => ObjectPage(
                 picture: picture,

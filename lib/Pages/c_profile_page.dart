@@ -38,9 +38,9 @@ class ProfileSettings extends State<ProfilePage> {
   }
 
   /// Get from gallery
- // getFromGallery() async {
-    //final ImagePicker picker = ImagePicker();
-    //final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+  // getFromGallery() async {
+  //final ImagePicker picker = ImagePicker();
+  //final XFile? image = await picker.pickImage(source: ImageSource.gallery);
   //}
 
   @override
@@ -318,7 +318,7 @@ class ProfileSettings extends State<ProfilePage> {
                             style: AppTextStyle.textSize13Grey,
                           ),
                         ),
-                        Container(
+                        SizedBox(
                           width: MediaQueryData.fromWindow(
                                       WidgetsBinding.instance.window)
                                   .size
@@ -424,7 +424,8 @@ class ProfileSettings extends State<ProfilePage> {
                         onPressed: () async {
                           await Auth().signOut();
                           await Auth().authStateChanges().then((value) => !value
-                              ? Navigator.pushNamedAndRemoveUntil(
+                              ? 
+                              Navigator.pushNamedAndRemoveUntil(
                                   context,
                                   Routes.registrationPage,
                                   (Route<dynamic> route) => false)
@@ -458,6 +459,8 @@ class ProfileSettings extends State<ProfilePage> {
                           shadowColor: Color.fromARGB(255, 250, 250, 250),
                         ),
                         onPressed: () async {
+                          
+
                           Navigator.pushNamedAndRemoveUntil(context,
                               Routes.mainPage, (Route<dynamic> route) => false);
                         },

@@ -24,6 +24,7 @@ String objectAccess = "";
 String imgUrl = "";
 bool flag = true; //Determine what position to use (Current or New)
 
+
 //Current position Data
 double latitude = 0.0;
 double longitude = 0.0;
@@ -43,6 +44,7 @@ String newPostalCode = "";
 String newCity = "";
 String newStreet = "";
 String newBuilding = "";
+bool immovable=false;
 
 //Last selected address
 Marker? lastSelectedAddress;

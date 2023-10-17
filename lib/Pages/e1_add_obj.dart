@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 //Packages
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:math';
 //widgets
-import '../Widgets/uulid_api.dart';//fetch uulid DB
+import '../Widgets/uulid_api.dart'; //fetch uulid DB
 import '../Widgets/footer_menu.dart';
+import '../Widgets/determine_current_position.dart';
+import '../Widgets/geocoding.dart';
 //Settings
 import '../globals.dart' as globals;
 import '../BLoC/obj_details_counter.dart';
@@ -19,13 +23,78 @@ class AddObjPage extends StatefulWidget {
   }
 }
 
-
 class _AddObj extends State<AddObjPage> {
   @override
   Widget build(BuildContext context) {
     //debugShowCheckedModeBanner: false, //remove the debug banner "Demo"
+    //holds calculatef distance of iterable List of exist object
+    num? distance;
+    //holds nearest object Lat & Long
+    double nearestObjectLatitude = 0.0;
+    double nearestObjectLongitude = 0.0;
+    dynamic prevNearestObjectDistance = 0;
+    final docObjects = FirebaseFirestore.instance.collection('objects');
 
+    double distanceToObject(lat1, lon1) {
+      var p = 0.017453292519943295;
+      var a = 0.5 -
+          cos((globals.latitude - lat1) * p) / 2 +
+          cos(lat1 * p) *
+              cos(globals.latitude * p) *
+              (1 - cos((globals.longitude - lon1) * p)) /
+              2;
+      return distance = 12742 * asin(sqrt(a));
+    }
 
+//Getting unique address for current AccountName to display them on the map
+    getObjectsLatLang() async {
+      await docObjects
+          .where("phoneNumber", isEqualTo: globals.phoneNumber.toString())
+          .where("accountName", isEqualTo: globals.accountName.toString())
+          .get()
+          .then((QuerySnapshot snapshot) {
+        var filteredDb = snapshot.docs.toList();
+
+        var seen = Set<String>();
+        var uniquelist = filteredDb
+            .where((x) =>
+                seen.add(x["latitude"].toString() + x["longitude"].toString()))
+            .toList();
+        globals.existAddressesInAccount = uniquelist;
+        print(filteredDb.length);
+        print(uniquelist.length);
+
+        for (var i = 0; i < uniquelist.length; i++) {
+          distanceToObject(
+              uniquelist[i]["latitude"], uniquelist[i]["longitude"]);
+          print("distance");
+          print(distance);
+          if (i == 0 && distance == 0) {
+            prevNearestObjectDistance = 0;
+          } else if (i == 0 && distance != 0) {
+            prevNearestObjectDistance = distance;
+          }
+
+          if (distance! <= prevNearestObjectDistance) {
+            prevNearestObjectDistance = distance;
+            nearestObjectLatitude = uniquelist[i]["latitude"];
+            nearestObjectLongitude = uniquelist[i]["longitude"];
+          }
+
+        }
+        if (uniquelist.isNotEmpty) {
+          globals.flag = false;
+          globals.newLatitude = nearestObjectLatitude;
+          globals.newLongitude = nearestObjectLongitude;
+          convertToAddress().then((value) {
+            setState(() {});
+          });
+        } else {
+          globals.flag = true;
+        }
+        globals.immovable=globals.existAddressesInAccount.isNotEmpty ? false : true;
+      });
+    }
 
     return WillPopScope(onWillPop: () async {
       Navigator.pushNamedAndRemoveUntil(
@@ -125,19 +194,19 @@ class _AddObj extends State<AddObjPage> {
                           elevation: 1,
                           shadowColor: Color.fromARGB(255, 250, 250, 250),
                         ),
-                        onPressed: () {
-                          //globals.flag = true;
+                        onPressed: () async {
                           globals.lastSelectedAddress = null;
                           globals.objectId = "";
                           globals.level = "";
                           globals.uulid = "";
-                          globals.uulid = "";
                           globals.fullPath = "";
                           globals.uulidDB = [];
-                          globals.objectInfo= "";
-                          globals.objectAccess= "";
-                          
-                          getUULID(0,0);
+                          globals.objectInfo = "";
+                          globals.objectAccess = "";
+                          globals.flag = true;
+                          await determinePosition();
+                          await getObjectsLatLang();
+                          await getUULID(0, 0);
                           BlocProvider.of<CounterNav>(context)
                               .add(CounterResetEvent());
                           Navigator.pushNamed(

@@ -8,15 +8,15 @@ getUULID(uulidLevel, levelTarget) async {
   print(levelTarget);
   int i = levelTarget - 1;
 
-  if (globals.uulidDB.length > levelTarget&&levelTarget!=0) {
+  if (globals.uulidDB.length > levelTarget && levelTarget != 0) {
     globals.uulidDB.length = levelTarget;
-    
+
     List<String> strarray = globals.fullPath.split(".");
     strarray.length = i;
-    globals.fullPath= strarray.join(".");
-print("Path length after substring");
-print(globals.uulidDB);
-print(globals.fullPath);
+    globals.fullPath = strarray.join(".");
+    print("Path length after substring");
+    print(globals.uulidDB);
+    print(globals.fullPath);
     //globals.fullPath = globals.fullPath.substring(0, ((i * 2) - 1));
     //print(globals.fullPath.substring(0, ((i * 2) - 1)));
   }
@@ -57,35 +57,36 @@ print(globals.fullPath);
         //return labels;
       } else {
         //Checking, delete last user uulid path, if he is selecting another one uulid on the last Level of uulid
-        String fullPathLength=globals.fullPath.replaceAll(RegExp('[^0-9]'), '');
+        String fullPathLength =
+            globals.fullPath.replaceAll(RegExp('[^0-9]'), '');
         if (fullPathLength.length != globals.uulidDB.length) {
           globals.fullPath =
               globals.fullPath.substring(0, ((globals.fullPath.length) - 4));
-               globals.fullPath = globals.fullPath + '.' + uulidLevel.toString();
+          globals.fullPath = globals.fullPath + '.' + uulidLevel.toString();
         }
-        
 
         print("globals.uulidDB");
         print(globals.uulidDB);
-        print( globals.fullPath);
+        print(globals.fullPath);
         print(globals.uulidDB.length);
-print(fullPathLength.length);
+        print(fullPathLength.length);
         //return labels;
       }
-print("Возвращаю labels");
-print(globals.uulidDB);
-print(labels);
-        print(globals.fullPath);
+      print("Возвращаю labels");
+      print(globals.uulidDB);
+      print(labels);
+      print(globals.fullPath);
       return labels;
       //print(globals.uulidDBLevelTwo);
       //print(Labels);
 
     } else {
       print("error while fetching uulid data");
-      return false;
+      return "misstake";
     }
   } catch (e) {
     print(e);
-    return false;
+    print("error while fetching uulid data2");
+    return e.toString();
   } //send get request to API URL
 }

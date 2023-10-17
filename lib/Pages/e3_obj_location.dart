@@ -78,8 +78,8 @@ class ObjLocationState extends State<ObjLocation> {
         : null;
     showAllObjects();
     setState(() {});
-    //Do not rerender the map with current position if already done
-    if (widget.currentPositionOnMap == false) {
+    //Do not rerender the map with current position if position already choosen
+    if (widget.currentPositionOnMap == false && widget.immovable == true) {
       updateCameraLocation(currentLocation);
     } else {
       return;
@@ -120,16 +120,17 @@ class ObjLocationState extends State<ObjLocation> {
     var newlatlang = LatLng(lat, lang);
     print(newlatlang);
 
-    globals.newLatitude = geometry.location.lat;
-    globals.newLongitude = geometry.location.lng;
-    globals.flag = false;
+    globals.latitude = geometry.location.lat;
+    globals.longitude = geometry.location.lng;
+    globals.flag = true;
     convertToAddress().then((value) {
       setState(() {
-        street = globals.newStreet;
-        building = globals.newBuilding;
-        newLocation = LatLng(globals.newLatitude, globals.newLongitude);
+        street = globals.street;
+        building = globals.building;
+        currentLocation = LatLng(globals.latitude, globals.longitude);
       });
     });
+    updateDB();
     CameraPosition newCameraPosition =
         CameraPosition(target: newlatlang, zoom: 18);
     currentMapController
@@ -178,15 +179,14 @@ class ObjLocationState extends State<ObjLocation> {
       if (widget.immovable == false) {
         Marker existAddress = Marker(
           markerId: MarkerId("123"),
-          position: LatLng(nearestObjectLatitude, nearestObjectLongitude),
+          position: LatLng(globals.newLatitude, globals.newLongitude),
           infoWindow: InfoWindow(title: "nearest object", snippet: ""),
           icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
           onTap: () {
-            newLocation = LatLng(nearestObjectLatitude, nearestObjectLongitude);
+            newLocation = LatLng(globals.newLatitude, globals.newLongitude);
             globals.flag = false;
           },
         );
-
         markers.add(existAddress);
       }
       if (widget.immovable == true) {
@@ -195,24 +195,19 @@ class ObjLocationState extends State<ObjLocation> {
           position: LatLng(globals.latitude, globals.longitude),
           infoWindow: InfoWindow(title: "current position", snippet: ""),
           icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-          onTap: () {
-
-
-          },
+          onTap: () {},
         );
         markers.add(currentAddress);
       }
-    }else {
-      markers.add(globals.lastSelectedAddress!);
-      
+    } else {
+      if (widget.immovable == true) {
+        markers.add(globals.lastSelectedAddress!);
+      }
     }
     print("markers length end");
     print(markers.length);
 
     setState(() {});
-    print("nearestObjectID");
-    print(nearestObjectLatitude);
-    print(nearestObjectLongitude);
   }
 
   updateDB() {
@@ -220,16 +215,14 @@ class ObjLocationState extends State<ObjLocation> {
       markerId: MarkerId("123"),
       position: LatLng(globals.latitude, globals.longitude),
       infoWindow: InfoWindow(
-          title: globals.country,
-          snippet: globals.street + globals.building),
+          title: globals.country, snippet: globals.street + globals.building),
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
       onTap: () {
         newLocation = LatLng(globals.latitude, globals.longitude);
         globals.flag = true;
-
       },
     );
-    globals.lastSelectedAddress=newAddress;
+    globals.lastSelectedAddress = newAddress;
     markers.remove(markers.last);
     markers.add(newAddress);
 
@@ -279,11 +272,15 @@ class ObjLocationState extends State<ObjLocation> {
                         // in the below line, creating google maps.
                         child: GoogleMap(
                           // in the below line, setting camera position
-                          initialCameraPosition: CameraPosition(
-                            target:
-                                globals.flag ? currentLocation : newLocation,
-                            zoom: 19,
-                          ),
+                          initialCameraPosition: globals.flag
+                              ? CameraPosition(
+                                  target: currentLocation,
+                                  zoom: 19,
+                                )
+                              : CameraPosition(
+                                  target: newLocation,
+                                  zoom: 19,
+                                ),
                           // in the below line, specifying map type.
                           mapType: MapType.normal,
                           // in the below line, setting user location enabled.
@@ -299,7 +296,7 @@ class ObjLocationState extends State<ObjLocation> {
                               globals.longitude = latLng.longitude;
                               convertToAddress().then((value) {
                                 street = globals.street;
-                               building = globals.building;
+                                building = globals.building;
                                 updateDB();
                                 setState(() {});
                               });
@@ -415,6 +412,7 @@ class ObjLocationState extends State<ObjLocation> {
                                         child: SizedBox(
                                           child: Text(
                                             '$street $building',
+                                            overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               fontSize: 20,
                                               color: Color.fromARGB(
@@ -486,6 +484,7 @@ class ObjLocationState extends State<ObjLocation> {
                                   child: SizedBox(
                                     child: Text(
                                       '$street $building',
+                                      overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         fontSize: 20,
                                         color: Color.fromARGB(255, 15, 77, 154),

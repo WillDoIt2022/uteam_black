@@ -27,7 +27,7 @@ class ObjDetailsPage extends StatefulWidget {
 }
 
 class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
-  bool immovable = false;
+  bool immovable = globals.immovable;
   bool currentPositionOnMap = false;
   bool cameraPermissionStatus = false;
   bool uulidSelected = false;
@@ -144,8 +144,6 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
     '10th floor',
   ];
 
-
-
   _goToGooleMapPage(toShowAddress, onEditAdress) {
     Navigator.push(
             context,
@@ -162,6 +160,19 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
     setState(() {
       BlocProvider.of<CounterNav>(context).add(CounterResetEvent());
     });
+  }
+
+  existAddressesInAccountIsEmpty() {
+    uulidSelected = true;
+    Flushbar(
+      title: 'object uulid'.toUpperCase(),
+      titleColor: Colors.red,
+      titleSize: 18,
+      message: 'There is no exist addresses in DB',
+      messageSize: 14,
+      duration: Duration(seconds: 3),
+      flushbarPosition: FlushbarPosition.TOP,
+    ).show(context);
   }
 
   noAdressNotification() {
@@ -207,7 +218,7 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
       title: 'object uulid'.toUpperCase(),
       titleColor: Colors.yellow,
       titleSize: 18,
-      message: 'Please, try again later',
+      message: 'Some problems with DB. Please, try again later',
       messageSize: 14,
       duration: Duration(seconds: 3),
       flushbarPosition: FlushbarPosition.TOP,
@@ -342,14 +353,12 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                                           child: Align(
                                             heightFactor: 1,
                                             widthFactor: 1,
-                                            child: 
-                                            
-                                             ObjLocation(
+                                            child: ObjLocation(
                                                 currentPositionOnMap:
-                                                   currentPositionOnMap,
+                                                    currentPositionOnMap,
                                                 toShowAddress: false,
                                                 onEditAdress: false,
-                                               immovable: immovable),
+                                                immovable: immovable),
                                           ),
                                         ),
                                         InkWell(
@@ -564,17 +573,29 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                                                       255, 250, 250, 250),
                                                 ),
                                                 onPressed: () {
-                                                  immovable = !immovable;
-                                                  globals.flag = !globals.flag;
-                                             
-                                                  setState(() {});
+                                                  if (globals
+                                                      .existAddressesInAccount
+                                                      .isNotEmpty) {
+                                                    globals.immovable = !immovable;
+                                                    globals.flag =
+                                                        !globals.flag;
+                                                    Navigator.pushReplacementNamed(context,
+                                                        '/main_page/add_obj/obj_details');
+                                                    setState(() {});
+                                                  } else {
+                                                    existAddressesInAccountIsEmpty();
+                                                  }
                                                 },
                                                 child: Text(
-                                                  globals.flag?globals.generalContentArray[
-                                                          'objDetailsPageText_3']
-                                                      .toString()
-                                                      .toUpperCase():"movable, select from exist".toString()
-                                                      .toUpperCase(),
+                                                  globals.flag
+                                                      ? globals
+                                                          .generalContentArray[
+                                                              'objDetailsPageText_3']
+                                                          .toString()
+                                                          .toUpperCase()
+                                                      : "movable, select from exist"
+                                                          .toString()
+                                                          .toUpperCase(),
                                                   style: TextStyle(
                                                     color: Color.fromARGB(
                                                         255, 255, 255, 255),
@@ -643,14 +664,21 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                                                 ElevatedButton.icon(
                                                   onPressed: () async {
                                                     uulidAPIRequestFlag = true;
-                                                    globals.uulidDB.isEmpty
-                                                        ? await getUULID(0, 0)
+
+                                                    globals.uulidDB.isNotEmpty
+                                                        ? setState(() {
+                                                            selectNextUULIDLevel();
+                                                            print(
+                                                                "Updating current UI");
+                                                            uulidAPIRequestFlag =
+                                                                false;
+                                                          })
+                                                        : await getUULID(0, 0)
                                                             .then((value) =>
-                                                                value.isNotEmpty
+                                                                value.runtimeType !=
+                                                                        String
                                                                     ? setState(
                                                                         () {
-                                                                        print(
-                                                                            "Was making a new report");
                                                                         selectNextUULIDLevel();
                                                                         uulidAPIRequestFlag =
                                                                             false;
@@ -658,16 +686,10 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                                                                     : setState(
                                                                         () {
                                                                         noAPIResponse();
+
                                                                         uulidAPIRequestFlag =
                                                                             false;
-                                                                      }))
-                                                        : setState(() {
-                                                            selectNextUULIDLevel();
-                                                            print(
-                                                                "Updating current UI");
-                                                            uulidAPIRequestFlag =
-                                                                false;
-                                                          });
+                                                                      }));
                                                   },
                                                   icon: Icon(
                                                     Icons.refresh,

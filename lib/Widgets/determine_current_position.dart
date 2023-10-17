@@ -47,5 +47,5 @@ determinePosition() async {
       globals.longitude = position.longitude;
     
 
-    convertToAddress();
+   await convertToAddress();
   }

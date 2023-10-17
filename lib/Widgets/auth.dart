@@ -83,6 +83,7 @@ class Auth {
   Future signOut() async {
     try {
       final user = await _auth.signOut();
+      globals.usersAccounts = [];
       return true;
     } catch (e) {
       print(e);

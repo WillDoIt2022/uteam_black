@@ -4,8 +4,8 @@ import 'package:translator/translator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:another_flushbar/flushbar.dart'; //notifys
 import 'package:loading_animation_widget/loading_animation_widget.dart'; //Spinner
-import 'dart:math';
-import '../Widgets/geocoding.dart';
+
+
 //settings
 import '../globals.dart' as globals;
 import '../routes.dart';
@@ -25,16 +25,11 @@ class MainPage extends StatefulWidget {
 class _LaunchApp extends State<MainPage> {
   final docAccounts =
       FirebaseFirestore.instance.collection('users').doc(globals.phoneNumber);
-  final docObjects = FirebaseFirestore.instance.collection('objects');
+  
   final translator = GoogleTranslator();
 
   bool filteredDbflag = globals.usersAccounts.isEmpty ? false : true;
-//holds calculatef distance of iterable List of exist object
-  num? distance;
-  //holds nearest object Lat & Long
-  double nearestObjectLatitude = 0.0;
-  double nearestObjectLongitude = 0.0;
-  dynamic prevNearestObjectDistance = 0;
+
 
   @override
   void initState() {
@@ -55,70 +50,9 @@ class _LaunchApp extends State<MainPage> {
     });
   }
 
-//Getting unique address for current AccountName to display them on the map
-  getObjectsLatLang() async {
-    await docObjects
-        .where("phoneNumber", isEqualTo: globals.phoneNumber.toString())
-        .where("accountName", isEqualTo: globals.accountName.toString())
-        .get()
-        .then((QuerySnapshot snapshot) {
-      var filteredDb = snapshot.docs.toList();
 
-      var seen = Set<String>();
-      var uniquelist = filteredDb
-          .where((x) =>
-              seen.add(x["latitude"].toString() + x["longitude"].toString()))
-          .toList();
-      globals.existAddressesInAccount = uniquelist;
-      print(filteredDb.length);
-      print(uniquelist.length);
 
-      for (var i = 0; i < uniquelist.length; i++) {
-        distanceToObject(uniquelist[i]["latitude"], uniquelist[i]["longitude"]);
-        print("distance");
-        print(distance);
-        if (i == 0 && distance == 0) {
-          prevNearestObjectDistance = 0;
-        } else if (i == 0 && distance != 0) {
-          prevNearestObjectDistance = distance;
-        }
-
-        if (distance! <= prevNearestObjectDistance) {
-          prevNearestObjectDistance = distance;
-          nearestObjectLatitude = uniquelist[i]["latitude"];
-          nearestObjectLongitude = uniquelist[i]["longitude"];
-        }
-       
-        //print(uniquelist[i]["latitude"]);
-        //print(uniquelist[i]["longitude"]);
-        //print(uniquelist[i]["id"]);
-      }
-       if (uniquelist.isNotEmpty) {
-          print("Im setting a new address!!!!!!!!!!!!");
-          print(globals.flag);
-          print(nearestObjectLatitude);
-          print(nearestObjectLongitude);
-          globals.flag = false;
-          globals.newLatitude = nearestObjectLatitude;
-          globals.newLongitude =
-              nearestObjectLongitude;
-          convertToAddress().then((value) {
-            setState(() {});
-          });
-        }
-    });
-  }
-
-  double distanceToObject(lat1, lon1) {
-    var p = 0.017453292519943295;
-    var a = 0.5 -
-        cos((globals.latitude - lat1) * p) / 2 +
-        cos(lat1 * p) *
-            cos(globals.latitude * p) *
-            (1 - cos((globals.longitude - lon1) * p)) /
-            2;
-    return distance = 12742 * asin(sqrt(a));
-  }
+ 
 
   void translateLanguage(textt) {
     translator.translate(textt, to: globals.language).then((result) {
@@ -279,7 +213,7 @@ class _LaunchApp extends State<MainPage> {
                                         .usersAccounts[index]["name"]
                                         .toString()
                                         .toLowerCase();
-                                    getObjectsLatLang();
+                                    
                                     Navigator.pushNamed(
                                         context, Routes.addObjPage);
                                   } else {

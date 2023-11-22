@@ -87,7 +87,7 @@ dependencies:
   #text_tools: ^0.0.2
   string_capitalize_extension: ^0.0.1
 #Internet connection checker 
-  data_connection_checker: ^0.3.4-nullsafety.0
+  #data_connection_checker: ^0.3.4-nullsafety.0
 
 #Left package without ver to install, and terminal will install those ver, 
 #wich is relative to others packages (in this package conflict with cameras package)

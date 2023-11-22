@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // ignore: import_of_legacy_library_into_null_safe
-import 'package:text_tools/text_tools.dart';
+//import 'package:text_tools/text_tools.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart'; //Spinner
 import 'package:dropdown_button2/dropdown_button2.dart'; //DropDawn buttons
 import '../Widgets/footer_menu.dart';
@@ -367,11 +367,15 @@ class _DataBase extends State<DataBasePage> {
                                                               left: 15,
                                                             ),
                                                             child: Text(
-                                                              TextTools.toUppercaseFirstLetter(
-                                                                  text: filteredDb[
+                                                              filteredDb[
                                                                           index]
                                                                       [
                                                                       "objectName"]),
+                                                              //TextTools.toUppercaseFirstLetter(
+                                                                  //text: filteredDb[
+                                                                          //index]
+                                                                      //[
+                                                                      //"objectName"]),
                                                               overflow:
                                                                   TextOverflow
                                                                       .ellipsis,
@@ -407,9 +411,10 @@ class _DataBase extends State<DataBasePage> {
                                                               left: 15,
                                                             ),
                                                             child: Text(
-                                                              TextTools.toUppercaseFirstLetter(
-                                                                  text: 
-                                                                      "${filteredDb[index]['uulidPath']}: ${filteredDb[index]['uulid']}"),
+                                                              "${filteredDb[index]['uulidPath']}: ${filteredDb[index]['uulid']}",
+                                                              //TextTools.toUppercaseFirstLetter(
+                                                                  //text: 
+                                                                      //"${filteredDb[index]['uulidPath']}: ${filteredDb[index]['uulid']}"),
                                                               overflow:
                                                                   TextOverflow
                                                                       .ellipsis,
@@ -445,10 +450,11 @@ class _DataBase extends State<DataBasePage> {
                                                               left: 15,
                                                             ),
                                                             child: Text(
-                                                              TextTools
-                                                                  .toUppercaseFirstLetter(
-                                                                      text:
-                                                                          "${filteredDb[index]['street']}, ${filteredDb[index]['building']}"),
+                                                              "${filteredDb[index]['street']}, ${filteredDb[index]['building']}",
+                                                              //TextTools
+                                                                 // .toUppercaseFirstLetter(
+                                                                    //  text:
+                                                                         // "${filteredDb[index]['street']}, ${filteredDb[index]['building']}"),
                                                               overflow:
                                                                   TextOverflow
                                                                       .ellipsis,

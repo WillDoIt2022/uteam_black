@@ -84,7 +84,7 @@ dependencies:
 #For multilanguage. 
   translator: ^0.1.4
 #To capitilized the letters and more options to do 
-  text_tools: ^0.0.2
+  #text_tools: ^0.0.2
   string_capitalize_extension: ^0.0.1
 #Internet connection checker 
   data_connection_checker: ^0.3.4-nullsafety.0

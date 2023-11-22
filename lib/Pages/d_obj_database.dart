@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-// ignore: import_of_legacy_library_into_null_safe
+// ignore: import_of_legacy_library_into_null_safe;
 //import 'package:text_tools/text_tools.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart'; //Spinner
 import 'package:dropdown_button2/dropdown_button2.dart'; //DropDawn buttons
@@ -370,7 +370,7 @@ class _DataBase extends State<DataBasePage> {
                                                               filteredDb[
                                                                           index]
                                                                       [
-                                                                      "objectName"]),
+                                                                      "objectName"],
                                                               //TextTools.toUppercaseFirstLetter(
                                                                   //text: filteredDb[
                                                                           //index]

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 //packages
 import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart'; //for switch case usage
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:text_tools/text_tools.dart';
+//import 'package:text_tools/text_tools.dart';
 import 'package:another_flushbar/flushbar.dart'; //notifys
 import 'package:loading_animation_widget/loading_animation_widget.dart'; //Spinner
 import 'package:permission_handler/permission_handler.dart';
@@ -438,10 +438,11 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                                                 child: Text(
                                                   globals.flag
                                                       ? "${globals.street}, ${globals.building}"
-                                                      : TextTools
-                                                          .toUppercaseFirstLetter(
-                                                              text:
-                                                                  "${globals.newStreet}, ${globals.newBuilding}"),
+                                                      : "${globals.newStreet}, ${globals.newBuilding}",
+                                                      //TextTools
+                                                          //.toUppercaseFirstLetter(
+                                                              //text:
+                                                                  //"${globals.newStreet}, ${globals.newBuilding}"),
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   style: TextStyle(

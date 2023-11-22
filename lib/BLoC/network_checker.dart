@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 // ignore: import_of_legacy_library_into_null_safe
-import 'package:data_connection_checker/data_connection_checker.dart'; //Internet connection checker
+//import 'package:data_connection_checker/data_connection_checker.dart'; //Internet connection checker
 import '../Widgets/determine_current_position.dart';
 
 
@@ -12,7 +12,8 @@ class NetworkChecker extends Bloc<NetworkCheckerEvent, dynamic> {
   Future<void> _onCeckInternetConnectionEvent<NetworkCheckerEvent>(
       CheckInternetConnectionEvent event, Emitter<dynamic> emit) async {
 
-    bool result = await DataConnectionChecker().hasConnection;
+    //bool result = await DataConnectionChecker().hasConnection;
+    bool result=true;
     print("Это результат проверки $result");
     if (result == true) {
       print("Im before launching geo determination");

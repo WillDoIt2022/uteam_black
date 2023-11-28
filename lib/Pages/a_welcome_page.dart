@@ -65,6 +65,7 @@ class _LaunchApp extends State<WelcomePage> with TickerProviderStateMixin {
       
       return Scaffold(
           backgroundColor: Color.fromARGB(255, 246, 246, 246),
+          resizeToAvoidBottomInset : false,//when the keyboard appears, prevent the content resizing
           body: Stack(children: [
             Column(
               mainAxisAlignment: MainAxisAlignment.start,

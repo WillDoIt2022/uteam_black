@@ -42,8 +42,9 @@ getUULID(uulidLevel, levelTarget) async {
       response.data.forEach((item) {
         //print(item);
 
-        if (item["n"]["properties"]["Label_FR"] != null) {
-          final label = item["n"]["properties"]["Label_FR"].toString();
+        //if (item["n"]["properties"]["Label_FR"] != null) {
+          if (item["n"]["properties"]["ID label"] != null) {
+          final label = item["n"]["properties"]["ID label"].toString();
           print(label);
           labels.add(label);
           //Labelss.add(uulidText);

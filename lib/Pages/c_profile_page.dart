@@ -47,6 +47,7 @@ class ProfileSettings extends State<ProfilePage> {
   Widget build(BuildContext context) {
     //debugShowCheckedModeBanner: false, //remove the debug banner "Demo"
     return Scaffold(
+      resizeToAvoidBottomInset : false,//when the keyboard appears, prevent the content resizing
       backgroundColor: Color.fromARGB(255, 246, 246, 246),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,

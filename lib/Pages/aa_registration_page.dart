@@ -173,6 +173,7 @@ for(var i = 0; i < usersAccounts.length; i++){
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset : false,//when the keyboard appears, prevent the content resizing
       backgroundColor: Color.fromARGB(255, 246, 246, 246),
       body: Stack(children: [
         Column(

@@ -499,15 +499,16 @@ class _DataBase extends State<DataBasePage> {
                                                     // Routes.objectPage,
                                                     // );
                                                     photo=null;
-                                                    Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder:
-                                                                (context) =>
-                                                                    ObjectPage(
-                                                                      picture:
-                                                                          photo,
-                                                                    )));
+                                                    Navigator.pushNamed(context, Routes.profilePage);
+                                                    //Navigator.push(
+                                                        //context,
+                                                       // MaterialPageRoute(
+                                                           // builder:
+                                                               // (context) =>
+                                                                 //   ObjectPage(
+                                                                 //     picture:
+                                                                 //         photo,
+                                                                 //   )));
 
 //Navigator.pushNamed(
                                                     //context,

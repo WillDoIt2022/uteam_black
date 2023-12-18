@@ -7,6 +7,7 @@ import 'package:dropdown_button2/dropdown_button2.dart'; //DropDawn buttons
 import '../Widgets/footer_menu.dart';
 import '../routes.dart';
 import '../globals.dart' as globals;
+import 'e5_obj_page.dart';
 
 // ignore_for_file: prefer_const_constructors
 
@@ -34,6 +35,7 @@ class _DataBase extends State<DataBasePage> {
   List sourceDb = [];
   bool filteredDbflag = false;
   dynamic data;
+  dynamic photo;
   @override
   void initState() {
     super.initState();
@@ -485,17 +487,27 @@ class _DataBase extends State<DataBasePage> {
                                               children: [
                                                 InkWell(
                                                   onTap: () {
-                                                    //data = filteredDb[index];
-                                                    data = filteredDb[0];
+                                                    data = filteredDb[index];
+                                                    //data = filteredDb[0];
                                                     print(index);
                                                     objectDetailsSet(data);
                                                     globals.onSave = false;
                                                     print(
                                                         "event before reffering to main page");
-                                                    Navigator.pushNamed(
-                                                      context,
-                                                      Routes.objectPage,
-                                                    );
+                                                    // Navigator.pushNamed(
+                                                    // context,
+                                                    // Routes.objectPage,
+                                                    // );
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder:
+                                                                (context) =>
+                                                                    ObjectPage(
+                                                                      picture:
+                                                                          photo,
+                                                                    )));
+
 //Navigator.pushNamed(
                                                     //context,
                                                     //Routes.mainPage,

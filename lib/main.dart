@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter/services.dart';
 import 'BLoC/obj_details_counter.dart';
 import 'BLoC/network_checker.dart';
 import 'Pages/a_welcome_page.dart';
@@ -26,6 +27,11 @@ Future main() async {
   await dotenv.load(fileName: "assets/.env");
   //Initializing Database when starting the application.
   await Firebase.initializeApp();
+  //to prevent rotate device
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
+  
   runApp(const MyApp());
 }
 

@@ -42,10 +42,10 @@ class _DataBase extends State<DataBasePage> {
 
   Future getUserObjects() async {
     await docObjects
-        .where("phoneNumber", isEqualTo: globals.phoneNumber.toString()).where("accountName", isEqualTo: globals.accountName.toString()) 
+        .where("phoneNumber", isEqualTo: globals.phoneNumber.toString())
+        .where("accountName", isEqualTo: globals.accountName.toString())
         .get()
         .then((QuerySnapshot snapshot) {
-
       filteredDb = snapshot.docs.toList();
       sourceDb = snapshot.docs;
 
@@ -63,7 +63,7 @@ class _DataBase extends State<DataBasePage> {
     globals.newLongitude = data['longitude'];
     globals.uulid = data['uulid'];
     globals.fullPath = data['uulidPath'];
-    globals.uulidDB=data["uulidList"];
+    globals.uulidDB = data["uulidList"];
     globals.objectName = data['objectName'];
     globals.newCountry = data['country'];
     globals.newCountryIso = data['countryIso'];
@@ -114,10 +114,9 @@ class _DataBase extends State<DataBasePage> {
       setState(() {
         filteredDb = filteredDb
             .where((e) => (e[selectedFilteredValue.toString().toLowerCase()]
-                .contains(controllerSearch.text.toString().toLowerCase())||
+                    .contains(controllerSearch.text.toString().toLowerCase()) ||
                 e["uulidPath"]
-                    .contains(controllerSearch.text.toString().toLowerCase()
-                )))
+                    .contains(controllerSearch.text.toString().toLowerCase())))
             .toList();
       });
     }
@@ -367,15 +366,13 @@ class _DataBase extends State<DataBasePage> {
                                                               left: 15,
                                                             ),
                                                             child: Text(
-                                                              filteredDb[
-                                                                          index]
-                                                                      [
-                                                                      "objectName"],
+                                                              filteredDb[index][
+                                                                  "objectName"],
                                                               //TextTools.toUppercaseFirstLetter(
-                                                                  //text: filteredDb[
-                                                                          //index]
-                                                                      //[
-                                                                      //"objectName"]),
+                                                              //text: filteredDb[
+                                                              //index]
+                                                              //[
+                                                              //"objectName"]),
                                                               overflow:
                                                                   TextOverflow
                                                                       .ellipsis,
@@ -413,8 +410,8 @@ class _DataBase extends State<DataBasePage> {
                                                             child: Text(
                                                               "${filteredDb[index]['uulidPath']}: ${filteredDb[index]['uulid']}",
                                                               //TextTools.toUppercaseFirstLetter(
-                                                                  //text: 
-                                                                      //"${filteredDb[index]['uulidPath']}: ${filteredDb[index]['uulid']}"),
+                                                              //text:
+                                                              //"${filteredDb[index]['uulidPath']}: ${filteredDb[index]['uulid']}"),
                                                               overflow:
                                                                   TextOverflow
                                                                       .ellipsis,
@@ -452,9 +449,9 @@ class _DataBase extends State<DataBasePage> {
                                                             child: Text(
                                                               "${filteredDb[index]['street']}, ${filteredDb[index]['building']}",
                                                               //TextTools
-                                                                 // .toUppercaseFirstLetter(
-                                                                    //  text:
-                                                                         // "${filteredDb[index]['street']}, ${filteredDb[index]['building']}"),
+                                                              // .toUppercaseFirstLetter(
+                                                              //  text:
+                                                              // "${filteredDb[index]['street']}, ${filteredDb[index]['building']}"),
                                                               overflow:
                                                                   TextOverflow
                                                                       .ellipsis,
@@ -488,19 +485,23 @@ class _DataBase extends State<DataBasePage> {
                                               children: [
                                                 InkWell(
                                                   onTap: () {
-                                                    data = filteredDb[index];
+                                                    //data = filteredDb[index];
+                                                    data = filteredDb[0];
+                                                    print(index);
                                                     objectDetailsSet(data);
                                                     globals.onSave = false;
-                                                    print("event before reffering to main page");
+                                                    print(
+                                                        "event before reffering to main page");
                                                     Navigator.pushNamed(
                                                       context,
                                                       Routes.objectPage,
                                                     );
 //Navigator.pushNamed(
-                                                      //context,
-                                                      //Routes.mainPage,
-                                                   //);
-                                                    print("event after reffering to main page");
+                                                    //context,
+                                                    //Routes.mainPage,
+                                                    //);
+                                                    print(
+                                                        "event after reffering to main page");
                                                   },
                                                   child: Text(
                                                     'view more'.toUpperCase(),

@@ -27,7 +27,7 @@ class _ObjSummary extends State<ObjectPage> {
   String objectId = "";
   late Map<String, dynamic> object = {};
 
-  final docObjects = FirebaseFirestore.instance.collection('objects');
+  //final docObjects = FirebaseFirestore.instance.collection('objects');
   dynamic onSave;
   String? urlDownloadLink;
   UploadTask? uploadTask;
@@ -39,6 +39,7 @@ class _ObjSummary extends State<ObjectPage> {
       text: globals.objectInfo == "" ? "" : globals.objectInfo);
   dynamic controllerObjectAccessNotes = TextEditingController(
       text: globals.objectAccess == "" ? "" : globals.objectAccess);
+      
 
   @override
   void initState() {
@@ -48,6 +49,7 @@ class _ObjSummary extends State<ObjectPage> {
     //Detecting if the picture was done by camera
     // ignore: unnecessary_null_comparison
     widget.picture == null ? isPictureDone = "false" : isPictureDone = "true";
+    
   }
 
   Future saveObjectPicture() async {
@@ -119,11 +121,11 @@ class _ObjSummary extends State<ObjectPage> {
   }
 
   Future addNewObject() async {
-    docObjects
-        .doc(globals.objectId)
-        .set(object)
-        .then((value) => dbSuccessfullyStored())
-        .onError((e, _) => dbNotStored(e));
+    //docObjects
+    //    .doc(globals.objectId)
+    //    .set(object)
+    //    .then((value) => dbSuccessfullyStored())
+    //    .onError((e, _) => dbNotStored(e));
   }
 
   dbSuccessfullyStored() {

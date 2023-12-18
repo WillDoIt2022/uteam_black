@@ -498,6 +498,7 @@ class _DataBase extends State<DataBasePage> {
                                                     // context,
                                                     // Routes.objectPage,
                                                     // );
+                                                    photo=null;
                                                     Navigator.push(
                                                         context,
                                                         MaterialPageRoute(

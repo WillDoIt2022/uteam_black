@@ -23,6 +23,7 @@ String objectInfo = "";
 String objectAccess = "";
 String imgUrl = "";
 bool flag = true; //Determine what position to use (Current or New)
+dynamic photo="";
 
 
 //Current position Data

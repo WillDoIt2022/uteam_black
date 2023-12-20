@@ -72,6 +72,7 @@ class _LaunchCamera extends State<PhotoPage> {
       setState(() {
         isPictureDone = true;
         photo = picture;
+        globals.photo=picture;
       });
     } on CameraException catch (e) {
       debugPrint('Error occured while taking picture: $e');

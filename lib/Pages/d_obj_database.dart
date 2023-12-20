@@ -494,6 +494,7 @@ class _DataBase extends State<DataBasePage> {
                                                     globals.onSave = false;
                                                     print(
                                                         "event before reffering to main page");
+                                                        //working ver
                                                     // Navigator.pushNamed(
                                                     // context,
                                                     // Routes.objectPage,
@@ -506,7 +507,7 @@ class _DataBase extends State<DataBasePage> {
                                                     ObjectPage(
                                                       picture: globals.photo,
                                                     )));
-                                                    
+                                                    //1st ver for test
                                                     //Navigator.push(
                                                         //context,
                                                        // MaterialPageRoute(
@@ -516,7 +517,8 @@ class _DataBase extends State<DataBasePage> {
                                                                  //     picture:
                                                                  //         photo,
                                                                  //   )));
-
+                                                                 
+//2nd ver for test
 //Navigator.pushNamed(
                                                     //context,
                                                     //Routes.mainPage,

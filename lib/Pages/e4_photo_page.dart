@@ -285,7 +285,7 @@ class _LaunchCamera extends State<PhotoPage> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     ObjectPage(
-                                                      picture: photo,
+                                                      picture: true,
                                                     )));
                                       },
                                       child: Text(

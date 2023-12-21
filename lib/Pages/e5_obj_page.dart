@@ -1,3 +1,6 @@
+//import 'dart:ffi';
+
+//import 'package:camera/camera.dart' ;
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart'; //Spinner
 import 'package:another_flushbar/flushbar.dart'; //notifys
 import 'dart:io';
+//import 'package:xfile/xfile.dart';
 import '../BLoC/obj_details_counter.dart';
 import '../globals.dart' as globals;
 import '../Widgets/footer_menu.dart';
@@ -15,7 +19,8 @@ import '../styles/app_textstyles.dart';
 
 class ObjectPage extends StatefulWidget {
   const ObjectPage({Key? key, required this.picture}) : super(key: key);
-  final XFile picture;
+  //final XFile picture;
+  final bool picture;
   @override
   State<StatefulWidget> createState() {
     return _ObjSummary();
@@ -26,8 +31,8 @@ class _ObjSummary extends State<ObjectPage> {
   var uuid = Uuid();
   String objectId = "";
   late Map<String, dynamic> object = {};
-
-  //final docObjects = FirebaseFirestore.instance.collection('objects');
+  XFile? photo;
+  final docObjects = FirebaseFirestore.instance.collection('objects');
   dynamic onSave;
   String? urlDownloadLink;
   UploadTask? uploadTask;
@@ -39,7 +44,6 @@ class _ObjSummary extends State<ObjectPage> {
       text: globals.objectInfo == "" ? "" : globals.objectInfo);
   dynamic controllerObjectAccessNotes = TextEditingController(
       text: globals.objectAccess == "" ? "" : globals.objectAccess);
-      
 
   @override
   void initState() {
@@ -48,8 +52,16 @@ class _ObjSummary extends State<ObjectPage> {
     globals.objectId == '' ? globals.objectId = 'onEdit' : null;
     //Detecting if the picture was done by camera
     // ignore: unnecessary_null_comparison
-    widget.picture == null ? isPictureDone = "false" : isPictureDone = "true";
-    
+    //widget.picture == null ? isPictureDone = "false" : isPictureDone = "true";
+    print("widget.picture");
+    print(widget.picture);
+    widget.picture == false ? isPictureDone = "false" : isPictureDone = "true";
+    if (widget.picture == true) {
+      photo = globals.photo;
+    }
+
+    //Image.file(File(widget.picture.path)).existsSync();
+    //widget.picture.existsFile()==null? isPictureDone = "false" : isPictureDone = "true";
   }
 
   Future saveObjectPicture() async {
@@ -60,7 +72,7 @@ class _ObjSummary extends State<ObjectPage> {
         globals.objectId = objectId;
 
         final path = 'images/$objectId.jpg';
-        final file = File(widget.picture.path);
+        final file = File(photo!.path);
         final ref = FirebaseStorage.instance.ref().child(path);
         uploadTask = ref.putFile(file);
 
@@ -73,7 +85,7 @@ class _ObjSummary extends State<ObjectPage> {
 // Delete the file
         await ref.delete();
 //Create a new one file
-        final file = File(widget.picture.path);
+        final file = File(photo!.path);
         uploadTask = ref.putFile(file);
 
         final snapshot = await uploadTask!.whenComplete(() {});
@@ -121,11 +133,11 @@ class _ObjSummary extends State<ObjectPage> {
   }
 
   Future addNewObject() async {
-    //docObjects
-    //    .doc(globals.objectId)
-    //    .set(object)
-    //    .then((value) => dbSuccessfullyStored())
-    //    .onError((e, _) => dbNotStored(e));
+    docObjects
+        .doc(globals.objectId)
+        .set(object)
+        .then((value) => dbSuccessfullyStored())
+        .onError((e, _) => dbNotStored(e));
   }
 
   dbSuccessfullyStored() {
@@ -211,13 +223,18 @@ class _ObjSummary extends State<ObjectPage> {
         "Warning Dialog",
         style: TextStyle(
           color: Color.fromARGB(255, 207, 135, 1),
-        ),textAlign: TextAlign.center,
+        ),
+        textAlign: TextAlign.center,
       ),
-      content: Text(globals.objectInfo == "" && globals.objectAccess == ""
-          ? "Object detailed information and how to access it is empty. Are you sure you want to save object in any case?"
-          : globals.objectAccess == ""
-              ? "How to access object information is empty. Are you sure you want to save object in any case?"
-              : "Object detailed information is empty. Are you sure you want to save object in any case?",style: AppTextStyle.textSize16DarkNormal,textAlign: TextAlign.center,),
+      content: Text(
+        globals.objectInfo == "" && globals.objectAccess == ""
+            ? "Object detailed information and how to access it is empty. Are you sure you want to save object in any case?"
+            : globals.objectAccess == ""
+                ? "How to access object information is empty. Are you sure you want to save object in any case?"
+                : "Object detailed information is empty. Are you sure you want to save object in any case?",
+        style: AppTextStyle.textSize16DarkNormal,
+        textAlign: TextAlign.center,
+      ),
       actions: [
         cancelButton,
         continueButton,
@@ -322,7 +339,7 @@ class _ObjSummary extends State<ObjectPage> {
                                   bottomLeft: Radius.circular(20),
                                 ),
                                 child: isPictureDone == "true"
-                                    ? Image.file(File(widget.picture.path),
+                                    ? Image.file(File(photo!.path),
                                         fit: BoxFit.cover,
                                         height: 200,
                                         width: 200)

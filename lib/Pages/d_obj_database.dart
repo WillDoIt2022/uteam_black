@@ -35,7 +35,7 @@ class _DataBase extends State<DataBasePage> {
   List sourceDb = [];
   bool filteredDbflag = false;
   dynamic data;
-  //dynamic photo;
+  dynamic photo;
   @override
   void initState() {
     super.initState();
@@ -499,13 +499,13 @@ class _DataBase extends State<DataBasePage> {
                                                     // context,
                                                     // Routes.objectPage,
                                                     // );
-                                                    //photo=null;
+                                                    photo=false;
                                                     Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     ObjectPage(
-                                                      picture: globals.photo,
+                                                      picture: false,
                                                     )));
                                                     //1st ver for test
                                                     //Navigator.push(

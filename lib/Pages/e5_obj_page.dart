@@ -1,6 +1,3 @@
-//import 'dart:ffi';
-
-//import 'package:camera/camera.dart' ;
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart'; //Spinner
 import 'package:another_flushbar/flushbar.dart'; //notifys
 import 'dart:io';
-//import 'package:xfile/xfile.dart';
 import '../BLoC/obj_details_counter.dart';
 import '../globals.dart' as globals;
 import '../Widgets/footer_menu.dart';
@@ -19,7 +15,6 @@ import '../styles/app_textstyles.dart';
 
 class ObjectPage extends StatefulWidget {
   const ObjectPage({Key? key, required this.picture}) : super(key: key);
-  //final XFile picture;
   final bool picture;
   @override
   State<StatefulWidget> createState() {
@@ -50,18 +45,10 @@ class _ObjSummary extends State<ObjectPage> {
     super.initState();
     onSave = globals.onSave;
     globals.objectId == '' ? globals.objectId = 'onEdit' : null;
-    //Detecting if the picture was done by camera
-    // ignore: unnecessary_null_comparison
-    //widget.picture == null ? isPictureDone = "false" : isPictureDone = "true";
-    print("widget.picture");
-    print(widget.picture);
     widget.picture == false ? isPictureDone = "false" : isPictureDone = "true";
     if (widget.picture == true) {
       photo = globals.photo;
     }
-
-    //Image.file(File(widget.picture.path)).existsSync();
-    //widget.picture.existsFile()==null? isPictureDone = "false" : isPictureDone = "true";
   }
 
   Future saveObjectPicture() async {
@@ -253,6 +240,7 @@ class _ObjSummary extends State<ObjectPage> {
   Widget build(BuildContext context) {
     return BlocBuilder<CounterNav, int>(builder: (context, counter) {
       return Scaffold(
+        resizeToAvoidBottomInset: false,//when the keyboard appears, prevent the content resizing
           backgroundColor: Color.fromARGB(255, 246, 246, 246),
           body: Center(
             child: Stack(

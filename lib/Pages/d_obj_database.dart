@@ -128,9 +128,12 @@ class _DataBase extends State<DataBasePage> {
   Widget build(BuildContext context) {
     //debugShowCheckedModeBanner: false, //remove the debug banner "Demo"
     return Scaffold(
-      resizeToAvoidBottomInset : false,//when the keyboard appears, prevent the content resizing
+      resizeToAvoidBottomInset:
+          false, //when the keyboard appears, prevent the content resizing
       backgroundColor: Color.fromARGB(255, 246, 246, 246),
-      body: filteredDbflag
+      body:SingleChildScrollView(
+       child: 
+      filteredDbflag
           ? Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               Expanded(
                 flex: 2,
@@ -495,30 +498,32 @@ class _DataBase extends State<DataBasePage> {
                                                     globals.onSave = false;
                                                     print(
                                                         "event before reffering to main page");
-                                                        //working ver
+                                                    //working ver
                                                     // Navigator.pushNamed(
                                                     // context,
                                                     // Routes.objectPage,
                                                     // );
                                                     //photo=false;
                                                     Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ObjectPage(
-                                                      picture: false,
-                                                    )));
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder:
+                                                                (context) =>
+                                                                    ObjectPage(
+                                                                      picture:
+                                                                          false,
+                                                                    )));
                                                     //1st ver for test
                                                     //Navigator.push(
-                                                        //context,
-                                                       // MaterialPageRoute(
-                                                           // builder:
-                                                               // (context) =>
-                                                                 //   ObjectPage(
-                                                                 //     picture:
-                                                                 //         photo,
-                                                                 //   )));
-                                                                 
+                                                    //context,
+                                                    // MaterialPageRoute(
+                                                    // builder:
+                                                    // (context) =>
+                                                    //   ObjectPage(
+                                                    //     picture:
+                                                    //         photo,
+                                                    //   )));
+
 //2nd ver for test
 //Navigator.pushNamed(
                                                     //context,
@@ -576,6 +581,6 @@ class _DataBase extends State<DataBasePage> {
                 size: 50,
               ),
             ),
-    );
+    ));
   }
 }

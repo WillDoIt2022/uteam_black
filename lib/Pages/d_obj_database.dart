@@ -128,6 +128,7 @@ class _DataBase extends State<DataBasePage> {
   Widget build(BuildContext context) {
     //debugShowCheckedModeBanner: false, //remove the debug banner "Demo"
     return Scaffold(
+      resizeToAvoidBottomInset : false,//when the keyboard appears, prevent the content resizing
       backgroundColor: Color.fromARGB(255, 246, 246, 246),
       body: filteredDbflag
           ? Column(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -499,7 +500,7 @@ class _DataBase extends State<DataBasePage> {
                                                     // context,
                                                     // Routes.objectPage,
                                                     // );
-                                                    photo=false;
+                                                    //photo=false;
                                                     Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(

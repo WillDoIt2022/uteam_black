@@ -5,7 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart'; //Spinner
 import 'package:dropdown_button2/dropdown_button2.dart'; //DropDawn buttons
 import '../Widgets/footer_menu.dart';
-import '../routes.dart';
 import '../globals.dart' as globals;
 import 'e5_obj_page.dart';
 
@@ -131,8 +130,7 @@ class _DataBase extends State<DataBasePage> {
       resizeToAvoidBottomInset:
           false, //when the keyboard appears, prevent the content resizing
       backgroundColor: Color.fromARGB(255, 246, 246, 246),
-      body:SingleChildScrollView(
-       child: 
+      body:
       filteredDbflag
           ? Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               Expanded(
@@ -581,6 +579,6 @@ class _DataBase extends State<DataBasePage> {
                 size: 50,
               ),
             ),
-    ));
+    );
   }
 }

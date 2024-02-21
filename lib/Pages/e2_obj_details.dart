@@ -249,6 +249,7 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
     //debugShowCheckedModeBanner: false, //remove the debug banner "Demo"
     return BlocBuilder<CounterNav, int>(builder: (context, counter) {
       return Scaffold(
+        resizeToAvoidBottomInset: false,//when the keyboard appears, prevent the content resizing
           backgroundColor: Color.fromARGB(255, 246, 246, 246),
           body: Stack(children: [
             Column(

@@ -203,6 +203,9 @@ class _AddObj extends State<AddObjPage> {
                           globals.uulidDB = [];
                           globals.objectInfo = "";
                           globals.objectAccess = "";
+                          globals.brandName="";
+                          globals.commercialName="";
+                          globals.serialNumber="";
                           globals.flag = true;
                           await determinePosition();
                           await getObjectsLatLang();

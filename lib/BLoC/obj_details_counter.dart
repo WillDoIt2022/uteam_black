@@ -6,6 +6,7 @@ class CounterNav extends Bloc<CounterEvent, int> {
     on<CounterDecrementEvent>(_onDecrement);
     on<CounterResetEvent>(_onReset);
      on<CounterGoToUulidEvent>(_goToUulid);
+     on<CounterGoToAddInfoEvent>(_goToAddInfo);
   }
 
   _onIncrement<CounterIncrementEvent>(
@@ -26,6 +27,11 @@ class CounterNav extends Bloc<CounterEvent, int> {
       CounterGoToUulidEvent event, Emitter<int> emit) {
     emit(1);
   }
+
+  _goToAddInfo<CounterGoToAddInfoEvent>(
+      CounterGoToAddInfoEvent event, Emitter<int> emit) {
+    emit(2);
+  }
 }
 
 abstract class CounterEvent {}
@@ -37,3 +43,8 @@ class CounterDecrementEvent extends CounterEvent {}
 class CounterResetEvent extends CounterEvent {}
 
 class CounterGoToUulidEvent extends CounterEvent {}
+
+class CounterGoToAddInfoEvent extends CounterEvent {}
+
+
+

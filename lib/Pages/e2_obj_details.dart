@@ -32,6 +32,12 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
   bool cameraPermissionStatus = false;
   bool uulidSelected = false;
   bool uulidAPIRequestFlag = false;
+  TextEditingController controllerBrand = globals.brandName==""?TextEditingController():TextEditingController(text:globals.brandName);
+  TextEditingController controllerCommercialName =
+      globals.commercialName==""?TextEditingController():TextEditingController(text:globals.commercialName);
+  TextEditingController controllerSerialNumber =
+      globals.serialNumber==""?TextEditingController():TextEditingController(text:globals.serialNumber);
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   // Initial Selected Value
   String dropdownLevelValue =
@@ -213,6 +219,19 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
     ).show(context);
   }
 
+  additionalInfo() {
+    uulidSelected = false;
+    Flushbar(
+      title: 'additional object information'.toUpperCase(),
+      titleColor: Colors.yellow,
+      titleSize: 18,
+      message: 'Please, complete all fields',
+      messageSize: 14,
+      duration: Duration(seconds: 3),
+      flushbarPosition: FlushbarPosition.TOP,
+    ).show(context);
+  }
+
   noAPIResponse() {
     Flushbar(
       title: 'object uulid'.toUpperCase(),
@@ -277,7 +296,7 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                           ),
                         ),
                       ),
-                      counter != 2 && globals.objectId == ""
+                      counter != 3 && globals.objectId == ""
                           ? ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 padding: EdgeInsets.only(top: 25, right: 30),
@@ -293,7 +312,22 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                                       globals.level = dropdownLevelValue;
                                     }
                                     if (counter == 1) {}
-                                    if (counter < 2) {
+                                    if (counter == 2) {
+                                      if (controllerBrand.text == "" ||
+                                          controllerCommercialName.text == "" ||
+                                          controllerSerialNumber.text == "") {
+                                        additionalInfo();
+                                        return;
+                                      } else {
+                                        globals.brandName =
+                                            controllerBrand.text;
+                                        globals.commercialName =
+                                            controllerCommercialName.text;
+                                        globals.serialNumber =
+                                            controllerSerialNumber.text;
+                                      }
+                                    }
+                                    if (counter < 3) {
                                       if (uulidSelected == false &&
                                           counter == 1) {
                                         print("Im making a request on click");
@@ -439,10 +473,10 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                                                   globals.flag
                                                       ? "${globals.street}, ${globals.building}"
                                                       : "${globals.newStreet}, ${globals.newBuilding}",
-                                                      //TextTools
-                                                          //.toUppercaseFirstLetter(
-                                                              //text:
-                                                                  //"${globals.newStreet}, ${globals.newBuilding}"),
+                                                  //TextTools
+                                                  //.toUppercaseFirstLetter(
+                                                  //text:
+                                                  //"${globals.newStreet}, ${globals.newBuilding}"),
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   style: TextStyle(
@@ -577,10 +611,12 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                                                   if (globals
                                                       .existAddressesInAccount
                                                       .isNotEmpty) {
-                                                    globals.immovable = !immovable;
+                                                    globals.immovable =
+                                                        !immovable;
                                                     globals.flag =
                                                         !globals.flag;
-                                                    Navigator.pushReplacementNamed(context,
+                                                    Navigator.pushReplacementNamed(
+                                                        context,
                                                         '/main_page/add_obj/obj_details');
                                                     setState(() {});
                                                   } else {
@@ -1001,6 +1037,245 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                                 ),
                               ),
                               Expanded(
+                                flex: 3,
+                                child: 
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    'ADDITIONAL \nINFORMATION',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 36,
+                                      color: Color.fromARGB(255, 15, 77, 154),
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              
+                              Expanded(
+
+                                flex: 3,
+                                child: 
+                                
+                                Form(
+                                  key: _formKey,
+                                  
+                                  child: SingleChildScrollView(
+                                child:Column(
+                                    children: [
+                                      SizedBox(
+                                        width: 290,
+                                        height: 40,
+                                      ),
+                                      SizedBox(
+                                        width: 290,
+                                        height: 16,
+                                        child: Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Text(
+                                            globals.generalContentArray[
+                                                    'objDetailsPageText_5']
+                                                .toString()
+                                                .toUpperCase(),
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                              color: Color.fromARGB(
+                                                  255, 124, 160, 209),
+                                              fontFamily: 'Inter',
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 290,
+                                        height: 40,
+                                        child: TextFormField(
+                                            keyboardType: TextInputType.text,
+                                            controller: controllerBrand,
+                                            onChanged: (newValue) {
+                                              globals.brandName=controllerBrand.text;
+                                            },
+                                            style: TextStyle(
+                                              fontSize: 20.0,
+                                              color: Color.fromARGB(
+                                                  255, 15, 77, 154),
+                                            ),
+                                            decoration: InputDecoration(
+                                              enabledBorder:
+                                                  UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  width: 2,
+                                                  color: Color.fromARGB(
+                                                      255, 124, 160, 209),
+                                                ),
+                                              ),
+                                              labelText: '',
+                                            ),
+                                            autovalidateMode: AutovalidateMode
+                                                .onUserInteraction,
+                                            validator: (value) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
+                                                return 'Please enter your Brand name';
+                                              }
+                                              return null;
+                                            }
+                                            ),
+                                      ),
+                                      SizedBox(
+                                        width: 290,
+                                        height: 40,
+                                      ),
+                                      SizedBox(
+                                        width: 290,
+                                        height: 16,
+                                        child: Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Text(
+                                            globals.generalContentArray[
+                                                    'objDetailsPageText_6']
+                                                .toString()
+                                                .toUpperCase(),
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                              color: Color.fromARGB(
+                                                  255, 124, 160, 209),
+                                              fontFamily: 'Inter',
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 290,
+                                        height: 40,
+                                        child: TextFormField(
+                                            keyboardType: TextInputType.text,
+                                            controller:
+                                                controllerCommercialName,
+                                                onChanged: (newValue) {
+                                              globals.commercialName=controllerCommercialName.text;
+                                            },
+                                            style: TextStyle(
+                                              fontSize: 20.0,
+                                              color: Color.fromARGB(
+                                                  255, 15, 77, 154),
+                                            ),
+                                            decoration: InputDecoration(
+                                              enabledBorder:
+                                                  UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  width: 2,
+                                                  color: Color.fromARGB(
+                                                      255, 124, 160, 209),
+                                                ),
+                                              ),
+                                              labelText: '',
+                                            ),
+                                            autovalidateMode: AutovalidateMode
+                                                .onUserInteraction,
+                                            validator: (value) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
+                                                return 'Please enter your Commercial name';
+                                              }
+                                              return null;
+                                            }),
+                                      ),
+                                      SizedBox(
+                                        width: 290,
+                                        height: 40,
+                                      ),
+                                      SizedBox(
+                                        width: 290,
+                                        height: 16,
+                                        child: Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Text(
+                                            globals.generalContentArray[
+                                                    'objDetailsPageText_7']
+                                                .toString()
+                                                .toUpperCase(),
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                              color: Color.fromARGB(
+                                                  255, 124, 160, 209),
+                                              fontFamily: 'Inter',
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 290,
+                                        height: 40,
+                                        child: TextFormField(
+                                            keyboardType: TextInputType.text,
+                                            controller: controllerSerialNumber,
+                                            onChanged: (newValue) {
+                                              globals.serialNumber=controllerSerialNumber.text;
+                                            },
+                                            style: TextStyle(
+                                              fontSize: 20.0,
+                                              color: Color.fromARGB(
+                                                  255, 15, 77, 154),
+                                            ),
+                                            decoration: InputDecoration(
+                                              enabledBorder:
+                                                  UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  width: 2,
+                                                  color: Color.fromARGB(
+                                                      255, 124, 160, 209),
+                                                ),
+                                              ),
+                                              labelText: '',
+                                            ),
+                                            autovalidateMode: AutovalidateMode
+                                                .onUserInteraction,
+                                            validator: (value) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
+                                                return 'Please enter your Serial Number';
+                                              }
+                                              return null;
+                                            }),
+                                      ),
+                                    ],
+                                  ),
+                                 ), ),
+                              ),
+                            ],
+                        3: (BuildContext context) => <Widget>[
+                              Expanded(
+                                flex: 6,
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Container(
+                                    height: MediaQueryData.fromWindow(
+                                                WidgetsBinding.instance.window)
+                                            .size
+                                            .width *
+                                        0.5,
+                                    width: MediaQueryData.fromWindow(
+                                                WidgetsBinding.instance.window)
+                                            .size
+                                            .width *
+                                        1,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: AssetImage(
+                                            'assets/img/app_img/Main_pic_2.png'),
+                                        fit: BoxFit.contain,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
                                 flex: 6,
                                 child: Align(
                                   alignment: Alignment.center,
@@ -1087,6 +1362,19 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                               ),
                               child: Icon(Icons.circle,
                                   color: (counter == 2)
+                                      ? Color.fromARGB(255, 15, 77, 154)
+                                      : Color.fromARGB(255, 124, 160, 209),
+                                  size: 22),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                elevation: 0.0,
+                                backgroundColor: Colors.black.withOpacity(0.0),
+                                shape: CircleBorder(),
+                              ),
+                              child: Icon(Icons.circle,
+                                  color: (counter == 3)
                                       ? Color.fromARGB(255, 15, 77, 154)
                                       : Color.fromARGB(255, 124, 160, 209),
                                   size: 22),

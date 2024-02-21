@@ -18,6 +18,9 @@ String objectId = "";
 String accountName = "";
 String objectName = "";
 String uulid = "";
+String brandName = "";
+String commercialName = "";
+String serialNumber = "";
 String level = "";
 String objectInfo = "";
 String objectAccess = "";
@@ -64,6 +67,9 @@ Map<String, String> generalContentArray = {
   'objDetailsPageText_2': 'level',
   'objDetailsPageText_3': 'immovable not on the map',
   'objDetailsPageText_4': 'add\nphoto',
+  'objDetailsPageText_5': 'brand name',
+  'objDetailsPageText_6': 'commercial name',
+  'objDetailsPageText_7': 'serial number',
   'photoPageText_1': 'make\nanother\nphoto',
   'photoPageText_2': 'use this\n photo',
   'objectPageText_1': 'save',

@@ -95,6 +95,9 @@ class _ObjSummary extends State<ObjectPage> {
         "uulidList": globals.uulidDB,
         "accountName": globals.accountName,
         "objectName": globals.objectName,
+        "objectBrandName": globals.brandName,
+        "objectCommercialName": globals.commercialName,
+        "objectSerialNumber": globals.serialNumber,
         "latitude": globals.flag ? globals.latitude : globals.newLatitude,
         "longitude": globals.flag ? globals.longitude : globals.newLongitude,
         "countryIso": globals.flag
@@ -176,7 +179,15 @@ class _ObjSummary extends State<ObjectPage> {
       Navigator.pushNamed(context, Routes.objDetailsPage).then((_) {
         setState(() {});
       });
-    } else if (data == "photo") {
+    } else if (data == "brandName") {
+       BlocProvider.of<CounterNav>(context).add(CounterGoToAddInfoEvent());
+       Navigator.pushNamed(context, Routes.objDetailsPage).then((_) {
+        // This block runs when you have returned back to the 1st Page from 2nd.
+        setState(() {
+          // Call setState to refresh the page.
+        });
+    });}
+    else if (data == "photo") {
       globals.imgUrl = "";
       Navigator.pushNamed(context, Routes.photoPage).then((_) {
         setState(() {});
@@ -310,7 +321,7 @@ class _ObjSummary extends State<ObjectPage> {
                       ),
                     ),
                     Expanded(
-                      flex: 5,
+                      flex: 4,
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -329,11 +340,11 @@ class _ObjSummary extends State<ObjectPage> {
                                 child: isPictureDone == "true"
                                     ? Image.file(File(photo!.path),
                                         fit: BoxFit.cover,
-                                        height: 200,
-                                        width: 200)
+                                        height: 190,
+                                        width: 190)
                                     : SizedBox(
-                                        width: 200,
-                                        height: 200,
+                                        width: 190,
+                                        height: 190,
                                         child: Image.network(globals.imgUrl),
                                       ),
                               ),
@@ -343,14 +354,55 @@ class _ObjSummary extends State<ObjectPage> {
                           ]),
                     ),
                     Expanded(
-                      flex: 4,
+                      flex: 5,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SizedBox(
+                        children: [SizedBox(
                             width: 290,
                             //height: 100,
+                            child: Text(
+                              "brandName".toUpperCase(),
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: Color.fromARGB(255, 124, 160, 209),
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              !onSave ? null : goToEdit("brandName");
+                            },
+                            child: Container(
+                              width: 290,
+                              //height: 100,
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 5.0, horizontal: 0.0),
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    width: 2.0,
+                                    color: Color.fromARGB(255, 124, 160, 209),
+                                  ),
+                                ),
+                              ),
+                              child: Text(
+                                globals.brandName.toUpperCase(),
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Color.fromARGB(255, 15, 77, 154),
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: 290,
+                            //height: 100,
+                            padding: EdgeInsets.only(top: 9),
                             child: Text(
                               "uulid".toUpperCase(),
                               style: TextStyle(
@@ -392,7 +444,7 @@ class _ObjSummary extends State<ObjectPage> {
                           Container(
                             width: 290,
                             //height: 100,
-                            padding: EdgeInsets.only(top: 10),
+                            padding: EdgeInsets.only(top: 9),
                             child: Text(
                               globals
                                   .generalContentArray['objDetailsPageText_1']
@@ -443,7 +495,7 @@ class _ObjSummary extends State<ObjectPage> {
                           Container(
                             width: 290,
                             //height: 100,
-                            padding: EdgeInsets.only(top: 10),
+                            padding: EdgeInsets.only(top: 9),
 
                             child: Text(
                               globals

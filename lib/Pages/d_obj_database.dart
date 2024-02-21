@@ -75,6 +75,9 @@ class _DataBase extends State<DataBasePage> {
     globals.imgUrl = data['imgUrl'];
     globals.objectInfo = data['objectInfo'];
     globals.objectAccess = data['objectAccess'];
+    globals.brandName = data['objectBrandName'];
+    globals.commercialName = data['objectCommercialName'];
+    globals.serialNumber = data['objectSerialNumber'];
   }
 
   filterDbFunctionFunction() {
@@ -130,8 +133,7 @@ class _DataBase extends State<DataBasePage> {
       resizeToAvoidBottomInset:
           false, //when the keyboard appears, prevent the content resizing
       backgroundColor: Color.fromARGB(255, 246, 246, 246),
-      body:
-      filteredDbflag
+      body: filteredDbflag
           ? Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               Expanded(
                 flex: 2,
@@ -511,24 +513,6 @@ class _DataBase extends State<DataBasePage> {
                                                                       picture:
                                                                           false,
                                                                     )));
-                                                    //1st ver for test
-                                                    //Navigator.push(
-                                                    //context,
-                                                    // MaterialPageRoute(
-                                                    // builder:
-                                                    // (context) =>
-                                                    //   ObjectPage(
-                                                    //     picture:
-                                                    //         photo,
-                                                    //   )));
-
-//2nd ver for test
-//Navigator.pushNamed(
-                                                    //context,
-                                                    //Routes.mainPage,
-                                                    //);
-                                                    print(
-                                                        "event after reffering to main page");
                                                   },
                                                   child: Text(
                                                     'view more'.toUpperCase(),

@@ -57,7 +57,7 @@ class _DataBase extends State<DataBasePage> {
   }
 
   objectDetailsSet(data) {
-    print(data["uulidList"]);
+    print(data);
     globals.flag = false;
     globals.objectId = data['id'];
     globals.newLatitude = data['latitude'];
@@ -75,9 +75,9 @@ class _DataBase extends State<DataBasePage> {
     globals.imgUrl = data['imgUrl'];
     globals.objectInfo = data['objectInfo'];
     globals.objectAccess = data['objectAccess'];
-    globals.brandName = data['objectBrandName']?data['objectBrandName']:"no data set";
-    globals.commercialName = data['objectCommercialName']?data['objectCommercialName']:"no data set";
-    globals.serialNumber = data['objectSerialNumber']?data['objectSerialNumber']:"no data set";
+    globals.brandName = data['objectBrandName'];
+    globals.commercialName = data['objectCommercialName'];
+    globals.serialNumber = data['objectSerialNumber'];
   }
 
   filterDbFunctionFunction() {

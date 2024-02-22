@@ -359,8 +359,7 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                 ),
                 Expanded(
                   flex: 12,
-                  child: SingleChildScrollView(
-                    child: Column(
+                  child:  Column(
                       children: ConditionalSwitch.list<int>(
                         context: context,
                         valueBuilder: (BuildContext context) =>
@@ -1072,13 +1071,16 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                                     ),
                                   ),
                                 ),
-                                ListView(
-                                    padding: EdgeInsets.all(0.0),
-                                    shrinkWrap: true,
-                                    children: <Widget>[
+                                
+                                      
                                       Expanded(
-                                        flex: 3,
-                                        child: Align(
+                                        flex: 6,
+                                        child: Form(
+                                          key: _formKey,
+                                          child: SingleChildScrollView(
+                                          child: Column(
+                                            children: [
+                                              Align(
                                           alignment: Alignment.center,
                                           child: Text(
                                             'ADDITIONAL \nINFORMATION',
@@ -1092,13 +1094,6 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      Expanded(
-                                        flex: 3,
-                                        child: Form(
-                                          key: _formKey,
-                                          child: Column(
-                                            children: [
                                               SizedBox(
                                                 width: 290,
                                                 height: 40,
@@ -1302,10 +1297,10 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                                                     }),
                                               ),
                                             ],
-                                          ),
+                                          ),)
                                         ),
                                       ),
-                                    ])
+                                   
                               ],
                           3: (BuildContext context) => <Widget>[
                                 Expanded(
@@ -1380,7 +1375,7 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                         ],
                       ),
                     ),
-                  ),
+                  
                 ),
                 Expanded(
                   flex: 2,

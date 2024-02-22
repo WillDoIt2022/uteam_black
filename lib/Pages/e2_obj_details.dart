@@ -324,14 +324,7 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                                           controllerSerialNumber.text == "") {
                                         additionalInfo();
                                         return;
-                                      } else {
-                                        globals.brandName =
-                                            controllerBrand.text;
-                                        globals.commercialName =
-                                            controllerCommercialName.text;
-                                        globals.serialNumber =
-                                            controllerSerialNumber.text;
-                                      }
+                                      } 
                                     }
                                     if (counter < 3) {
                                       if (uulidSelected == false &&
@@ -1454,7 +1447,7 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                 ),
               ],
             ),
-            counter == 2
+            counter == 3
                 ? cameraPermissionStatus
                     ? Column(children: [
                         Expanded(

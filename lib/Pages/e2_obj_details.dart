@@ -1045,8 +1045,9 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                                   ),
                                 ),
                               ),
-                             isKeyboardVisible ?Container(): Expanded(
-                                flex: keyboardVisible ? 0 : 3,
+                            // isKeyboardVisible ?Container(): 
+                             Expanded(
+                                flex: keyboardVisible ? 1 : 3,
                                 child: Align(
                                   alignment: Alignment.center,
                                   child: Text(
@@ -1269,7 +1270,7 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                                     )),
                               ),
                               isKeyboardVisible ? Expanded(
-                                flex: 3,
+                                flex: 2,
                                 child:Container()):Container()
                             ],
                         3: (BuildContext context) => <Widget>[

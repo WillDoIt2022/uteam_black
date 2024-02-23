@@ -1270,7 +1270,7 @@ class ObjDetails extends State<ObjDetailsPage> with WidgetsBindingObserver {
                                     )),
                               ),
                               isKeyboardVisible ? Expanded(
-                                flex: 2,
+                                flex: 3,
                                 child:Container()):Container()
                             ],
                         3: (BuildContext context) => <Widget>[

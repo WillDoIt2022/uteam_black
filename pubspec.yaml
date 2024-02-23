@@ -104,7 +104,8 @@ dependencies:
   firebase_storage: ^11.0.13
 #to check permissions to camera, location, etc
   permission_handler: ^10.2.0
-
+#to identify, is keyboard visible or not
+  flutter_keyboard_visibility: ^6.0.0
 
 
   # The following adds the Cupertino Icons font to your application.

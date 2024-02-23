@@ -207,6 +207,7 @@ class _AddObj extends State<AddObjPage> {
                           globals.commercialName="";
                           globals.serialNumber="";
                           globals.flag = true;
+                          globals.onSave = true;
                           await determinePosition();
                           await getObjectsLatLang();
                           await getUULID(0, 0);
